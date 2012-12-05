@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<siteMap xmlns="http://schemas.microsoft.com/AspNet/SiteMap-File-1.0" >
+  <siteMapNode url="Default.aspx" title="Principal"  description="Página Inicial">
+    <siteMapNode title="Relatório de Visita">
+	  <siteMapNode url="ConsultarRelatorioVisita.aspx" title="Consultar Visitas"  description="Consulta Visitas"/>
+		<siteMapNode url="CadastroRelatorioVisita.aspx?IdRel=incluir" title="Cadastro de Visitas"  description="Cadastro de Visitas"/>
+	  </siteMapNode>
+	  <siteMapNode title="Ordem de Serviço">
+		<siteMapNode url="OrdemDeServico.aspx" title="Cadastro de OS"  description="Ordem de Serviço"/>
+	  </siteMapNode>
+	 <siteMapNode title="Logoff">
+        <siteMapNode url="Login.aspx?Acao=Sair" title="Sair"  description="Tela de Login"/>
+	  </siteMapNode>
+	</siteMapNode>
+</siteMap>

@@ -1,0 +1,450 @@
+﻿/* DEFAULTS
+----------------------------------------------------------*/
+
+body
+{
+    background: #B4B4B4;
+    font-size: .80em;
+    font-family: "Helvetica Neue" , "Lucida Grande" , "Segoe UI" , Arial, Helvetica, Verdana, sans-serif;
+    margin: 0px;
+    padding: 0px;
+    color: #696969;
+}
+/*Modal Popup*/
+.modalBackground
+{
+    background-color: Orange;
+    filter: alpha(opacity=70);
+    opacity: 0.7;
+}
+
+a:link, a:visited
+{
+    color: #034af3;
+}
+
+a:hover
+{
+    color: #1d60ff;
+    text-decoration: none;
+}
+
+a:active
+{
+    color: #034af3;
+}
+
+p
+{
+    margin-bottom: 10px;
+    line-height: 1.6em;
+}
+
+
+/* HEADINGS   
+----------------------------------------------------------*/
+
+h1, h2, h3, h4, h5, h6
+{
+    font-size: 1.5em;
+    color: #666666;
+    font-variant: small-caps;
+    text-transform: none;
+    font-weight: 200;
+    margin-bottom: 0px;
+}
+
+h1
+{
+    font-size: 1.6em;
+    padding-bottom: 0px;
+    margin-bottom: 0px;
+}
+
+h2
+{
+    font-size: 1.5em;
+    font-weight: 600;
+}
+
+h3
+{
+    font-size: 1.2em;
+}
+
+h4
+{
+    font-size: 1.1em;
+}
+
+h5, h6
+{
+    font-size: 1em;
+}
+
+/* this rule styles <h1> and <h2> tags that are the 
+first child of the left and right table columns */
+.rightColumn > h1, .rightColumn > h2, .leftColumn > h1, .leftColumn > h2
+{
+    margin-top: 0px;
+}
+
+
+/* PRIMARY LAYOUT ELEMENTS   
+----------------------------------------------------------*/
+
+.page
+{
+    width: 900px;
+    background-color: #fff;
+    margin: 20px auto 0px auto;
+    border: 1px solid #FFFFFF;
+}
+
+.header
+{
+    position: relative;
+    margin: 0px;
+    padding: 0px;
+    background: #333333;
+    width: 100%;
+    top: 0px;
+    left: 0px;
+}
+
+.header h1
+{
+    border-style: none;
+    border-color: inherit;
+    border-width: medium;
+    font-weight: 700;
+    margin: 0px;
+    padding: 0px 0px 0px 20px;
+    color: #f9f9f9;
+    line-height: 2em;
+    font-size: 2em;
+    height: 36px;
+    width: 597px;
+}
+
+.main
+{
+    padding: 0px 12px;
+    margin: 12px 8px 8px 8px;
+    min-height: 420px;
+}
+
+.leftCol
+{
+    padding: 6px 0px;
+    margin: 12px 8px 8px 8px;
+    width: 200px;
+    min-height: 200px;
+    color: Black;
+}
+
+.footer
+{
+    color: #4e5766;
+    padding: 8px 0px 0px 0px;
+    margin: 0px auto;
+    text-align: center;
+    line-height: normal;
+}
+
+.Loader
+{
+    background: #000;
+    color: #fff;
+    height: 100px;
+    text-align: center;
+    width: 940px;
+}
+
+.align_imagen_menu
+{
+    float: none;
+}
+
+/* TAB MENU   
+----------------------------------------------------------*/
+
+div.hideSkiplink
+{
+    background-color: #3a4f63;
+    width: 100%;
+}
+
+div.menu
+{
+    padding: 4px 0px 4px 8px;
+}
+
+div.menu ul
+{
+    list-style: none;
+    margin: 0px;
+    padding: 0px;
+    width: auto;
+}
+
+div.menu ul li a, div.menu ul li a:visited
+{
+    background-color: #465c71;
+    border: 1px #4e667d solid;
+    color: #dde4ec;
+    display: block;
+    line-height: 1.35em;
+    padding: 4px 20px;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+div.menu ul li a:hover
+{
+    background-color: #bfcbd6;
+    color: #465c71;
+    text-decoration: none;
+}
+
+div.menu ul li a:active
+{
+    background-color: #465c71;
+    color: #cfdbe6;
+    text-decoration: none;
+}
+
+
+/* FORM ELEMENTS   
+----------------------------------------------------------*/
+
+td
+{
+    height: 21px;
+}
+
+.tdTitulo
+{
+    color: #fff;
+    background: #424242 url(grd_head.png) repeat-x top;
+    height: 20px;
+}
+
+fieldset
+{
+    margin: 1em 0px;
+    padding: 1em;
+    border: 1px solid #ccc;
+}
+
+fieldset p
+{
+    margin: 2px 12px 10px 10px;
+}
+
+fieldset.login label, fieldset.register label, fieldset.changePassword label
+{
+    display: block;
+}
+
+fieldset label.inline
+{
+    display: inline;
+}
+
+legend
+{
+    font-family: Verdana;
+    font-size: medium;
+    font-size: 1.1em;
+    font-weight: 600;
+    padding: 2px 4px 8px 4px;
+    height: auto;
+}
+
+input.textEntry
+{
+    border: 1px solid #ccc;
+}
+
+input.passwordEntry
+{
+    border: 1px solid #ccc;
+}
+
+div.accountInfo
+{
+    width: 122%;
+}
+
+/* MISC  
+----------------------------------------------------------*/
+
+.clear
+{
+    clear: both;
+}
+
+.title
+{
+    display: block;
+    float: left;
+    text-align: left;
+    width: 671px;
+}
+
+.loginDisplay
+{
+    font-size: 1.1em;
+    display: block;
+    text-align: right;
+    padding: 10px;
+    color: White;
+    height: 49px;
+}
+
+.loginDisplay a:link
+{
+    color: white;
+}
+
+.loginDisplay a:visited
+{
+    color: white;
+}
+
+.loginDisplay a:hover
+{
+    color: white;
+}
+
+.failureNotification
+{
+    font-size: 1.2em;
+    color: Red;
+    margin-bottom: 18px;
+}
+
+.bold
+{
+    font-weight: bold;
+}
+
+.submitButton
+{
+    text-align: right;
+    padding-right: 10px;
+}
+
+/*Textbox Watermark*/
+.unwatermarked
+{
+    height: 20px;
+    width: 148px;
+}
+
+.watermarked
+{
+    background-color: #F0F8FF;
+    color: gray;
+}
+
+
+
+.headerCopy
+{
+    position: relative;
+    margin: 0px;
+    padding: 0px;
+    background: #333333;
+    width: 91%;
+    top: 0px;
+    left: 0px;
+    font-family: "Segoe UI";
+    font-size: 10px;
+    font-weight: normal;
+    font-style: italic;
+}
+
+.label
+{
+    font-size: 12px;
+    font-family: Segoe UI;
+    color: Black;
+    font-weight: bold;
+}
+
+.Titulo
+{
+    font-size: 14px;
+    font-family: Segoe UI;
+    color: Black;
+    font-weight: bold;
+}
+
+.textBox
+{
+    font-size: 12px;
+    font-family: Segoe UI;
+    color: Black;
+    border: solid 1px #C0C0C0;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+     border: 1px solid #dcdcdc;
+}
+
+.Principal
+{
+    background-color: #595659;
+    -moz-border-radius: 8px;
+    -webkit-border-radius: 8px;
+    border-radius: 8px;
+    border: 2px solid #292929;
+    display: inline-block;
+    color: #ffffff;
+    font-family: arial;
+    font-size: 13px;
+    font-weight: bold;
+    padding: 0px 0px;
+    text-decoration: none;
+}
+.Principal:hover
+{
+    background-color: #423d42;
+}
+.Principal:active
+{
+    position: relative;
+    top: 1px;
+}
+
+.button
+{
+    -moz-box-shadow: inset 0px 1px 4px 0px #ffffff;
+    -webkit-box-shadow: inset 0px 1px 4px 0px #ffffff;
+    box-shadow: inset 0px 1px 4px 0px #ffffff;
+    background-color: #ededed;
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+    border-radius: 6px;
+    border: 2px solid #dcdcdc;
+    display: inline-block;
+    color: #777777;
+    font-family: arial;
+    font-size: 11px;
+    font-weight: bold;
+    padding: 4px 12px;
+    text-decoration: none;
+    text-shadow: 1px 1px 0px #ffffff;
+}
+.button:hover
+{
+    background-color: #dfdfdf;
+}
+.button:active
+{
+    posibutton: active { position:rctive { position:relative;
+    top: 1px;
+};;;;
+    

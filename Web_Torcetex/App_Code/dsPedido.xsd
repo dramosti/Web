@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="dsPedido" targetNamespace="http://tempuri.org/dsPedido.xsd" xmlns:mstns="http://tempuri.org/dsPedido.xsd" xmlns="http://tempuri.org/dsPedido.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="dsPedido" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:Generator_DataSetName="dsPedido" msprop:Generator_UserDSName="dsPedido">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="Pedido" msprop:Generator_TableClassName="PedidoDataTable" msprop:Generator_TableVarName="tablePedido" msprop:Generator_TablePropName="Pedido" msprop:Generator_RowDeletingName="PedidoRowDeleting" msprop:Generator_RowChangingName="PedidoRowChanging" msprop:Generator_RowEvHandlerName="PedidoRowChangeEventHandler" msprop:Generator_RowDeletedName="PedidoRowDeleted" msprop:Generator_UserTableName="Pedido" msprop:Generator_RowChangedName="PedidoRowChanged" msprop:Generator_RowEvArgName="PedidoRowChangeEvent" msprop:Generator_RowClassName="PedidoRow">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="DT_PEDIDO" msprop:Generator_ColumnVarNameInTable="columnDT_PEDIDO" msprop:Generator_ColumnPropNameInRow="DT_PEDIDO" msprop:Generator_ColumnPropNameInTable="DT_PEDIDOColumn" msprop:Generator_UserColumnName="DT_PEDIDO" type="xs:string" minOccurs="0" />
+              <xs:element name="CD_CLIENTE" msprop:Generator_ColumnVarNameInTable="columnCD_CLIENTE" msprop:Generator_ColumnPropNameInRow="CD_CLIENTE" msprop:Generator_ColumnPropNameInTable="CD_CLIENTEColumn" msprop:Generator_UserColumnName="CD_CLIENTE" type="xs:string" minOccurs="0" />
+              <xs:element name="NM_CLIFOR" msprop:Generator_ColumnVarNameInTable="columnNM_CLIFOR" msprop:Generator_ColumnPropNameInRow="NM_CLIFOR" msprop:Generator_ColumnPropNameInTable="NM_CLIFORColumn" msprop:Generator_UserColumnName="NM_CLIFOR" type="xs:string" minOccurs="0" />
+              <xs:element name="DS_ENDCLI" msprop:Generator_ColumnVarNameInTable="columnDS_ENDCLI" msprop:Generator_ColumnPropNameInRow="DS_ENDCLI" msprop:Generator_ColumnPropNameInTable="DS_ENDCLIColumn" msprop:Generator_UserColumnName="DS_ENDCLI" type="xs:string" minOccurs="0" />
+              <xs:element name="NM_BAIRROCLI" msprop:Generator_ColumnVarNameInTable="columnNM_BAIRROCLI" msprop:Generator_ColumnPropNameInRow="NM_BAIRROCLI" msprop:Generator_ColumnPropNameInTable="NM_BAIRROCLIColumn" msprop:Generator_UserColumnName="NM_BAIRROCLI" type="xs:string" minOccurs="0" />
+              <xs:element name="NM_CIDCLI" msprop:Generator_ColumnVarNameInTable="columnNM_CIDCLI" msprop:Generator_ColumnPropNameInRow="NM_CIDCLI" msprop:Generator_ColumnPropNameInTable="NM_CIDCLIColumn" msprop:Generator_UserColumnName="NM_CIDCLI" type="xs:string" minOccurs="0" />
+              <xs:element name="CD_UFCLI" msprop:Generator_ColumnVarNameInTable="columnCD_UFCLI" msprop:Generator_ColumnPropNameInRow="CD_UFCLI" msprop:Generator_ColumnPropNameInTable="CD_UFCLIColumn" msprop:Generator_UserColumnName="CD_UFCLI" type="xs:string" minOccurs="0" />
+              <xs:element name="CD_CEPCLI" msprop:Generator_ColumnVarNameInTable="columnCD_CEPCLI" msprop:Generator_ColumnPropNameInRow="CD_CEPCLI" msprop:Generator_ColumnPropNameInTable="CD_CEPCLIColumn" msprop:Generator_UserColumnName="CD_CEPCLI" type="xs:string" minOccurs="0" />
+              <xs:element name="CD_FONECLI" msprop:Generator_ColumnVarNameInTable="columnCD_FONECLI" msprop:Generator_ColumnPropNameInRow="CD_FONECLI" msprop:Generator_ColumnPropNameInTable="CD_FONECLIColumn" msprop:Generator_UserColumnName="CD_FONECLI" type="xs:string" minOccurs="0" />
+              <xs:element name="DS_PRAZO" msprop:Generator_ColumnVarNameInTable="columnDS_PRAZO" msprop:Generator_ColumnPropNameInRow="DS_PRAZO" msprop:Generator_ColumnPropNameInTable="DS_PRAZOColumn" msprop:Generator_UserColumnName="DS_PRAZO" type="xs:string" minOccurs="0" />
+              <xs:element name="DS_PROD" msprop:Generator_ColumnVarNameInTable="columnDS_PROD" msprop:Generator_ColumnPropNameInRow="DS_PROD" msprop:Generator_ColumnPropNameInTable="DS_PRODColumn" msprop:Generator_UserColumnName="DS_PROD" type="xs:string" minOccurs="0" />
+              <xs:element name="VL_UNIPROD" msprop:Generator_ColumnVarNameInTable="columnVL_UNIPROD" msprop:Generator_ColumnPropNameInRow="VL_UNIPROD" msprop:Generator_ColumnPropNameInTable="VL_UNIPRODColumn" msprop:Generator_UserColumnName="VL_UNIPROD" type="xs:string" minOccurs="0" />
+              <xs:element name="QT_PACOTES" msprop:Generator_ColumnVarNameInTable="columnQT_PACOTES" msprop:Generator_ColumnPropNameInRow="QT_PACOTES" msprop:Generator_ColumnPropNameInTable="QT_PACOTESColumn" msprop:Generator_UserColumnName="QT_PACOTES" type="xs:string" minOccurs="0" />
+              <xs:element name="QT_PROD" msprop:Generator_ColumnVarNameInTable="columnQT_PROD" msprop:Generator_ColumnPropNameInRow="QT_PROD" msprop:Generator_ColumnPropNameInTable="QT_PRODColumn" msprop:Generator_UserColumnName="QT_PROD" type="xs:string" minOccurs="0" />
+              <xs:element name="NM_VENDEDOR" msprop:Generator_ColumnVarNameInTable="columnNM_VENDEDOR" msprop:Generator_ColumnPropNameInRow="NM_VENDEDOR" msprop:Generator_ColumnPropNameInTable="NM_VENDEDORColumn" msprop:Generator_UserColumnName="NM_VENDEDOR" type="xs:string" minOccurs="0" />
+              <xs:element name="CD_PEDCLI" msprop:Generator_ColumnVarNameInTable="columnCD_PEDCLI" msprop:Generator_ColumnPropNameInRow="CD_PEDCLI" msprop:Generator_ColumnPropNameInTable="CD_PEDCLIColumn" msprop:Generator_UserColumnName="CD_PEDCLI" type="xs:string" minOccurs="0" />
+              <xs:element name="CD_FONEVEND" msprop:Generator_ColumnVarNameInTable="columnCD_FONEVEND" msprop:Generator_ColumnPropNameInRow="CD_FONEVEND" msprop:Generator_ColumnPropNameInTable="CD_FONEVENDColumn" msprop:Generator_UserColumnName="CD_FONEVEND" type="xs:string" minOccurs="0" />
+              <xs:element name="DS_TIPODOC" msprop:Generator_ColumnVarNameInTable="columnDS_TIPODOC" msprop:Generator_ColumnPropNameInRow="DS_TIPODOC" msprop:Generator_ColumnPropNameInTable="DS_TIPODOCColumn" msprop:Generator_UserColumnName="DS_TIPODOC" type="xs:string" minOccurs="0" />
+              <xs:element name="ST_PEDIDO" msprop:Generator_ColumnVarNameInTable="columnST_PEDIDO" msprop:Generator_ColumnPropNameInRow="ST_PEDIDO" msprop:Generator_ColumnPropNameInTable="ST_PEDIDOColumn" msprop:Generator_UserColumnName="ST_PEDIDO" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

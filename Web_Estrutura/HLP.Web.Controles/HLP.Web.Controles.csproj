@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{C5A2EB22-20A3-4952-B723-38A447EF11FD}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>HLP.Web.Controles</RootNamespace>
+    <AssemblyName>HLP.Web.Controles</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>G:\CSharp\Desenvolvimento\Projetos\Web_DLLs\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="HlpWebButton.cs" />
+    <Compile Include="HlpWebDropDownList.cs" />
+    <Compile Include="HlpWebGridView.cs" />
+    <Compile Include="HlpWebLabel.cs" />
+    <Compile Include="HlpWebLinkButton.cs" />
+    <Compile Include="HlpWebLogin.cs" />
+    <Compile Include="HlpWebMasterPage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="HlpWebMultiView.cs" />
+    <Compile Include="HlpWebPanel.cs" />
+    <Compile Include="HlpWebRadioButton.cs" />
+    <Compile Include="HlpWebSiteMapPath.cs" />
+    <Compile Include="HlpWebTextBox.cs" />
+    <Compile Include="HlpWebTextBoxData.cs" />
+    <Compile Include="HlpWebTextBoxInteiro.cs" />
+    <Compile Include="HlpWebTextBoxNumerico.cs" />
+    <Compile Include="HlpWebTreeView.cs" />
+    <Compile Include="HlpWebView.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\HLP.Dados\HLP.Dados\HLP.Dados.csproj">
+      <Project>{9EA6AF5A-7C40-4E63-8D34-24557AD166C1}</Project>
+      <Name>HLP.Dados</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HLP.Geral\HLP.Geral.csproj">
+      <Project>{C6819F32-6868-4BB5-BF8F-114ED4B49484}</Project>
+      <Name>HLP.Geral</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HLP.Web\HLP.Web.csproj">
+      <Project>{18807F5F-4BE5-456A-ABB7-FA820911C320}</Project>
+      <Name>HLP.Web</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

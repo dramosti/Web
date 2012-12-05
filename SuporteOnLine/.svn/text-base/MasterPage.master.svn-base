@@ -1,0 +1,87 @@
+<%@ Master Language="C#" AutoEventWireup="true" CodeFile="MasterPage.master.cs" Inherits="MasterPage" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head runat="server">
+    <title>Untitled Page</title>
+    <style type="text/css">
+        .style1
+        {
+            width: 100%;
+            height: 295px;
+        }
+    </style>
+    </head>
+<body>
+    <form id="form1" runat="server">
+    <div>
+        <table style="width: 715px; background-image: url('Imagem/Layout/Topo_r1_c1.jpg'); background-repeat: no-repeat; height: 170px;" 
+            align="center" cellpadding="0" cellspacing="0">
+            <tr>
+                <td align="center" style="width: 45%">
+                    &nbsp;</td>
+                <td align="center" style="width: 55%">
+                    <asp:Label ID="Label1" runat="server" Font-Bold="True" Font-Names="Verdana" Font-Size="22px"
+                        Text="SISTEMA  WEB" Width="233px" ForeColor="#0066CC" Font-Italic="True"></asp:Label><br />
+                    <br />
+                    <asp:Label ID="Label2" runat="server" Font-Bold="True" Font-Names="Verdana" Font-Size="Small"
+                        Font-Underline="False" Width="283px" Height="16px"></asp:Label></td>
+            </tr>
+            </table>
+        <table style="width: 714px; height: 226px" align="center" cellpadding="0" 
+            cellspacing="0">
+            <tr>
+                <td valign="top" 
+                    
+                    
+                    
+                    style="background-image: url('Imagem/Layout/Topo_r3_c1.jpg'); background-repeat: repeat-y; width: 25%; height: 295px;">
+                    <table align="center" cellpadding="0" cellspacing="0" class="style1" 
+                        style="background-image: url('Imagem/Layout/Topo_r2_c1.jpg'); background-repeat: no-repeat; height: 295px; width: 100%">
+                        <tr>
+                            <td valign="top">
+                                <br />
+                    <asp:Menu ID="Menu1" runat="server" DataSourceID="SiteMapDataSource1" 
+                        DynamicHorizontalOffset="2" Font-Names="Verdana" Font-Size="X-Small" 
+                        ForeColor="#284E98" StaticSubMenuIndent="10px" Font-Bold="True" 
+                        StaticDisplayLevels="50">
+                        <StaticSelectedStyle BackColor="#C1E0FF" Font-Names="Verdana" 
+                            Font-Size="X-Small" />
+                        <StaticMenuItemStyle HorizontalPadding="5px" VerticalPadding="2px" 
+                            Font-Bold="False" Font-Names="Verdana" Font-Size="X-Small" />
+                        <DynamicHoverStyle BackColor="#284E98" ForeColor="White" />
+                        <DynamicMenuStyle BackColor="Transparent" />
+                        <DynamicSelectedStyle BackColor="#C1E0FF" />
+                        <DynamicMenuItemStyle HorizontalPadding="5px" VerticalPadding="2px" />
+                        <StaticHoverStyle BackColor="#DFEFFF" ForeColor="#CC3300" Font-Bold="False" 
+                            Font-Names="Verdana" Font-Size="X-Small" />
+                    </asp:Menu>
+                            </td>
+                        </tr>
+                    </table>
+                    <br />
+                    <br />
+                </td>
+                <td valign="top" style="width: 75%">
+        <asp:contentplaceholder id="ContentPlaceHolder1" runat="server">
+        </asp:contentplaceholder>
+                </td>
+            </tr>
+            <tr>
+                <td valign="middle" 
+                    
+                    
+                    style="background-image: url('Imagem/Layout/Topo_r4_c1.jpg'); background-repeat: no-repeat; height: 41px;" 
+                    align="center" colspan="2">
+                    <asp:Label ID="Label3" runat="server" Font-Bold="True" Font-Names="Verdana" 
+                        Font-Size="X-Small" 
+                        Text="HLP Informática - © 2008 - Todos os Direitos Reservados."></asp:Label>
+                </td>
+            </tr>
+        </table>
+    </div>
+                    <asp:SiteMapDataSource ID="SiteMapDataSource1" runat="server" />
+    </form>
+</body>
+</html>

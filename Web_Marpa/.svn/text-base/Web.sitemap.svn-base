@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<siteMap xmlns="http://schemas.microsoft.com/AspNet/SiteMap-File-1.0" >
+
+  <siteMapNode title="Relatórios">
+    <siteMapNode url="rptClientes.rpt" title="Clientes" description="Relatorio de Clientes" />
+    <siteMapNode url="rptPedido.rpt" title="Pedido" description="Relatorio de Pedido" />
+    <siteMapNode url="rptPendenciasCliente.rpt" title="Pendencias" description="Relatorio de Pendencias" />
+  </siteMapNode>
+</siteMap>

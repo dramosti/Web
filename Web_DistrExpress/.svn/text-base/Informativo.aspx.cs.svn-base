@@ -1,0 +1,154 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using HLP.Web;
+using System.Data;
+using System.Text;
+using CrystalDecisions.Shared;
+using CrystalDecisions.CrystalReports.Engine;
+using System.IO;
+
+public partial class Informativo : System.Web.UI.Page
+{
+    protected static string sCodigoPedido = String.Empty;
+
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        if (!IsPostBack)
+        {
+            string sUser = UsuarioWeb.GetNomeUsuarioConectado(Session);
+            if (sUser == "")
+            {
+                Response.Redirect("~/Login.aspx");
+            }
+
+            if (Request["PARAMETERCODIGO"] != null)
+            {
+                sCodigoPedido = Request["PARAMETERCODIGO"].ToString();
+                lblInfo.Text = "Pedido nº " + sCodigoPedido.Trim() + " foi realizado com sucesso!";
+                btnNovoPedido.Visible = true;
+                btnImprimir.Visible = true;
+            }
+            else if (Request["CD_PEDIDO_EMAIL"] != null)
+            {
+                sCodigoPedido = Request["CD_PEDIDO_EMAIL"].ToString();
+                lblInfo.Text = "Pedido nº " + sCodigoPedido.Trim() + "!";
+                btnNovoPedido.Visible = false;
+                btnImprimir.Visible = true;
+            }
+        }
+    }
+
+    protected void btnImprimir_Click1(object sender, EventArgs e)
+    {
+        if (this.btnImprimir.Text == "Visualizar Pedido")
+        {
+            CarregaDataTableParaImpressao();
+            Response.Redirect("~/ViewPedido.aspx");
+
+            //ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "_new", "window.open('ViewPedido.aspx');", true);
+        }
+    }
+
+    private void CarregaDataTableParaImpressao()
+    {
+        UsuarioWeb objUsuario = (UsuarioWeb)Session["ObjetoUsuario"];
+
+        DataTable dtClientes = new DataTable();
+        StringBuilder str = new StringBuilder();
+        str.Append("SELECT PEDIDO.CD_EMPRESA, PEDIDO.CD_PEDIDO CD_PEDCLI, ");
+        str.Append("PEDIDO.CD_CLIENTE, ");
+        str.Append("PEDIDO.DT_PEDIDO, ");
+        str.Append("VENDEDOR.NM_VEND NM_VENDEDOR, ");
+        str.Append("VENDEDOR.CD_FONE CD_FONEVEND, ");
+        str.Append("PEDIDO.CD_PRAZO, ");
+        str.Append("PRAZOS.DS_PRAZO, ");
+        str.Append("CLIFOR.NM_CLIFOR, ");
+        str.Append("MOVITEM.CD_PROD, ");
+        str.Append("MOVITEM.VL_UNIPROD, ");
+        str.Append("MOVITEM.QT_PROD, ");
+        str.Append("MOVITEM.DS_PROD, ");
+        str.Append("MOVITEM.VL_TOTLIQ, ");
+        str.Append("MOVITEM.VL_PESOLIQ, ");
+        str.Append("COALESCE(PRODUTO.QT_PCAIXA,0) QT_PCAIXA ");
+        str.Append("FROM PEDIDO ");
+        str.Append("INNER JOIN EMPRESA ON (EMPRESA.CD_EMPRESA = PEDIDO.CD_EMPRESA) ");
+        str.Append("LEFT OUTER JOIN MOVITEM ON ((MOVITEM.CD_EMPRESA = PEDIDO.CD_EMPRESA) AND (MOVITEM.CD_PEDIDO = PEDIDO.CD_PEDIDO)) ");
+        str.Append("LEFT OUTER JOIN VENDEDOR ON (VENDEDOR.CD_VEND = PEDIDO.CD_VEND1) ");
+        str.Append("LEFT OUTER JOIN PRAZOS ON (PRAZOS.CD_PRAZO = PEDIDO.CD_PRAZO) ");
+        str.Append("LEFT OUTER JOIN CLIFOR ON (CLIFOR.CD_CLIFOR = PEDIDO.CD_CLIENTE) ");
+        str.Append("LEFT OUTER JOIN PRODUTO ON (PRODUTO.CD_PROD = MOVITEM.CD_PROD) ");
+        str.Append("WHERE PEDIDO.cd_vend1 = '" + objUsuario.CodigoVendedor.ToString() + "' ");
+        str.Append("AND PEDIDO.CD_PEDIDO = '" + sCodigoPedido + "' ");
+        str.Append("ORDER BY PEDIDO.CD_PEDIDO ");
+
+
+
+        dtClientes = objUsuario.oTabelas.hlpDbFuncoes.qrySeekRet(str.ToString());
+
+        Session["PedidoRes"] = dtClientes;
+    }
+    protected void btnNovoPedido_Click1(object sender, EventArgs e)
+    {
+        Response.Redirect("~/Pedido.aspx");
+    }
+    protected void btnEmail_Click(object sender, EventArgs e)
+    {
+        ExportPDF();
+        Response.Redirect("~/EnviarEmail.aspx?ANEXO=" + sCodigoPedido);
+    }
+
+    private void ExportPDF()
+    {
+        try
+        {
+            lblInfo.Text = "Gerando arquivo pdf para anexo";
+            DirectoryInfo dinfo = new DirectoryInfo(Server.MapPath("Pedidos"));
+            if (!dinfo.Exists)
+            {
+                dinfo.Create();
+            }
+            if (File.Exists(Server.MapPath("Pedidos\\" + sCodigoPedido + ".pdf")))
+            {
+                File.Delete(Server.MapPath("Pedidos\\" + sCodigoPedido + ".pdf"));
+            }
+            CarregaDataTableParaImpressao();
+            ReportDocument rpt = new ReportDocument();
+            DataTable TabelaImpressao = (DataTable)Session["PedidoRes"];
+            rpt.Load(Server.MapPath("rptPedido.rpt"));
+            rpt.SetDataSource(TabelaImpressao);
+
+            CrystalDecisions.Web.CrystalReportViewer cryView = new CrystalDecisions.Web.CrystalReportViewer();
+            ExportOptions CrExportOptions;
+            DiskFileDestinationOptions CrDiskFileDestinationOptions = new DiskFileDestinationOptions();
+            PdfRtfWordFormatOptions CrFormatTypeOptions = new PdfRtfWordFormatOptions();
+            CrDiskFileDestinationOptions.DiskFileName = Server.MapPath("Pedidos\\" + sCodigoPedido + ".pdf");
+            CrExportOptions = rpt.ExportOptions;
+            {
+                CrExportOptions.ExportDestinationType = ExportDestinationType.DiskFile;
+                CrExportOptions.ExportFormatType = ExportFormatType.PortableDocFormat;
+                CrExportOptions.DestinationOptions = CrDiskFileDestinationOptions;
+                CrExportOptions.FormatOptions = CrFormatTypeOptions;
+            }
+            rpt.Export();
+            lblInfo.Text = "Exportando arquivo para o servidor";
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+            //lblInfo.Text = ex.Message + (ex.InnerException != null ? ex.InnerException.Message : "");
+        }
+    }
+
+
+
+    protected void btnEmail0_Click(object sender, EventArgs e)
+    {
+        DirectoryInfo dinfo = new DirectoryInfo(Server.MapPath("Pedidos"));
+        lblInfo.Text = dinfo.FullName;
+        MessageHLP.ShowPopUpMsg(dinfo.Exists.ToString(), this.Page);
+    }
+}

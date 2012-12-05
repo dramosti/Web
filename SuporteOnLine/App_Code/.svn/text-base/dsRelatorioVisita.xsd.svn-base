@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="dsRelatorioVisita" targetNamespace="http://tempuri.org/dsRelatorioVisita.xsd" xmlns:mstns="http://tempuri.org/dsRelatorioVisita.xsd" xmlns="http://tempuri.org/dsRelatorioVisita.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="dsRelatorioVisita" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:Generator_UserDSName="dsRelatorioVisita" msprop:Generator_DataSetName="dsRelatorioVisita">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="RelatorioVisita" msprop:Generator_UserTableName="RelatorioVisita" msprop:Generator_RowDeletedName="RelatorioVisitaRowDeleted" msprop:Generator_RowChangedName="RelatorioVisitaRowChanged" msprop:Generator_RowClassName="RelatorioVisitaRow" msprop:Generator_RowChangingName="RelatorioVisitaRowChanging" msprop:Generator_RowEvArgName="RelatorioVisitaRowChangeEvent" msprop:Generator_RowEvHandlerName="RelatorioVisitaRowChangeEventHandler" msprop:Generator_TableClassName="RelatorioVisitaDataTable" msprop:Generator_TableVarName="tableRelatorioVisita" msprop:Generator_RowDeletingName="RelatorioVisitaRowDeleting" msprop:Generator_TablePropName="RelatorioVisita">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="NR_LANC" msprop:Generator_UserColumnName="NR_LANC" msprop:Generator_ColumnPropNameInRow="NR_LANC" msprop:Generator_ColumnVarNameInTable="columnNR_LANC" msprop:Generator_ColumnPropNameInTable="NR_LANCColumn" type="xs:string" minOccurs="0" />
+              <xs:element name="DT_REL" msprop:Generator_UserColumnName="DT_REL" msprop:Generator_ColumnPropNameInRow="DT_REL" msprop:Generator_ColumnVarNameInTable="columnDT_REL" msprop:Generator_ColumnPropNameInTable="DT_RELColumn" type="xs:string" minOccurs="0" />
+              <xs:element name="NM_GUERRA" msprop:Generator_UserColumnName="NM_GUERRA" msprop:Generator_ColumnPropNameInRow="NM_GUERRA" msprop:Generator_ColumnVarNameInTable="columnNM_GUERRA" msprop:Generator_ColumnPropNameInTable="NM_GUERRAColumn" type="xs:string" minOccurs="0" />
+              <xs:element name="NM_CONTATO" msprop:Generator_UserColumnName="NM_CONTATO" msprop:Generator_ColumnPropNameInRow="NM_CONTATO" msprop:Generator_ColumnVarNameInTable="columnNM_CONTATO" msprop:Generator_ColumnPropNameInTable="NM_CONTATOColumn" type="xs:string" minOccurs="0" />
+              <xs:element name="HR_ENTRADA" msprop:Generator_UserColumnName="HR_ENTRADA" msprop:Generator_ColumnPropNameInRow="HR_ENTRADA" msprop:Generator_ColumnVarNameInTable="columnHR_ENTRADA" msprop:Generator_ColumnPropNameInTable="HR_ENTRADAColumn" type="xs:string" minOccurs="0" />
+              <xs:element name="HR_DESCONTO" msprop:Generator_UserColumnName="HR_DESCONTO" msprop:Generator_ColumnPropNameInRow="HR_DESCONTO" msprop:Generator_ColumnVarNameInTable="columnHR_DESCONTO" msprop:Generator_ColumnPropNameInTable="HR_DESCONTOColumn" type="xs:string" minOccurs="0" />
+              <xs:element name="HR_SAIDA" msprop:Generator_UserColumnName="HR_SAIDA" msprop:Generator_ColumnPropNameInRow="HR_SAIDA" msprop:Generator_ColumnVarNameInTable="columnHR_SAIDA" msprop:Generator_ColumnPropNameInTable="HR_SAIDAColumn" type="xs:string" minOccurs="0" />
+              <xs:element name="DS_OBS" msprop:Generator_UserColumnName="DS_OBS" msprop:Generator_ColumnPropNameInRow="DS_OBS" msprop:Generator_ColumnVarNameInTable="columnDS_OBS" msprop:Generator_ColumnPropNameInTable="DS_OBSColumn" type="xs:string" minOccurs="0" />
+              <xs:element name="TITULO" msprop:Generator_UserColumnName="TITULO" msprop:Generator_ColumnPropNameInRow="TITULO" msprop:Generator_ColumnVarNameInTable="columnTITULO" msprop:Generator_ColumnPropNameInTable="TITULOColumn" type="xs:string" minOccurs="0" />
+              <xs:element name="NM_OPERADO" msprop:Generator_UserColumnName="NM_OPERADO" msprop:Generator_ColumnVarNameInTable="columnNM_OPERADO" msprop:Generator_ColumnPropNameInRow="NM_OPERADO" msprop:Generator_ColumnPropNameInTable="NM_OPERADOColumn" type="xs:string" minOccurs="0" />
+              <xs:element name="DS_MAQUINA" msprop:Generator_UserColumnName="DS_MAQUINA" msprop:Generator_ColumnPropNameInRow="DS_MAQUINA" msprop:Generator_ColumnVarNameInTable="columnDS_MAQUINA" msprop:Generator_ColumnPropNameInTable="DS_MAQUINAColumn" type="xs:string" minOccurs="0" />
+              <xs:element name="ST_MAQ" msprop:Generator_UserColumnName="ST_MAQ" msprop:Generator_ColumnPropNameInRow="ST_MAQ" msprop:Generator_ColumnVarNameInTable="columnST_MAQ" msprop:Generator_ColumnPropNameInTable="ST_MAQColumn" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+    <xs:unique name="RelatorioVisitaKey1">
+      <xs:selector xpath=".//mstns:RelatorioVisita" />
+      <xs:field xpath="mstns:NR_LANC" />
+    </xs:unique>
+  </xs:element>
+</xs:schema>

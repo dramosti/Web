@@ -1,0 +1,50 @@
+﻿/*        V2        */
+
+*
+{
+    list-style: none;
+    margin: 0px;
+    padding: 0px;
+}
+
+
+#menuH
+{
+    background-color: #3B5998;
+    border: 1px solid #96A6C5;
+    font-family: arial;
+    font-size: 12px;
+    font-weight: bold;
+    width: 380px;
+}
+
+#menuH li a
+{
+    border-color: #FFF;
+    height: 32px;
+    voice-family: "\"}\"";
+    voice-family: inherit;
+    height: 24px;
+    text-decoration: none;
+}
+
+#menuH li a:link, #menuH li a:visited
+{
+    border: 1px solid #96A6C5;
+    color: #fff;
+    display: block;
+    padding: 8px 0 0 10px;
+    width: 366px;
+}
+
+#menuH li a:hover
+{
+    background-repeat: repeat;
+    padding: 8px 0 0 10px;
+}
+
+#menuH li a:active
+{
+    background-repeat: repeat;
+    padding: 8px 0 0 10px;
+}

@@ -1,0 +1,72 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="Site.master.cs" Inherits="SiteMaster" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head runat="server">
+    <title>Consulta de Conhecimento</title>
+    <link href="~/Styles/Site.css" rel="stylesheet" type="text/css" />
+    <asp:ContentPlaceHolder ID="HeadContent" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body style="background-image: url(imagem/background.jpg)">
+    <form runat="server">
+    <div class="page" style="width: 900px;">
+        <div style="background-image: url(<%=backgroundImage%>); height: 128px; width: 900px;">
+            <div class="loginDisplay">
+                <asp:LoginView ID="HeadLoginView" runat="server" EnableViewState="false">
+                    <AnonymousTemplate>
+                        [ <a href="~/Account/Login.aspx" id="HeadLoginStatus" runat="server">Log In</a>
+                        ]
+                    </AnonymousTemplate>
+                    <LoggedInTemplate>
+                        <asp:Label ID="Label1" runat="server" Font-Bold="True" Font-Names="Segoe UI" Font-Size="11px"
+                            Text=" Bem-Vindo"></asp:Label>
+                        <span class="bold">
+                            <asp:LoginName ID="HeadLoginName" runat="server" Font-Bold="True" Font-Names="Segoe UI"
+                                Font-Size="11px" />
+                        </span>!
+                    </LoggedInTemplate>
+                </asp:LoginView>
+            </div>
+            <div align="right" style="margin-right:3px;">
+                <asp:Label ID="Label4" runat="server" Text="Filtrar por " Font-Size="14px" Width="650px"
+                    Font-Italic="true" Font-Bold="true " Font-Names="Segoe UI" ForeColor="white"><%=nmEmpresa%> para São Paulo, Salto, Itu e Indaiatuba e Diretas para Todo o Brasil</asp:Label>
+                <br />
+                <asp:Label ID="Label2" runat="server" Font-Size="9px" Width="410px" Font-Bold="true "
+                    Font-Names="Segoe UI" ForeColor="white">Endereço: <%=rua%>, nº <%=nro%> - Resid. Fabbri - CEP: <%=cep%> - <%=cidade%> / <%=uf%> </asp:Label>
+                <br />
+                <asp:Label ID="Label3" runat="server" Font-Size="14px" Width="310" Font-Bold="true" Font-Italic="true"
+                    Font-Names="Segoe UI" ForeColor="white">Atendimento 24 horas: <%=tel%></asp:Label>
+            </div>
+        </div>
+        <div>
+            <asp:Menu ID="NavigationMenu" runat="server" BackColor="#F7F6F3" Orientation="Horizontal"
+                style="background-image: url(imagem/fundoMenu.png); float:left; padding:3px 0 0 0; height:23px; width:900px; background-repeat:repeat-x;" 
+                DynamicHorizontalOffset="2" Font-Names="Segoe UI" Font-Size="12px" ForeColor="#000000" StaticSubMenuIndent="12px"
+                PathSeparator="|" StaticEnableDefaultPopOutImage="False">
+
+                <StaticHoverStyle BackColor="#FFFFCC" ForeColor="Black" Font-Bold="true" />
+                <StaticMenuItemStyle HorizontalPadding="5px" VerticalPadding="2px" />
+                
+                <Items>
+                    <asp:MenuItem NavigateUrl="~/Conhecimentos.aspx" Text="Conhecimentos" Value="Conhecimentos" />
+                    <asp:MenuItem NavigateUrl="~/Account/Login.aspx" Text="Login" />
+                </Items>
+            </asp:Menu>
+        </div>
+        <div class="main">
+            <asp:ContentPlaceHolder ID="MainContent" runat="server" />
+        </div>
+        <div class="clear">
+        </div>
+    </div>
+    <div class="footer" style="font-family: Segoe UI; font-size: 8px; color: White;">
+        HLP Estratégia em Software. Todos os Direitos Reservados.
+        <br />
+        Rua 9 de Julho, 942 - Vila Nova - Salto - Fone: (11) 4028-8950
+        <br />
+        <br />
+    </div>
+    </form>
+</body>
+</html>

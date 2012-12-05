@@ -1,0 +1,58 @@
+10
+
+dir
+5210
+file://192.168.9.100/g/svn/repos/csharp/Fontes/Web_Estrutura
+file://192.168.9.100/g/svn/repos/csharp
+
+
+
+2012-08-13T14:32:36.933669Z
+4739
+andre
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+bec86352-e73f-ed4d-b236-e556ffed02f2
+
+HLP.Web
+dir
+
+HLP.Dados.Faturamento
+dir
+
+HLP.Web.Controles
+dir
+
+HLP.Dados.Cadastro.Web
+dir
+
+HLP.Dados.Vendas.Web
+dir
+
+HLP.Web.Controles.Ajax
+dir
+
+HLP.Dados.Cadastro
+dir
+
+HLP.Dados.Vendas
+dir
+
+HLP.Dados
+dir
+
+HLP.Geral
+dir
+
