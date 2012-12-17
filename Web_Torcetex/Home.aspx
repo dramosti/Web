@@ -167,7 +167,7 @@
                             <asp:CommandField SelectText="Ler" ShowSelectButton="True" />
                         </Columns>
                         <PagerStyle CssClass="pgr"></PagerStyle>
-                        <SelectedRowStyle BackColor="#CC3333" Font-Bold="True" ForeColor="White" />
+                        <SelectedRowStyle BackColor="#FFCDCE" Font-Bold="True" ForeColor="White" />
                         <PagerSettings FirstPageText="Início" LastPageText="Fim" Mode="NextPreviousFirstLast"
                             NextPageText="Próximo" PreviousPageText="Anterior" />
                     </asp:GridView>
@@ -175,7 +175,7 @@
                         CssClass="mGrid" BorderStyle="None" BorderWidth="1px" CellPadding="4" ForeColor="Black"
                         GridLines="Horizontal" Height="50px" Width="500px" AutoGenerateRows="False" Font-Bold="False"
                        Font-Names="Segoe UI" Font-Size="13px">
-                        <EditRowStyle BackColor="#CC3333" Font-Bold="True" ForeColor="White" />
+                        <EditRowStyle BackColor="#FFCDCE" Font-Bold="True" ForeColor="White" />
                         <Fields>
                             <asp:BoundField DataField="DS_AVISO" ShowHeader="False">
                                 <ItemStyle HorizontalAlign="Left" Font-Names="Segoe UI" Font-Size="13px"  Font-Bold="False" />

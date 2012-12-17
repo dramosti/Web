@@ -124,18 +124,19 @@ public partial class ConsultaPedidos : System.Web.UI.Page
             sQuery.Append("VL_PERCOMI1 ");
             sQuery.Append("FROM MOVITEM WHERE CD_EMPRESA = '{0}' AND CD_PEDIDO= '{1}' ");
 
+            DataTable dtPedidos = (DataTable)Session["DadosConsultaPedidos"];
 
             if (gridConsultaPedidos.Rows.Count > 0)
             {
-                foreach (GridViewRow row in gridConsultaPedidos.Rows)
+                foreach (DataRow row in dtPedidos.Rows)
                 {
                     drPedido = ds.Pedido.NewPedidoRow();
-                    drPedido.CD_PEDIDO = row.Cells[0].Text;// (row.Cells[0].FindControl("hlPedido") as HyperLink).Text;
-                    drPedido.NM_GUERRA = (row.Cells[1].FindControl("lblNmGuerra") as Label).Text;
-                    drPedido.DT_PEDIDO = Convert.ToDateTime((row.Cells[2].FindControl("lblDtPedido") as Label).Text);
+                    drPedido.CD_PEDIDO = row[2].ToString();// (row.Cells[0].FindControl("hlPedido") as HyperLink).Text;
+                    drPedido.NM_GUERRA = row[3].ToString();
+                    drPedido.DT_PEDIDO = Convert.ToDateTime(row[1].ToString());
                     ds.Pedido.AddPedidoRow(drPedido);
 
-                    dtItensPedido = objUsuario.oTabelas.hlpDbFuncoes.qrySeekRet(string.Format(sQuery.ToString(), objUsuario.oTabelas.sEmpresa, row.Cells[0].Text)); //(row.Cells[0].FindControl("hlPedido") as HyperLink).Text));
+                    dtItensPedido = objUsuario.oTabelas.hlpDbFuncoes.qrySeekRet(string.Format(sQuery.ToString(), objUsuario.oTabelas.sEmpresa, row[2].ToString())); //(row.Cells[0].FindControl("hlPedido") as HyperLink).Text));
 
                     foreach (DataRow rowItem in dtItensPedido.Rows)
                     {

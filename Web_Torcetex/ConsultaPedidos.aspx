@@ -9,8 +9,9 @@
     <div align="center">
         <asp:GridView ID="gridConsultaPedidos" runat="server" CssClass="mGrid" PagerStyle-CssClass="pgr"
             Font-Names="Segoe UI" Font-Size="13px" AlternatingRowStyle-CssClass="alt" GridLines="None"
-            AutoGenerateColumns="False" AllowPaging="True" OnPageIndexChanging="gridConsultaPedidos_PageIndexChanging"
-            PageSize="7" Width="100%" DataKeyNames="CD_PEDIDO" OnSelectedIndexChanged="gridConsultaPedidos_SelectedIndexChanged"
+            AutoGenerateColumns="False" AllowPaging="True" 
+            OnPageIndexChanging="gridConsultaPedidos_PageIndexChanging" Width="100%" 
+            DataKeyNames="CD_PEDIDO" OnSelectedIndexChanged="gridConsultaPedidos_SelectedIndexChanged"
             OnRowCommand="gridConsultaPedidos_RowCommand">
             <AlternatingRowStyle CssClass="alt" />
             <Columns>
@@ -22,12 +23,12 @@
                 </asp:BoundField>
                 <asp:TemplateField HeaderText="Razão Social">
                     <EditItemTemplate>
-                        <asp:TextBox runat="server" Text='<%# Bind("NM_CLIFOR") %>' ID="txtNmGuerra"></asp:TextBox>
+                        <asp:TextBox runat="server" Text='<%# Bind("NM_GUERRA") %>' ID="txtNmGuerra"></asp:TextBox>
                     </EditItemTemplate>
                     <HeaderStyle HorizontalAlign="Left" />
                     <ItemStyle HorizontalAlign="Left" />
                     <ItemTemplate>
-                        <asp:Label runat="server" Text='<%# Bind("NM_CLIFOR") %>' ID="lblNmGuerra"></asp:Label>
+                        <asp:Label runat="server" Text='<%# Bind("NM_GUERRA") %>' ID="lblNmGuerra"></asp:Label>
                     </ItemTemplate>
                 </asp:TemplateField>
                 <asp:TemplateField HeaderText="Data de Emiss&#227;o" ItemStyle-Width="130px">

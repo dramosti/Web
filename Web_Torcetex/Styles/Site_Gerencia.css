@@ -46,6 +46,15 @@ header, footer, hgroup, nav, section
     width: 1033px;
 }
 
+.style_teste
+{
+    border: 1px solid #008E00;
+    background: #BFFEBF;
+    font-size: 14px;
+    font-family: Segoe UI;
+    color: Black;
+}
+
 .float-right
 {
     float: right;

@@ -74,9 +74,11 @@
             <asp:View ID="ViewDadosPedido" runat="server">
                 <table style="width: 100%;">
                     <tr class="BordaInferior">
-                        <td style="text-align: left; color: Black" class="Titulo" colspan="3">
+                        <td style="text-align: left; color: Black" class="Titulo" colspan="2">
                             Incluir Pedido
                         </td>
+                        <td class="Titulo" style="text-align: left; color: Black">
+                            &nbsp;</td>
                     </tr>
                     <tr>
                         <td align="right" class="label">
@@ -86,6 +88,8 @@
                             <asp:TextBox ID="txtDataPedido" runat="server" CssClass="textBox" Enabled="False"
                                 Width="103px"></asp:TextBox>
                         </td>
+                        <td align="left">
+                            &nbsp;</td>
                     </tr>
                     <tr>
                         <td align="right" class="label">
@@ -99,6 +103,8 @@
                             <asp:Button ID="btnPesqCliente" runat="server" CssClass="button" Height="26px" Text="Filtrar Pesquisar"
                                 OnClick="btnPesqCliente_Click" />
                         </td>
+                        <td align="left">
+                            &nbsp;</td>
                     </tr>
                     <tr>
                         <td align="right" class="label">
@@ -106,9 +112,12 @@
                         </td>
                         <td align="left">
                             <asp:DropDownList ID="cbxDS_TPDOCWEB" runat="server" AutoPostBack="True" CssClass="textBox"
-                                DataTextField="DS_TPDOC" DataValueField="CD_TPDOC" Enabled="true" Width="185px">
+                                DataTextField="DS_TPDOC" DataValueField="CD_TPDOC" Enabled="true" 
+                                Width="210px">
                             </asp:DropDownList>
                         </td>
+                        <td align="left">
+                            &nbsp;</td>
                     </tr>
                     <tr>
                         <td align="right" class="label">
@@ -117,10 +126,31 @@
                         <td align="left">
                             <asp:DropDownList ID="cbxCD_PRAZO" runat="server" AutoPostBack="True" CssClass="textBox"
                                 AppendDataBoundItems="true" DataTextField="DS_PRAZO" DataValueField="CD_PRAZO"
-                                Enabled="True" Width="185px">
+                                Enabled="True" Width="210px">
                                 <asp:ListItem>Selecione um item</asp:ListItem>
                             </asp:DropDownList>
                         </td>
+                        <td align="left">
+                            &nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td align="right" class="label">
+                            Transportadora:</td>
+                        <td align="left">
+                            <asp:TextBox ID="txtTransportadora" runat="server" CssClass="textBox" 
+                                Width="198px"></asp:TextBox>
+                        </td>
+                        <td align="left">
+                            &nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td align="right" class="label">
+                            Fone:</td>
+                        <td align="left">
+                            <asp:TextBox ID="txtFoneTrans" runat="server" CssClass="textBox" Width="198px"></asp:TextBox>
+                        </td>
+                        <td align="left">
+                            &nbsp;</td>
                     </tr>
                     <tr>
                         <td align="center" colspan="2">
@@ -129,18 +159,24 @@
                             <br />
                             <br />
                         </td>
+                        <td align="center">
+                            &nbsp;</td>
                     </tr>
                     <tr>
                         <td align="center" colspan="2">
                             <asp:Button ID="btnVerificarPendencias" runat="server" OnClick="btnVerificarPendencias_Click"
                                 Text="Pendência Financeira" CssClass="button" Width="189px" />
                         </td>
+                        <td align="center">
+                            &nbsp;</td>
                     </tr>
                     <tr>
                         <td colspan="2">
                             <asp:Label ID="lblPendencias" runat="server" CssClass="label" Width="488px"></asp:Label>
                             <br />
                         </td>
+                        <td>
+                            &nbsp;</td>
                     </tr>
                     <tr>
                         <td colspan="2">
@@ -149,16 +185,22 @@
                                     Width="488px"></asp:Label>
                             </div>
                         </td>
+                        <td>
+                            &nbsp;</td>
                     </tr>
                     <tr>
                         <td colspan="2">
                             &nbsp;
                         </td>
+                        <td>
+                            &nbsp;</td>
                     </tr>
                     <tr>
                         <td align="center" colspan="2">
                             &nbsp;
                         </td>
+                        <td align="center">
+                            &nbsp;</td>
                     </tr>
                 </table>
             </asp:View>
@@ -262,21 +304,21 @@
                                 <AlternatingRowStyle CssClass="alt" />
                                 <Columns>
                                     <asp:ButtonField CommandName="Incluir" Text="Incluir">
-                                        <ControlStyle BackColor="Transparent" BorderStyle="None" Font-Names="Segoe UI" Font-Size="13px" />
-                                        <HeaderStyle HorizontalAlign="Left" />
-                                        <ItemStyle ForeColor="#3333CC" HorizontalAlign="Left" Width="30px" />
+                                    <ControlStyle BackColor="Transparent" BorderStyle="None" Font-Names="Segoe UI" Font-Size="13px" />
+                                    <HeaderStyle HorizontalAlign="Left" />
+                                    <ItemStyle ForeColor="#3333CC" HorizontalAlign="Left" Width="30px" />
                                     </asp:ButtonField>
                                     <asp:BoundField DataField="CD_PROD" HeaderText="Código">
-                                        <ItemStyle Font-Names="Segoe UI" Font-Size="13px" HorizontalAlign="Left" Width="60px" />
-                                        <HeaderStyle HorizontalAlign="Left" />
+                                    <ItemStyle Font-Names="Segoe UI" Font-Size="13px" HorizontalAlign="Left" Width="60px" />
+                                    <HeaderStyle HorizontalAlign="Left" />
                                     </asp:BoundField>
                                     <asp:BoundField DataField="CD_BARRAS" HeaderText="Código Barras">
-                                        <ItemStyle HorizontalAlign="Left" Width="80px" Wrap="False" />
-                                        <HeaderStyle HorizontalAlign="Left" Width="50px" Wrap="False" />
+                                    <ItemStyle HorizontalAlign="Left" Width="80px" Wrap="False" />
+                                    <HeaderStyle HorizontalAlign="Left" Width="50px" Wrap="False" />
                                     </asp:BoundField>
                                     <asp:BoundField DataField="DS_PROD" HeaderText="Descrição">
-                                        <HeaderStyle HorizontalAlign="Left" Width="100px" />
-                                        <ItemStyle HorizontalAlign="Left" Width="200px" Wrap="False" />
+                                    <HeaderStyle HorizontalAlign="Left" Width="100px" />
+                                    <ItemStyle HorizontalAlign="Left" Width="200px" Wrap="False" />
                                     </asp:BoundField>
                                     <asp:TemplateField HeaderText="Vl. Unitário">
                                         <EditItemTemplate>
@@ -290,28 +332,28 @@
                                         </ItemTemplate>
                                     </asp:TemplateField>
                                     <asp:BoundField HeaderText="Vl. IVA" Visible="False">
-                                        <HeaderStyle HorizontalAlign="Left" />
-                                        <ItemStyle Width="60px" />
+                                    <HeaderStyle HorizontalAlign="Left" />
+                                    <ItemStyle Width="60px" />
                                     </asp:BoundField>
                                     <asp:BoundField DataField="VL_PESOBRU" DataFormatString="{0:0.0000}" HeaderText="Peso"
                                         Visible="False">
-                                        <HeaderStyle HorizontalAlign="Left" />
-                                        <ItemStyle HorizontalAlign="Left" Width="60px" />
+                                    <HeaderStyle HorizontalAlign="Left" />
+                                    <ItemStyle HorizontalAlign="Left" Width="60px" />
                                     </asp:BoundField>
                                     <asp:BoundField DataField="QT_ESTOQUE" DataFormatString="{0:0.00000}" HeaderText="Estoque"
                                         Visible="False">
-                                        <HeaderStyle HorizontalAlign="Left" />
-                                        <ItemStyle HorizontalAlign="Left" Width="60px" />
+                                    <HeaderStyle HorizontalAlign="Left" />
+                                    <ItemStyle HorizontalAlign="Left" Width="60px" />
                                     </asp:BoundField>
                                     <asp:ButtonField CommandName="Alertar" Text="Alertar" Visible="False">
-                                        <ControlStyle BackColor="Transparent" BorderStyle="None" Font-Names="Segoe UI" Font-Size="13px" />
-                                        <HeaderStyle HorizontalAlign="Left" />
-                                        <ItemStyle HorizontalAlign="Left" Width="30px" />
+                                    <ControlStyle BackColor="Transparent" BorderStyle="None" Font-Names="Segoe UI" Font-Size="13px" />
+                                    <HeaderStyle HorizontalAlign="Left" />
+                                    <ItemStyle HorizontalAlign="Left" Width="30px" />
                                     </asp:ButtonField>
                                     <asp:CommandField ButtonType="Link" CancelText="" DeleteText="" EditText="" NewText=""
                                         SelectText="Detalhes" ShowSelectButton="True">
-                                        <HeaderStyle Width="20px" />
-                                        <ItemStyle BorderStyle="None" Font-Underline="True" ForeColor="Blue" />
+                                    <HeaderStyle Width="20px" />
+                                    <ItemStyle BorderStyle="None" Font-Underline="True" ForeColor="Blue" />
                                     </asp:CommandField>
                                 </Columns>
                                 <PagerStyle CssClass="pgr" />
@@ -326,32 +368,32 @@
                                 <AlternatingRowStyle BorderStyle="None" />
                                 <Fields>
                                     <asp:BoundField DataField="DS_PROD" HeaderText="Descrição">
-                                        <HeaderStyle Width="150px" />
-                                        <ItemStyle Font-Bold="True" HorizontalAlign="Left" />
+                                    <HeaderStyle Width="150px" />
+                                    <ItemStyle Font-Bold="True" HorizontalAlign="Left" />
                                     </asp:BoundField>
                                     <asp:BoundField DataField="VL_PESOBRU" HeaderText="Peso">
-                                        <ItemStyle Font-Bold="True" HorizontalAlign="Left" />
+                                    <ItemStyle Font-Bold="True" HorizontalAlign="Left" />
                                     </asp:BoundField>
                                     <asp:BoundField DataField="QT_ESTOQUE" HeaderText="Estoque">
-                                        <ItemStyle Font-Bold="True" HorizontalAlign="Left" />
+                                    <ItemStyle Font-Bold="True" HorizontalAlign="Left" />
                                     </asp:BoundField>
                                     <asp:BoundField DataField="DS_CLASFIS" HeaderText="Classificação Fiscal">
-                                        <ItemStyle Font-Bold="True" HorizontalAlign="Left" />
+                                    <ItemStyle Font-Bold="True" HorizontalAlign="Left" />
                                     </asp:BoundField>
                                     <asp:BoundField DataField="VL_ALIIPI" HeaderText="% IPI">
-                                        <ItemStyle Font-Bold="True" HorizontalAlign="Left" />
+                                    <ItemStyle Font-Bold="True" HorizontalAlign="Left" />
                                     </asp:BoundField>
                                     <asp:BoundField DataField="VL_REDBASE" HeaderText="% Redução">
-                                        <ItemStyle Font-Bold="True" HorizontalAlign="Left" />
+                                    <ItemStyle Font-Bold="True" HorizontalAlign="Left" />
                                     </asp:BoundField>
                                     <asp:BoundField DataField="VL_ALIQUOT" HeaderText="% ICMS">
-                                        <ItemStyle Font-Bold="True" HorizontalAlign="Left" />
+                                    <ItemStyle Font-Bold="True" HorizontalAlign="Left" />
                                     </asp:BoundField>
                                     <asp:BoundField DataField="VL_ALISUBS" HeaderText="% Subst. Tributária">
-                                        <ItemStyle Font-Bold="True" HorizontalAlign="Left" />
+                                    <ItemStyle Font-Bold="True" HorizontalAlign="Left" />
                                     </asp:BoundField>
                                     <asp:BoundField DataField="CD_SITTRIB" HeaderText="Situação Tributária">
-                                        <ItemStyle Font-Bold="True" HorizontalAlign="Left" />
+                                    <ItemStyle Font-Bold="True" HorizontalAlign="Left" />
                                     </asp:BoundField>
                                 </Fields>
                                 <HeaderStyle HorizontalAlign="Left" />
@@ -399,13 +441,13 @@
                                 <AlternatingRowStyle CssClass="alt" />
                                 <Columns>
                                     <asp:ButtonField CommandName="Excluir" Text="Excluir">
-                                        <ControlStyle BackColor="Transparent" BorderStyle="None" Font-Names="Segoe UI" Font-Size="13px" />
-                                        <ItemStyle HorizontalAlign="Left" Width="30px" />
-                                        <HeaderStyle HorizontalAlign="Left" />
+                                    <ControlStyle BackColor="Transparent" BorderStyle="None" Font-Names="Segoe UI" Font-Size="13px" />
+                                    <ItemStyle HorizontalAlign="Left" Width="30px" />
+                                    <HeaderStyle HorizontalAlign="Left" />
                                     </asp:ButtonField>
                                     <asp:BoundField DataField="CD_PROD" HeaderText="Código">
-                                        <ItemStyle HorizontalAlign="Left" Width="80px" Wrap="False" />
-                                        <HeaderStyle HorizontalAlign="Left" Wrap="True" />
+                                    <ItemStyle HorizontalAlign="Left" Width="80px" Wrap="False" />
+                                    <HeaderStyle HorizontalAlign="Left" Wrap="True" />
                                     </asp:BoundField>
                                     <asp:TemplateField HeaderText="Qtde">
                                         <ItemTemplate>
@@ -428,28 +470,28 @@
                                         <ItemStyle HorizontalAlign="Left" Width="60px" Wrap="False" />
                                     </asp:TemplateField>
                                     <asp:BoundField DataField="DESC" HeaderText="Descrição">
-                                        <HeaderStyle HorizontalAlign="Left" />
-                                        <ItemStyle HorizontalAlign="Left" Width="200px" Wrap="False" />
+                                    <HeaderStyle HorizontalAlign="Left" />
+                                    <ItemStyle HorizontalAlign="Left" Width="200px" Wrap="False" />
                                     </asp:BoundField>
                                     <asp:BoundField DataField="VL_DESCONTO" HeaderText="Desconto" HeaderStyle-HorizontalAlign="Left"
                                         ItemStyle-HorizontalAlign="Left" ItemStyle-Width="60px" />
                                     <asp:BoundField DataField="CD_LISTA" HeaderText="Lista" ItemStyle-HorizontalAlign="Left"
                                         ItemStyle-Width="60px">
-                                        <ItemStyle HorizontalAlign="Left" Width="40px" Wrap="False" />
-                                        <HeaderStyle HorizontalAlign="Left" />
+                                    <ItemStyle HorizontalAlign="Left" Width="40px" Wrap="False" />
+                                    <HeaderStyle HorizontalAlign="Left" />
                                     </asp:BoundField>
                                     <asp:BoundField DataField="VL_PROD" DataFormatString="{0:N2}" HeaderText="Vl. Unitário">
-                                        <ItemStyle Width="60px" Wrap="False" />
-                                        <HeaderStyle Wrap="False" />
+                                    <ItemStyle Width="60px" Wrap="False" />
+                                    <HeaderStyle Wrap="False" />
                                     </asp:BoundField>
                                     <asp:BoundField DataField="VL_UNIPROD_SEM_DESC" DataFormatString="{0:N2}" Visible="true"
                                         HeaderText="Vl. s/desc">
-                                        <ItemStyle Width="60px" Wrap="False" />
-                                        <HeaderStyle Wrap="False" Width="60px" />
+                                    <ItemStyle Width="60px" Wrap="False" />
+                                    <HeaderStyle Wrap="False" Width="60px" />
                                     </asp:BoundField>
                                     <asp:BoundField DataField="SUBTOTAL" HeaderText="Vl. Total" DataFormatString="{0:N2}">
-                                        <HeaderStyle HorizontalAlign="Left" Wrap="False" Width="50" />
-                                        <ItemStyle HorizontalAlign="Left" Wrap="False" Width="50" />
+                                    <HeaderStyle HorizontalAlign="Left" Wrap="False" Width="50"/>
+                                    <ItemStyle HorizontalAlign="Left" Wrap="False" Width="50" />
                                     </asp:BoundField>
                                 </Columns>
                                 <PagerStyle CssClass="pgr" />
@@ -656,13 +698,13 @@
                                 Width="100px" PageSize="15" OnRowDataBound="GridDuplicatas_RowDataBound" OnPageIndexChanging="GridDuplicatas_PageIndexChanging">
                                 <Columns>
                                     <asp:BoundField DataField="DT_VENCI" HeaderText="Vencimento" DataFormatString="{0:dd/MM/yyyy}">
-                                        <ItemStyle HorizontalAlign="Left" Width="100px" Wrap="False" />
-                                        <HeaderStyle HorizontalAlign="Left" Wrap="True" />
+                                    <ItemStyle HorizontalAlign="Left" Width="100px" Wrap="False" />
+                                    <HeaderStyle HorizontalAlign="Left" Wrap="True" />
                                     </asp:BoundField>
                                     <asp:BoundField DataField="VL_DOC" HeaderText="Valor" DataFormatString="{0:c}">
-                                        <ItemStyle HorizontalAlign="Left" Width="150px" Wrap="False" />
-                                        <FooterStyle Font-Names="Segoe UI" Font-Size="13px" />
-                                        <HeaderStyle HorizontalAlign="Left" />
+                                    <ItemStyle HorizontalAlign="Left" Width="150px" Wrap="False" />
+                                    <FooterStyle Font-Names="Segoe UI" Font-Size="13px" />
+                                    <HeaderStyle HorizontalAlign="Left" />
                                     </asp:BoundField>
                                 </Columns>
                             </asp:GridView>

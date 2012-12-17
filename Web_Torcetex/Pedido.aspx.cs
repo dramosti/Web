@@ -14,6 +14,7 @@ using HLP.Dados.Cadastro;
 using HLP.Dados.Cadastro.Web;
 using HLP.Dados.Faturamento;
 using HLP.Web;
+using HLP.Dados.Vendas;
 
 
 public partial class Pedido : System.Web.UI.Page
@@ -49,6 +50,8 @@ public partial class Pedido : System.Web.UI.Page
 
         GetTPDOC();
 
+        GetTransportadoraDefault();
+
         cbxLinhaProduto.DataSource = GetLinhaProduto();
         cbxLinhaProduto.DataBind();
     }
@@ -58,7 +61,7 @@ public partial class Pedido : System.Web.UI.Page
         UsuarioWeb objUsuario = (UsuarioWeb)Session["ObjetoUsuario"];
 
         CodigoCliente = (string)Session["CD_ALTER"];
-        sCdClifor = "";
+        sCdClifor = ""; 
         string NomeCliente = (string)Session["NM_CLIFOR"];
         txtDataPedido.Text = GetDataFormatada(DateTime.Today.ToShortDateString().ToString());
 
@@ -81,6 +84,11 @@ public partial class Pedido : System.Web.UI.Page
                 {
                     lblPendencias.Text = "";
                 }
+            }
+
+            if (NomeCliente == null)
+            {
+                NomeCliente = "";
             }
 
             txtCliente.Text = NomeCliente.ToUpper();
@@ -164,7 +172,12 @@ public partial class Pedido : System.Web.UI.Page
             lblInfo.Visible = false;
             lblInfo.Text = String.Empty;
             MultiViewItensPed.ActiveViewIndex = 1;
+
+            //REVER..........EU MUDEI PARA QUE JA VENHA SELECIONADO DE ACORDO COM OQ FOI SELECIONADO E CBX_PRAZO
+
+            //string sListaPadrao = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("PRAZOS", "PRAZOS.CD_LISTA", "(PRAZOS.CD_PRAZO = '" + cbxCD_PRAZO.SelectedItem.Value.Trim() + "')");
             string sListaPadrao = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("CLIFOR", "coalesce(CD_LISTA,'')CD_LISTA", "CD_ALTER = '" + txtCodCli.Text + "'");
+
             if (sListaPadrao == "")
             {
                 sListaPadrao = "00001";
@@ -237,6 +250,7 @@ public partial class Pedido : System.Web.UI.Page
             iLoop++;
         }
         GridViewNovo.FooterRow.Cells[8].Text = String.Format("{0:N2}", TotalAtual);
+        GridViewNovo.FooterRow.Cells[8].Font.Bold = true;
         txtTotalDesconto.Text = String.Format("{0:N2}", TotalDesconto);
         double desconto = Convert.ToDouble(txtDesconto.Text);
         TotalPedidoComDesc = TotalPedidoComDesc - (TotalPedidoComDesc * (desconto / 100));
@@ -437,7 +451,7 @@ public partial class Pedido : System.Web.UI.Page
 
             }
 
-            string sCD_PEDIDO = objUsuario.oTabelas.hlpDbFuncoes.RetornaProximoValorGenerator("GEN_PEDIDO_WEB").PadLeft(7, '0');
+            string sCD_PEDIDO = objUsuario.oTabelas.hlpDbFuncoes.RetornaProximoValorGenerator("GEN_PEDIDO_WEB").PadLeft(7, '0'); //RETORNA UMA PK VALIDA
 
             cmdSelectPed.Parameters.Add("@SCD_EMPRESA", FbDbType.VarChar, 3).Value = objUsuario.oTabelas.sEmpresa.ToString();
             cmdSelectPed.Parameters.Add("@SCD_VEND1", FbDbType.VarChar, 7).Value = objUsuario.CodigoVendedor.ToString();
@@ -454,6 +468,7 @@ public partial class Pedido : System.Web.UI.Page
 
                 string sVL_TOTALPED = GridViewNovo.FooterRow.Cells[8].Text.Replace(".", "").Replace(",", ".");
                 string sST_FRETE = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("EMPRESA", "ST_RESPONSAVEL_FRETE", "CD_EMPRESA = '" + objUsuario.oTabelas.sEmpresa.Trim() + "'");
+                string Vendedor2 = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("VENDEDOR", "CD_SEGVEND", "CD_VEND = '" + objUsuario.oTabelas.CdVendedorAtual + "'");
 
                 strUpDatePed.Append(" UPDATE PEDIDO SET CD_PEDIDO = '" + strRetPedido.Trim());
                 strUpDatePed.Append("', VL_TOTALPED = '" + sVL_TOTALPED);
@@ -464,13 +479,16 @@ public partial class Pedido : System.Web.UI.Page
 
 
                 strUpDatePed.Append("', DT_PEDIDO = '" + txtDataPedido.Text.Replace("/", "."));
-                strUpDatePed.Append("', CD_TIPODOC = '" + sTipoDocumento);
+                strUpDatePed.Append("', CD_TIPODOC = '" + sTipoDocumento); 
                 strUpDatePed.Append("', CD_PRAZO = '" + cbxCD_PRAZO.SelectedItem.Value.Trim());
                 strUpDatePed.Append("', CD_TRANS = '" + objUsuario.oTabelas.TRANSP.ToString().Trim());
+                strUpDatePed.Append("', NM_TRANS_WEB = '" + txtTransportadora.Text.ToUpper());
+                strUpDatePed.Append("', CD_FONETRANS_WEB = '" + txtFoneTrans.Text);
                 strUpDatePed.Append("', DS_OBS_WEB = '" + txtObs.Text.ToUpper().Trim());
                 strUpDatePed.Append("', DT_ABER = '" + txtDataPedido.Text.Replace("/", "."));
                 strUpDatePed.Append("', CD_USUINC ='" + objUsuario.oTabelas.CdUsuarioAtual);
-                strUpDatePed.Append("', CD_VEND1 = '" + objUsuario.oTabelas.CdVendedorAtual + "'");
+                strUpDatePed.Append("', CD_VEND1 = '" + objUsuario.oTabelas.CdVendedorAtual);
+                strUpDatePed.Append(Vendedor2.Equals(String.Empty) ? "' " : "', CD_VEND2 = '" + Vendedor2.Trim() + "' ");
                 strUpDatePed.Append(" WHERE (CD_PEDIDO = '" + strRetPedido.Trim() + "') AND (CD_EMPRESA = '" + objUsuario.oTabelas.sEmpresa.Trim() + "')");
 
                 FbCommand cmdUpDatePedido = new FbCommand(strConn);
@@ -533,79 +551,29 @@ public partial class Pedido : System.Web.UI.Page
 
                             //#region Busca Valor % de comissão
 
-                            string dVL_PERCOMI1 = "0";
-                                                       ////Verifica se o TPDOC se encontra no cadastro de empresa, caso sim, zera comissão.
-                            //string sCD_TPDOCBONI = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("EMPRESA", "cd_tpdocboni", "CD_EMPRESA = '" + objUsuario.oTabelas.sEmpresa + "'");
-                            //if (!sCD_TPDOCBONI.Contains(cbxDS_TPDOCWEB.SelectedValue.ToString()))
-                            //{
-                            //    string sST_COMREP = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("CLIFOR", "COALESCE(ST_COMREP,'C')", "CD_CLIFOR = '" + sCdClifor + "'");
-                            //    switch (sST_COMREP)
-                            //    {
-                            //        case "C": //busca comissão do cliente
-                            //            {
-                            //                dVL_PERCOMI1 = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("CLIFOR", "COALESCE(vl_percomi1,'0')", "CD_CLIFOR = '" + sCdClifor + "'");
-                            //                dVL_PERCOMI2 = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("CLIFOR", "COALESCE(vl_percomi2,'0')", "CD_CLIFOR = '" + sCdClifor + "'");
-                            //            } break;
-                            //        case "P":
-                            //            {
-                            //                dVL_PERCOMI1 = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("PRODUTO", "COALESCE(vl_percomi1,'0')", "CD_PROD = '" + sCD_PROD + "'");
-                            //                dVL_PERCOMI2 = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("PRODUTO", "COALESCE(vl_percomi2,'0')", "CD_PROD = '" + sCD_PROD + "'");
-                            //            } break;
-                            //        case "L":
-                            //            {
-                            //                FbCommand cmdSP_PRECOS = new FbCommand();
-                            //                cmdSP_PRECOS.CommandText = "SP_PRECOS";
-                            //                cmdSP_PRECOS.CommandType = CommandType.StoredProcedure;
-                            //                cmdSP_PRECOS.Connection = Conn;
-                            //                Conn.Open();
+                            string ValorComissao = "";
 
-                            //                //CD_EMPRESAINP VARCHAR(3),
-                            //                //CD_LISTAINI VARCHAR(5),
-                            //                //CD_LISTAFIM VARCHAR(5),
-                            //                //CD_PRODINI VARCHAR(7),
-                            //                //CD_PRODFIM VARCHAR(7))                                            
-                            //                cmdSP_PRECOS.Parameters.Add("@CD_EMPRESAINP", FbDbType.VarChar, 3).Value = objUsuario.oTabelas.sEmpresa;
-                            //                cmdSP_PRECOS.Parameters.Add("@CD_LISTAINI", FbDbType.VarChar, 5).Value = sCD_LISTA;
-                            //                cmdSP_PRECOS.Parameters.Add("@CD_LISTAFIM", FbDbType.VarChar, 5).Value = sCD_LISTA;
-                            //                cmdSP_PRECOS.Parameters.Add("@CD_PRODINI", FbDbType.VarChar, 7).Value = sCD_PROD;
-                            //                cmdSP_PRECOS.Parameters.Add("@CD_PRODFIM", FbDbType.VarChar, 7).Value = sCD_PROD;
+                            string TipoComissao = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("VENDEDOR", "ST_COMISSAO", "CD_VEND = '" + objUsuario.oTabelas.CdVendedorAtual.ToString() + "'");
+                            string TipoPrazo = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("PRAZOS", "DS_FORMULA", "CD_PRAZO = '" + cbxCD_PRAZO.SelectedItem.Value.Trim() + "'");
 
-                            //                FbDataReader dr = cmdSP_PRECOS.ExecuteReader();
-                            //                dr.Read();
-                            //                dVL_PERCOMI1 = dr["VL_COMIVEN"].ToString();
-                            //                dVL_PERCOMI2 = dVL_PERCOMI1.Replace(".", "").Replace(",", ".");
-                            //                Conn.Close();
+                            if (TipoComissao == "N")
+                            {
+                                if (TipoPrazo == "0")
+                                    ValorComissao = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("VENDEDOR", "VL_PERCOAV", "CD_VEND = '" + objUsuario.oTabelas.CdVendedorAtual.ToString() + "'");
+                                else
+                                    ValorComissao = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("VENDEDOR", "VL_PERCOAP", "CD_VEND = '" + objUsuario.oTabelas.CdVendedorAtual.ToString() + "'");
+                            }
+                            else if (TipoComissao == "S")
+                                if (TipoPrazo == "0")
+                                    ValorComissao = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("VENDCOMI", "VL_PERCOAV", "(CD_VEND = '" + objUsuario.oTabelas.CdVendedorAtual.ToString() + "') AND (CD_PROD = '" + sCD_PROD + "')"); 
+                                else
+                                    ValorComissao = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("VENDCOMI", "VL_PERCOAP", "(CD_VEND = '" + objUsuario.oTabelas.CdVendedorAtual.ToString() + "') AND (CD_PROD = '" + sCD_PROD + "')");
 
-                            //            } break;
-                            //        case "Q":
-                            //            {
-                            //                string sFORMULA = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("PRAZOS", "COALESCE(DS_FORMULA,'')", "CD_PRAZO = '" + cbxCD_PRAZO.SelectedValue.ToString() + "'");
-                            //                bool bAVISTA = false;
-                            //                if (sFORMULA.Length > 0)
-                            //                {
-                            //                    bAVISTA = sFORMULA[0].Equals("0") ? true : false;
-                            //                }
-                            //                if (bAVISTA)
-                            //                {
-                            //                    if (Convert.ToInt32(objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("vendcomi", "count(*)", "CD_PROD = '" + sCD_PROD + "' and CD_VEND = '" + objUsuario.oTabelas.CdVendedorAtual + "'")) > 0)
-                            //                    {
-                            //                        dVL_PERCOMI1 = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("vendcomi", "coalesce(VL_PERCOAV,0)", "CD_PROD = '" + sCD_PROD + "' and CD_VEND = '" + objUsuario.oTabelas.CdVendedorAtual + "'");
-                            //                        dVL_PERCOMI2 = dVL_PERCOMI1;
-                            //                    }
-                            //                }
-                            //                else
-                            //                {
-                            //                    if (Convert.ToInt32(objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("vendcomi", "count(*)", "CD_PROD = '" + sCD_PROD + "' and CD_VEND = '" + objUsuario.oTabelas.CdVendedorAtual + "'")) > 0)
-                            //                    {
-                            //                        dVL_PERCOMI1 = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("vendcomi", "coalesce(VL_PERCOAP,0)", "CD_PROD = '" + sCD_PROD + "' and CD_VEND = '" + objUsuario.oTabelas.CdVendedorAtual + "'");
-                            //                        dVL_PERCOMI2 = dVL_PERCOMI1;
-                            //                    }
-                            //                }
 
-                            //            } break;
-                            //    }
-                            //}
-                            //#endregion
+                            if (ValorComissao == "")
+                            {
+                                ValorComissao = "0.0";
+                            }
 
 
                             #region Calcula Desconto Item
@@ -644,7 +612,8 @@ public partial class Pedido : System.Web.UI.Page
                             obljup.Add(new update { sCampo = "CD_ALIICMS", sValor = CODICMS.Trim() });
                             obljup.Add(new update { sCampo = "CD_SITTRIB", sValor = SITTRIB.Trim() });
                             obljup.Add(new update { sCampo = "VL_COEF", sValor = dCOEFDESC.ToString().Replace(",", ".") });
-                            obljup.Add(new update { sCampo = "VL_PERCOMI1", sValor = dVL_PERCOMI1.ToString() });
+                            obljup.Add(new update { sCampo = "VL_PERCOMI1", sValor = ValorComissao.Replace(",", ".") });
+                            obljup.Add(new update { sCampo = "VL_PERCOMI2", sValor = HlpFuncoesVendas.GetPercentualComissao(objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("VENDEDOR", "CD_SEGVEND", "CD_VEND = '" + objUsuario.oTabelas.CdVendedorAtual + "'"), cbxCD_PRAZO.SelectedItem.Value.Trim(), objUsuario.oTabelas).ToString().Replace(",", ".") });
                             obljup.Add(new update { sCampo = "DT_PRAZOEN", sValor = txtDataPedido.Text.Replace("/", ".") });
                             obljup.Add(new update { sCampo = "VL_ALIIPI", sValor = HlpFuncoesFaturamento.GetAliquotaIPI(objUsuario.oTabelas.GetOperacaoDefault("CD_OPER"), txtCodCli.Text.Trim(), CF, objUsuario.oTabelas).ToString() });
                             obljup.Add(new update { sCampo = "CD_OPER", sValor = scdOper });
@@ -747,6 +716,8 @@ public partial class Pedido : System.Web.UI.Page
             ExcluirProduto.AcceptChanges();
             GridViewNovo.DataSource = CriaDataSet();
             GridViewNovo.DataBind();
+
+            RecalculaGridNovo();
         }
         else
         {
@@ -924,6 +895,7 @@ public partial class Pedido : System.Web.UI.Page
             {
                 row["CD_TPDOC"] = tpdoc[1].ToString().Trim();
                 row["DS_TPDOC"] = tpdoc[0].ToString().Trim();
+
                 dtTPDOC.Rows.Add(row);
             }
         }
@@ -947,6 +919,16 @@ public partial class Pedido : System.Web.UI.Page
             cbxDS_TPDOCWEB.SelectedValue = stpDocCliFor;
         }
     }
+    private void GetTransportadoraDefault()
+    {
+        UsuarioWeb objUsuario = (UsuarioWeb)Session["ObjetoUsuario"];
+
+        string sNmTrans = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("TRANSPOR", "NM_TRANS", "CD_TRANS = '" + objUsuario.oTabelas.TRANSP.ToString().Trim() + "'");
+        string sFoneTrans = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("TRANSPOR", "CD_FONE", "CD_TRANS = '" + objUsuario.oTabelas.TRANSP.ToString().Trim() + "'");
+
+        txtTransportadora.Text = sNmTrans;
+        txtFoneTrans.Text = sFoneTrans;
+    }
     private DataTable GetLinhaProduto()
     {
         UsuarioWeb objUsuario = (UsuarioWeb)Session["ObjetoUsuario"];
@@ -960,6 +942,7 @@ public partial class Pedido : System.Web.UI.Page
         UsuarioWeb objUsuario = (UsuarioWeb)Session["ObjetoUsuario"];
         DataTable dtListas = null;
 
+        
         string sListaPermit = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("ACESSO", "cd_listapermitida", "cd_vend = '" + objUsuario.oTabelas.CdVendedorAtual + "'");
 
         if (sListaPermit != "")
@@ -1006,8 +989,24 @@ public partial class Pedido : System.Web.UI.Page
         }
         else
         {
-            string strAbrir = "if(window.alert('Já existe esse Produto: " + strProduto.Trim() + " - " + strDescProd.Trim() + " na Lista!'))";
-            Page.ClientScript.RegisterClientScriptBlock(this.GetType(), "Confirmar", strAbrir, true);
+            int qdtAtual = Convert.ToInt32(row["QT_PROD"]);
+            qdtAtual++;
+
+            row["DESC"] = strDescProd;
+            row["CD_LISTA"] = cbxListaPreco.SelectedValue.ToString();
+            decimal dVL_DESC = dVL_PROD * Convert.ToDecimal(txtDesconto.Text.Replace('.', ',')) / 100;
+            row["VL_DESCONTO"] = String.Format("{0:N2}", dVL_DESC);
+            row["VL_PROD"] = String.Format("{0:N4}", dVL_PROD);
+            row["VL_UNIPROD_SEM_DESC"] = String.Format("{0:N4}", dVL_PROD);
+            row["SUBTOTAL"] = string.Format("{0:N2}", dVL_PROD - dVL_DESC);
+            row["QT_PROD"] = qdtAtual;
+            row["CD_PROD"] = strCodigo;
+
+            GridViewNovo.DataSource = ListaProduto;
+            GridViewNovo.DataBind();
+            RecalculaGridNovo();
+            //string strAbrir = "if(window.alert('Já existe esse Produto: " + strProduto.Trim() + " - " + strDescProd.Trim() + " na Lista!'))";
+            //Page.ClientScript.RegisterClientScriptBlock(this.GetType(), "Confirmar", strAbrir, true);
         }
         btnAtualiza.Visible = true;
         btnAvancar.Visible = true;
@@ -1114,8 +1113,7 @@ public partial class Pedido : System.Web.UI.Page
         str.Append("WHERE ");
         str.Append("((CLIFOR.ST_INATIVO <> 'S') OR (CLIFOR.ST_INATIVO IS NULL)) AND (CLIFOR.CD_VEND1 = '" + objUsuario.CodigoVendedor + "') AND (NM_GUERRA IS NOT NULL) ");
         str.Append("AND (CD_ALTER ='" + txtCodCli.Text + "')");
-        dtClientes = objUsuario.oTabelas.hlpDbFuncoes.qrySeekRet(
-            str.ToString());
+        dtClientes = objUsuario.oTabelas.hlpDbFuncoes.qrySeekRet(str.ToString());
         DataColumn[] ChavePrimaria = new DataColumn[] { dtClientes.Columns["CD_ALTER"] };
         dtClientes.PrimaryKey = ChavePrimaria;
         Session["DadosConsultaClientes"] = dtClientes;

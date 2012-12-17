@@ -21,8 +21,8 @@
     <div align="center">
         <table style="width: 100%">
             <tr>
-                <td colspan="3">
-                    <asp:Label ID="lblInfo" runat="server" CssClass="label" Width="444px"></asp:Label>
+                <td colspan="3" align="center">
+                    <asp:Label ID="lblInfo" runat="server" CssClass="style_teste" Width="444px"></asp:Label>
                 </td>
             </tr>
             <tr>

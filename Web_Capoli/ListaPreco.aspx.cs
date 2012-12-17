@@ -78,8 +78,9 @@ public partial class ListaPreco : System.Web.UI.Page
         if (!txtCodProd.Text.Equals(String.Empty))
             strWhere.Append("AND (PRODUTO.CD_ALTER STARTING'" + txtCodProd.Text.ToUpper().Trim().PadLeft(7, '0') + "') ");
         if (!txtProdDesc.Text.Equals(String.Empty))
-            strWhere.Append("AND (PRODUTO.DS_PROD LIKE ('%" + txtProdDesc.Text.ToUpper().Trim() + "%')) ");
+            strWhere.Append("AND (PRODUTO.DS_PROD LIKE ('%" + txtProdDesc.Text.ToUpper().Trim() + "%'))");
         //DataTable dtProduto = objUsuario.oTabelas.hlpDbFuncoes.qrySeekRet("PRODUTO", "CD_ALTER, CD_PROD, DS_PROD", strWhere.ToString(), "DS_PROD");
+        strWhere.Append(" AND (PRODUTO.QT_ESTOQUE > 0)");
 
         DataTable dtProduto = objUsuario.oTabelas.hlpDbFuncoes.qrySeekRet("PRECOS INNER JOIN PRODUTO ON (PRODUTO.CD_PROD = PRECOS.CD_PROD)", (st_atualizacao.Equals("M") ? "PRECOS.VL_PRECOVE" : "(PRECOS.VL_PRECOVE * " + vl_perc.ToString().Replace(',', '.') + ")VL_PRECOVE") + ", PRODUTO.CD_ALTER, PRODUTO.CD_PROD, PRODUTO.DS_DETALHE, PRODUTO.VL_PESOBRU, PRODUTO.QT_ESTOQUE", strWhere.ToString(), "PRODUTO.DS_PROD");
 

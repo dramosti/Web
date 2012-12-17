@@ -50,7 +50,7 @@ public partial class ConsultaClientes : System.Web.UI.Page
         if (bPesquisarDados)
         {
             StringBuilder str = new StringBuilder();
-            str.Append("SELECT NM_GUERRA, NM_CLIFOR, CD_ALTER, CD_UFNOR, NM_CIDNOR,CD_FONECOM  ");
+            str.Append("SELECT NM_GUERRA, NM_CLIFOR, CD_ALTER, CD_UFNOR, NM_CIDNOR, CD_FONECOM ");
             str.Append("FROM CLIFOR ");
             str.Append("WHERE ");
             str.Append(sWhere + " ");

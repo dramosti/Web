@@ -53,20 +53,19 @@ public partial class ConsultaPedidos : System.Web.UI.Page
         if (bPesquisarDados)
         {
             StringBuilder str = new StringBuilder();
-            str.Append("SELECT P.CD_EMPRESA, ");
-            str.Append("P.DT_PEDIDO, ");
-            str.Append("P.CD_PEDIDO, ");
-            str.Append("P.NM_CLIFOR ");
-            str.Append("FROM PEDIDO P ");
-            str.Append("LEFT OUTER JOIN {0} MOVI ON (MOVI.CD_EMPRESA = P.CD_EMPRESA) AND (MOVI.CD_PEDIDO = P.CD_PEDIDO) ");
-            str.Append("WHERE (P.CD_EMPRESA = '" + objUsuario.oTabelas.sEmpresa + "') AND ");
+            str.Append("SELECT PEDIDO.CD_EMPRESA, ");
+            str.Append("PEDIDO.DT_PEDIDO, ");
+            str.Append("PEDIDO.CD_PEDIDO, ");
+            str.Append("PEDIDO.NM_GUERRA "); //NM_CLIFOR
+            str.Append("FROM PEDIDO ");
+            str.Append("LEFT OUTER JOIN {0} MOVI ON (MOVI.CD_EMPRESA = PEDIDO.CD_EMPRESA) AND (MOVI.CD_PEDIDO = PEDIDO.CD_PEDIDO) ");
+            str.Append("WHERE (PEDIDO.CD_EMPRESA = '" + objUsuario.oTabelas.sEmpresa + "') AND ");
             str.Append(sWhere + " ");
-            str.Append("GROUP BY P.CD_EMPRESA, P.DT_PEDIDO, P.CD_PEDIDO, P.NM_CLIFOR ");
+            str.Append("GROUP BY PEDIDO.CD_EMPRESA, PEDIDO.DT_PEDIDO, PEDIDO.CD_PEDIDO, PEDIDO.NM_GUERRA "); //NM_CLIFOR
 
             if (!sHaving.Equals(String.Empty))
                 str.Append("HAVING " + sHaving);
-            dtPedidos = objUsuario.oTabelas.hlpDbFuncoes.qrySeekRet(
-              string.Format(str.ToString(), sTabela));
+            dtPedidos = objUsuario.oTabelas.hlpDbFuncoes.qrySeekRet(string.Format(str.ToString(), sTabela));
 
             DataColumn[] ChavePrimaria = new DataColumn[] { dtPedidos.Columns["CD_PEDIDO"] };
             dtPedidos.PrimaryKey = ChavePrimaria;
