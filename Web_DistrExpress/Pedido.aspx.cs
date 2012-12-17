@@ -660,7 +660,7 @@ public partial class Pedido : System.Web.UI.Page
                             string scdTribOpereve = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("OPEREVE", "cd_sittrib", "CD_OPER = '" + scdOper + "'");
 
                             // SITTRIB já está com o valor definido na tabela produto...
-                            if (String.IsNullOrEmpty(scdTribOpereve))
+                            if (!String.IsNullOrEmpty(scdTribOpereve))
 	                        {
                                 SITTRIB = scdTribOpereve;
                             }
