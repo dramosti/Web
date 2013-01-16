@@ -657,12 +657,12 @@ public partial class Pedido : System.Web.UI.Page
                             string scdOper = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("tpdoc", "substring(tpdoc.cd_operval from 1 for 3) cd_operval", "cd_tipodoc = '" + sTipoDocumentoPadrao + "'");
 
                             // OS. 28381 - Mário
-                            string scdTribOpereve = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("OPEREVE", "cd_sittrib", "CD_OPER = '" + scdOper + "'");
+                            string scd_sittribOPEREVE = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("OPEREVE", "cd_sittrib", "CD_OPER = '" + scdOper + "'");
 
                             // SITTRIB já está com o valor definido na tabela produto...
-                            if (!String.IsNullOrEmpty(scdTribOpereve))
-	                        {
-                                SITTRIB = scdTribOpereve;
+                            if (!String.IsNullOrEmpty(scd_sittribOPEREVE))
+                            {
+                                SITTRIB = scd_sittribOPEREVE;
                             }
                             //FIM OS. 28381
 
@@ -696,6 +696,7 @@ public partial class Pedido : System.Web.UI.Page
                             string sCD_ALTER = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("PRODUTO", "CD_ALTER", "CD_EMPRESA = '" + objUsuario.oTabelas.sEmpresa.Trim() + "' AND CD_PROD ='" + sCD_PROD + "'");
 
                             strUpDatePed.Append("UPDATE MOVITEM SET NR_LANC = '" + strRetMoviPend.Trim() + "', CD_PEDIDO = '" + strRetPedido.Trim() + "', DS_PROD = '" + sDS_PROD + "', ");
+                            strUpDatePed.Append("cd_clifor = '" + txtCodCli.Text.Trim() + "', ");
                             strUpDatePed.Append("CD_VEND1 = '" + objUsuario.oTabelas.CdVendedorAtual + "', ");
                             strUpDatePed.Append("CD_LISTA = '" + sCD_LISTA + "', CD_PROD = '" + sCD_PROD + "', CD_ALTER = '" + sCD_ALTER + "', ");
                             strUpDatePed.Append("QT_SALDOEN = '" + qtde.Replace(".", "").Replace(",", ".") + "', ");
