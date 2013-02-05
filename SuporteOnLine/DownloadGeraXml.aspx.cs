@@ -27,8 +27,15 @@ public partial class DownloadGeraXml : System.Web.UI.Page
     {
         try
         {
-
-            string sPath = ConfigurationManager.AppSettings["Download"].ToString();
+            string sPath = "";
+            if (cbxPrograma.SelectedIndex == 0)
+            {
+                sPath = ConfigurationManager.AppSettings["DownloadGera"].ToString();
+            }
+            else
+            {
+                sPath = ConfigurationManager.AppSettings["DownloadSPED"].ToString();
+            }
             DirectoryInfo dinfo = new DirectoryInfo(sPath);
             DirectoryInfo[] diretorios;
             if (cbxTpExe.SelectedIndex == 0)
@@ -39,12 +46,12 @@ public partial class DownloadGeraXml : System.Web.UI.Page
             {
                 diretorios = dinfo.GetDirectories().Where(c => c.Name.ToUpper().Contains("TESTE")).OrderByDescending(c => c.Name).ToArray();
             }
-            List<VersoesGeraXml> lVersoes = new List<VersoesGeraXml>();
-            VersoesGeraXml versao;
+            List<Versoes> lVersoes = new List<Versoes>();
+            Versoes versao;
             int iCountID = 1;
             foreach (DirectoryInfo pasta in diretorios)
             {
-                versao = new VersoesGeraXml();
+                versao = new Versoes();
                 versao.id = iCountID;
                 versao.Versao = pasta.Name;
                 string sFileZip = pasta.Name.Replace("_TESTE", "");
@@ -79,9 +86,9 @@ public partial class DownloadGeraXml : System.Web.UI.Page
     protected void gvVersoes_SelectedIndexChanged(object sender, EventArgs e)
     {
         int id = Convert.ToInt32(gvVersoes.SelectedDataKey[0].ToString());
-        if (((List<VersoesGeraXml>)Session["Versoes"]).Where(c => c.id == id).Count() > 0)
+        if (((List<Versoes>)Session["Versoes"]).Where(c => c.id == id).Count() > 0)
         {
-            HlpMessageBox.ShowPopUpMsg(((List<VersoesGeraXml>)Session["Versoes"]).FirstOrDefault(c => c.id == id).Detalhes, this);
+            HlpMessageBox.ShowPopUpMsg(((List<Versoes>)Session["Versoes"]).FirstOrDefault(c => c.id == id).Detalhes, this);
         }
         else
         {
@@ -96,7 +103,7 @@ public partial class DownloadGeraXml : System.Web.UI.Page
             GridViewRow row = gvVersoes.Rows[index];
             int id = Convert.ToInt32(row.Cells[1].Text);
 
-            VersoesGeraXml versao = ((List<VersoesGeraXml>)Session["Versoes"]).FirstOrDefault(c => c.id == id);
+            Versoes versao = ((List<Versoes>)Session["Versoes"]).FirstOrDefault(c => c.id == id);
 
             Response.AddHeader("content-disposition", string.Format("attachment; filename={0}.zip", versao.Versao));
             Response.TransmitFile(versao.Path);
@@ -132,7 +139,7 @@ public partial class DownloadGeraXml : System.Web.UI.Page
     protected void gvVersoes_PageIndexChanging(object sender, GridViewPageEventArgs e)
     {
         gvVersoes.PageIndex = e.NewPageIndex;
-        gvVersoes.DataSource = Session["Versoes"] as List<VersoesGeraXml>;
+        gvVersoes.DataSource = Session["Versoes"] as List<Versoes>;
         gvVersoes.DataBind();
     }
 

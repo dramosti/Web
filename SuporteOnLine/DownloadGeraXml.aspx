@@ -11,23 +11,28 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="Server">
     <div class="main">
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        &nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
         <br />
         <table class="style1" style="width: 42%">
             <tr>
                 <td>
-                 
-        <asp:Label ID="Label1" runat="server" Text="Tipo de Executável: "></asp:Label>
-        <asp:DropDownList ID="cbxTpExe" runat="server" Height="26px" 
-            Width="98px">
-            <asp:ListItem Value="0">Oficial</asp:ListItem>
-            <asp:ListItem Value="1">Testes</asp:ListItem>
-        </asp:DropDownList>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <asp:Button ID="btnCarregar" runat="server" Height="26px" Text="Carregar" 
-            Width="89px" onclick="btnCarregar_Click" />
-                 
+                    <asp:Label ID="Label2" runat="server" Text="Selecione o Programa: "></asp:Label>
+                    <asp:DropDownList ID="cbxPrograma" runat="server" Height="26px" Width="98px">
+                        <asp:ListItem>GeraXML</asp:ListItem>
+                        <asp:ListItem>SPED</asp:ListItem>
+                    </asp:DropDownList>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <asp:Label ID="Label1" runat="server" Text="Tipo de Executável: "></asp:Label>
+                    <asp:DropDownList ID="cbxTpExe" runat="server" Height="26px" Width="98px">
+                        <asp:ListItem Value="0">Oficial</asp:ListItem>
+                        <asp:ListItem Value="1">Testes</asp:ListItem>
+                    </asp:DropDownList>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <asp:Button ID="btnCarregar" runat="server" Height="26px" Text="Carregar" Width="89px"
+                        OnClick="btnCarregar_Click" />
                 </td>
             </tr>
             <tr class="BordaInferior">
@@ -96,8 +101,7 @@
             </tr>
             <tr>
                 <td>
-                    <asp:LinkButton ID="LinkButton1" runat="server" OnClick="LinkButton1_Click" 
-                        PostBackUrl="http://www.microsoft.com/pt-br/download/details.aspx?id=32">WIC - Windows Imaging Component</asp:LinkButton>
+                    <asp:LinkButton ID="LinkButton1" runat="server" OnClick="LinkButton1_Click" PostBackUrl="http://www.microsoft.com/pt-br/download/details.aspx?id=32">WIC - Windows Imaging Component</asp:LinkButton>
                 </td>
             </tr>
         </table>

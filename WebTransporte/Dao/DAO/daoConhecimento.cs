@@ -292,14 +292,14 @@ namespace DAO
             sQuery.Append("from nfconhec INNER JOIN conhecim on nfconhec.nr_lancconhecim = conhecim.nr_lanc ");
             if (sParametro != "between")
             {
-                sQuery.Append(string.Format("Where nfconhec.cd_nf {0} {1} ", sParametro, sValor1));
+                sQuery.Append(string.Format("Where nfconhec.cd_nf {0} '{1}' ", sParametro, sValor1));
             }
             else
             {
-                sQuery.Append(string.Format("Where nfconhec.cd_nf {0} {1} and {2} ", sParametro, sValor1, sValor2));
+                sQuery.Append(string.Format("Where nfconhec.cd_nf {0} '{1}' and '{2}' ", sParametro, sValor1, sValor2));
             }
 
-            sQuery.Append(string.Format("and conhecim.cd_remetent  = {0} ", daoStatic.CD_CLIFOR));
+            sQuery.Append(string.Format("and conhecim.cd_remetent  = '{0}' ", daoStatic.CD_CLIFOR));
 
 
             using (FbConnection Conn = new FbConnection(daoStatic.sConn))

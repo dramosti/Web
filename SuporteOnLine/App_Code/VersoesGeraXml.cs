@@ -6,7 +6,7 @@ using System.Web;
 /// <summary>
 /// Summary description for VersoesGeraXml
 /// </summary>
-public class VersoesGeraXml
+public class Versoes
 {
     public int id { get; set; }
     public string Versao { get; set; }
@@ -14,7 +14,7 @@ public class VersoesGeraXml
     public string Detalhes { get; set; }
     public string Path { get; set; }
 
-	public VersoesGeraXml()
+	public Versoes()
 	{
 
 	}
