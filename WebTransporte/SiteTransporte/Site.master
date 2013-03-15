@@ -50,6 +50,8 @@
                 
                 <Items>
                     <asp:MenuItem NavigateUrl="~/Conhecimentos.aspx" Text="Conhecimentos" Value="Conhecimentos" />
+                    <asp:MenuItem NavigateUrl="~/PreviewNF.aspx" Text="Notas Fiscais / Fretes" 
+                        Value="Notas Fiscais / Fretes"></asp:MenuItem>
                     <asp:MenuItem NavigateUrl="~/Account/Login.aspx" Text="Login" />
                 </Items>
             </asp:Menu>

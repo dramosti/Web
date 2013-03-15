@@ -71,7 +71,7 @@ public partial class ViewVendasRepresentante : System.Web.UI.Page
         StringBuilder sQuery = new StringBuilder();
         sQuery.Append("select v.cd_vend, coalesce(sum(p.vl_totalped),0) TOTAL,v.nm_vend NM_VEND ");
         sQuery.Append("from pedido p inner join clifor c on p.cd_cliente = c.cd_clifor inner join vendedor v on v.cd_vend = c.cd_vend1 ");
-        sQuery.Append("where coalesce(v.st_acessa_web,'N') = 'S'  and p.dt_pedido  between '{0}' and '{1}' and ");
+        sQuery.Append("where p.dt_pedido  between '{0}' and '{1}' and "); // retirado essa parte do código coalesce(v.st_acessa_web,'N') = 'S'  and
         sQuery.Append("p.cd_tipodoc in ({2}) ");
         if (sCodRepresentante != "")
         {

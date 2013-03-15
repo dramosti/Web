@@ -292,3 +292,20 @@ div.accountInfo
     text-align: right;
     padding-right: 10px;
 }
+.BordaInferior td
+{
+    border-bottom: 2px solid black;
+}
+.tdTitulo
+{
+    color: #fff;
+    background: #424242 url(grd_head.png) repeat-x top;
+    height: 20px;
+}
+.Titulo
+{
+    font-size: 16px;
+    font-family: Segoe UI;
+    color: Black;
+    font-weight: bold;
+}

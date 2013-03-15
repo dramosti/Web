@@ -47,6 +47,7 @@
     <Compile Include="daoDadosAdicionais.cs" />
     <Compile Include="daoNF.cs" />
     <Compile Include="daoOcorrencias.cs" />
+    <Compile Include="daoRelNfFrete.cs" />
     <Compile Include="daoStatic.cs" />
     <Compile Include="daoUsuario.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

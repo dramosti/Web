@@ -111,18 +111,6 @@
                         </td>
                     </tr>
                     <tr>
-                        <td align="right" class="label">
-                            Condição Pagto:
-                        </td>
-                        <td align="left">
-                            <asp:DropDownList ID="cbxCD_PRAZO" runat="server" AutoPostBack="True" CssClass="textBox"
-                                AppendDataBoundItems="true" DataTextField="DS_PRAZO" DataValueField="CD_PRAZO"
-                                Enabled="True" Width="185px">
-                                <asp:ListItem>Selecione um item</asp:ListItem>
-                            </asp:DropDownList>
-                        </td>
-                    </tr>
-                    <tr>
                         <td align="center" colspan="2">
                             <asp:Button ID="btnIncluiItens" runat="server" CssClass="button" OnClick="btnIncluiItens_Click"
                                 Text="Incluir Itens" Width="189px" />
@@ -376,8 +364,8 @@
                             Desconto Total do Pedido R$
                         </td>
                         <td align="left">
-                            <asp:TextBox ID="txtTotalDesconto" runat="server" CssClass="textBox" 
-                                MaxLength="4" BackColor="#CCCCCC" ReadOnly="True"></asp:TextBox>
+                            <asp:TextBox ID="txtTotalDesconto" runat="server" CssClass="textBox" MaxLength="4"
+                                BackColor="#CCCCCC" ReadOnly="True"></asp:TextBox>
                         </td>
                     </tr>
                     <tr>
@@ -385,8 +373,20 @@
                             Total do Pedido Com Desconto R$
                         </td>
                         <td align="left">
-                            <asp:TextBox ID="txtTotalPedidoSemDesc" runat="server" CssClass="textBox" 
-                                MaxLength="4" BackColor="#CCCCCC" ReadOnly="True"></asp:TextBox>
+                            <asp:TextBox ID="txtTotalPedidoSemDesc" runat="server" CssClass="textBox" MaxLength="4"
+                                BackColor="#CCCCCC" ReadOnly="True"></asp:TextBox>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="right" class="style3">
+                            Condição de Pgto
+                        </td>
+                        <td align="left">
+                            <asp:DropDownList ID="cbxCD_PRAZO" runat="server" AutoPostBack="True" CssClass="textBox"
+                                AppendDataBoundItems="true" DataTextField="DS_PRAZO" DataValueField="CD_PRAZO"
+                                Enabled="True" Width="185px">
+                                <asp:ListItem>Selecione um item</asp:ListItem>
+                            </asp:DropDownList>
                         </td>
                     </tr>
                     <tr>

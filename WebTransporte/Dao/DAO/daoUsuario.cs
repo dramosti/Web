@@ -118,11 +118,13 @@ namespace DAO
                         {
                             this.IMG_EMP = "imagem/LogoGca.png";
                             this.CD_EMPRESA = "001";
-                        }
+                            daoStatic.CD_EMPRESA = "001";
+                            }
                         else
                         {
                             this.IMG_EMP = "imagem/LogoGca2.png";
                             this.CD_EMPRESA = "002";
+                            daoStatic.CD_EMPRESA = "002";
                         }
 
                     }

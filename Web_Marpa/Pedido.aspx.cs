@@ -21,6 +21,7 @@ public partial class Pedido : System.Web.UI.Page
 {
 
 
+
     protected void Page_Load(object sender, EventArgs e)
     {
         if (!IsPostBack)
@@ -89,7 +90,7 @@ public partial class Pedido : System.Web.UI.Page
             else
             {
                 cbxCD_PRAZO.SelectedIndex = 0;
-            }          
+            }
             decimal dVL_PERDESC = Convert.ToDecimal(objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("CLIFOR", "COALESCE(VL_PERDESC,0) VL_PERDESC", "CD_CLIFOR = '" + sCdClifor + "'"));
             txtDesconto.Text = dVL_PERDESC.ToString();
             Session["ST_DESC"] = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("EMPRESA", "COALESCE(ST_DESC,'U')", "CD_EMPRESA = '" + objUsuario.oTabelas.sEmpresa + "'");
@@ -129,15 +130,7 @@ public partial class Pedido : System.Web.UI.Page
             CamposObrigatorios = false;
             lblInfo.Visible = true;
             MessageHLP.ShowPopUpMsg("Cliente não foi informado!", this.Page);
-        }
-        if (cbxCD_PRAZO.Text.Equals(String.Empty) || cbxCD_PRAZO.SelectedIndex == -1)
-        {
-            CamposObrigatorios = false;
-            lblInfo.Visible = true;
-
-            MessageHLP.ShowPopUpMsg("Condição de Pagamento não foi informado!", this.Page);
-
-        }
+        }       
 
         if (CamposObrigatorios)
         {
@@ -181,7 +174,7 @@ public partial class Pedido : System.Web.UI.Page
         double TotalDesconto = 0;
         double TotalPedidoComDesc = 0;
         int iLoop = 0;
-        Regex reg = new Regex(@"^\d{1,5}(\.\d{1,2})?$");
+        Regex reg = new Regex(@"^\d{1,5}(\,\d{1,2})?$");
         foreach (GridViewRow Linha in GridViewNovo.Rows)
         {
             double dqtde = 1;
@@ -562,11 +555,26 @@ public partial class Pedido : System.Web.UI.Page
                                 }
                             }
 
+                            
 
-                            string sSittribipi = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("OPEREVE", "cd_sittribipi", "CD_OPER = '" + scdOper + "'");
-                            string sSittribpis = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("OPEREVE", "cd_sittribpis", "CD_OPER = '" + scdOper + "'");
-                            string sSittribcofins = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("OPEREVE", "cd_sittribcof", "CD_OPER = '" + scdOper + "'");
+                            string sSittribipi = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("PRODUTO", "cd_sittribipi", "CD_PROD = '" + sCD_PROD + "' and CD_EMPRESA = '" + objUsuario.oTabelas.sEmpresa + "'");
+                            string sSittribpis = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("clas_fis", "cd_sittribpis", "cd_cf = '" + CF + "' and CD_EMPRESA = '" + objUsuario.oTabelas.sEmpresa + "'");
+                            string sSittribcofins = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("clas_fis", "cd_sittribcof", "cd_cf = '" + CF + "' and CD_EMPRESA = '" + objUsuario.oTabelas.sEmpresa + "'");
                             string sTipoPrazo = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("PRAZOS", "DS_FORMULA", "CD_PRAZO = '" + cbxCD_PRAZO.SelectedItem.Value.Trim() + "'");
+
+
+                            if (sSittribipi == "")
+                            {
+                                sSittribipi = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("OPEREVE", "cd_sittribipi", "CD_OPER = '" + scdOper + "'");
+                            }
+                            if (sSittribpis == "")
+                            {
+                                sSittribpis = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("OPEREVE", "cd_sittribpis", "CD_OPER = '" + scdOper + "'");
+                            }
+                            if (sSittribcofins == "")
+                            {
+                                sSittribcofins = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("OPEREVE", "cd_sittribcof", "CD_OPER = '" + scdOper + "'");
+                            }
 
                             #region Busca Valor % de comissão
 
@@ -733,6 +741,11 @@ public partial class Pedido : System.Web.UI.Page
     }
     protected void btnAvancar_Click(object sender, EventArgs e)
     {
+        if (cbxCD_PRAZO.Text.Equals(String.Empty) || cbxCD_PRAZO.SelectedIndex == -1)
+        {
+            lblInfo.Visible = true;
+            MessageHLP.ShowPopUpMsg("Condição de Pagamento não foi informado!", this.Page);
+        }
         if (GridViewNovo.Rows.Count > 0)
         {
             btnAtualiza_Click(sender, e);
@@ -948,7 +961,7 @@ public partial class Pedido : System.Web.UI.Page
             cbxCD_PRAZO.DataSource = dtPrazo;
             cbxCD_PRAZO.DataBind();
         }
-        
+
     }
     private void GetTPDOC()
     {
