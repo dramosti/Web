@@ -130,7 +130,7 @@ public partial class Pedido : System.Web.UI.Page
             CamposObrigatorios = false;
             lblInfo.Visible = true;
             MessageHLP.ShowPopUpMsg("Cliente não foi informado!", this.Page);
-        }       
+        }
 
         if (CamposObrigatorios)
         {
@@ -439,6 +439,31 @@ public partial class Pedido : System.Web.UI.Page
 
             }
 
+            string sTipoDocumento = cbxDS_TPDOCWEB.SelectedValue.ToString(); // WebConfigurationManager.AppSettings["CdTipoDocPedidoDefault"];
+            string sUFclifor = Session["CD_UFNOR"].ToString();
+            string sUFempresa = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("EMPRESA", "cd_ufnor", string.Format("cd_empresa = '{0}'", objUsuario.oTabelas.sEmpresa.Trim()));
+            string sCD_CFOP = "";
+            string sDS_CFOP = "";
+
+            if (sUFclifor.Equals("EX"))
+            {
+                sCD_CFOP = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("TPDOC", "cd_cfopext", string.Format("cd_tipodoc = '{0}'", sTipoDocumento));
+            }
+            else if (sUFclifor == sUFempresa)
+            {
+                sCD_CFOP = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("TPDOC", "cd_cfopest", string.Format("cd_tipodoc = '{0}'", sTipoDocumento));
+            }
+            else
+            {
+                sCD_CFOP = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("TPDOC", "cd_cfopfes", string.Format("cd_tipodoc = '{0}'", sTipoDocumento));
+            }
+
+            if (sCD_CFOP != "")
+            {
+                sDS_CFOP = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("cfops", "ds_cfopabv", string.Format("cd_cfops = '{0}'", sCD_CFOP));
+            }
+
+
             string sCD_PEDIDO = objUsuario.oTabelas.hlpDbFuncoes.RetornaProximoValorGenerator("GEN_PEDIDO_WEB").PadLeft(7, '0');
 
             cmdSelectPed.Parameters.Add("@SCD_EMPRESA", FbDbType.VarChar, 3).Value = objUsuario.oTabelas.sEmpresa.ToString();
@@ -451,7 +476,7 @@ public partial class Pedido : System.Web.UI.Page
 
             if (strRetPedido != null)
             {
-                string sTipoDocumento = cbxDS_TPDOCWEB.SelectedValue.ToString(); // WebConfigurationManager.AppSettings["CdTipoDocPedidoDefault"];
+
                 StringBuilder strUpDatePed = new StringBuilder();
 
                 string sVL_TOTALPED = GridViewNovo.FooterRow.Cells[8].Text.Replace(".", "").Replace(",", ".");
@@ -487,6 +512,11 @@ public partial class Pedido : System.Web.UI.Page
 
 
                 strUpDatePed.Append("', DT_PEDIDO = '" + txtDataPedido.Text.Replace("/", "."));
+                if (sCD_CFOP != "")
+                {
+                    strUpDatePed.Append("', cd_cfops = '" + sCD_CFOP);
+                    strUpDatePed.Append("', ds_cfop = '" + sDS_CFOP);
+                }
                 strUpDatePed.Append("', CD_TIPODOC = '" + sTipoDocumento);
                 strUpDatePed.Append("', CD_PRAZO = '" + cbxCD_PRAZO.SelectedItem.Value.Trim());
                 strUpDatePed.Append("', CD_TRANS = '" + objUsuario.oTabelas.TRANSP.ToString().Trim());
@@ -494,6 +524,8 @@ public partial class Pedido : System.Web.UI.Page
                 strUpDatePed.Append("', DT_ABER = '" + txtDataPedido.Text.Replace("/", "."));
                 strUpDatePed.Append("', CD_USUINC ='" + objUsuario.oTabelas.CdUsuarioAtual);
                 strUpDatePed.Append("', CD_VEND1 = '" + objUsuario.oTabelas.CdVendedorAtual + "'");
+
+
                 strUpDatePed.Append(" WHERE (CD_PEDIDO = '" + strRetPedido.Trim() + "') AND (CD_EMPRESA = '" + objUsuario.oTabelas.sEmpresa.Trim() + "')");
 
                 FbCommand cmdUpDatePedido = new FbCommand(strConn);
@@ -555,7 +587,7 @@ public partial class Pedido : System.Web.UI.Page
                                 }
                             }
 
-                            
+
 
                             string sSittribipi = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("PRODUTO", "cd_sittribipi", "CD_PROD = '" + sCD_PROD + "' and CD_EMPRESA = '" + objUsuario.oTabelas.sEmpresa + "'");
                             string sSittribpis = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("clas_fis", "cd_sittribpis", "cd_cf = '" + CF + "' and CD_EMPRESA = '" + objUsuario.oTabelas.sEmpresa + "'");
@@ -1008,7 +1040,7 @@ public partial class Pedido : System.Web.UI.Page
     {
         UsuarioWeb objUsuario = (UsuarioWeb)Session["ObjetoUsuario"];
 
-        DataTable dtLinhaProd = objUsuario.oTabelas.hlpDbFuncoes.qrySeekRet("linhapro", "cd_linha, ds_linha", "CD_EMPRESA = '" + objUsuario.oTabelas.sEmpresa + "' and st_linha = 'A' and coalesce(st_web,'S') = 'S'");
+        DataTable dtLinhaProd = objUsuario.oTabelas.hlpDbFuncoes.qrySeekRet("linhapro", "cd_linha, ds_linha", "CD_EMPRESA = '" + objUsuario.oTabelas.sEmpresa + "' and st_linha = 'A' and coalesce(st_web,'S') = 'S' order by ds_linha");
 
         return dtLinhaProd;
     }
