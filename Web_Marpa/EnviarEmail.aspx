@@ -1,8 +1,9 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.master" AutoEventWireup="true"
     CodeFile="EnviarEmail.aspx.cs" Inherits="EnviarEmail" %>
 
-<%@ Register Assembly="HLP.Web.Controles" Namespace="HLP.Web.Controles" TagPrefix="cc1" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
+<%@ Register Assembly="HLP.Web.Controles" Namespace="HLP.Web.Controles" TagPrefix="cc1" %>
+
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="Server">
     <style type="text/css">
         .style1
@@ -30,6 +31,7 @@
         }
     </style>
 </asp:Content>
+
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="Server">
     <div align="center">
         <asp:MultiView ID="MultViewEmail" runat="server" ActiveViewIndex="0">
@@ -87,8 +89,8 @@
                                         <asp:Panel ID="panelBody" runat="server">
                                             <asp:TextBox ID="txtCorpo" runat="server" CssClass="textBox" Height="143px" TextMode="MultiLine"
                                                 Width="550px"></asp:TextBox>
-                                        </asp:Panel>
-                                        <asp:HtmlEditorExtender ID="txtCorpo_HtmlEditorExtender" runat="server" Enabled="True"
+                                        </asp:Panel>                                       
+                                       <%-- <asp:HtmlEditorExtender ID="txtCorpo_HtmlEditorExtender" runat="server" Enabled="True"
                                             TargetControlID="txtCorpo">
                                             <Toolbar>
                                                 <asp:Undo />
@@ -124,6 +126,8 @@
                                                 <asp:HorizontalSeparator />
                                             </Toolbar>
                                         </asp:HtmlEditorExtender>
+--%>
+
                                     </td>
                                     <td align="left" colspan="2">
                                         <asp:Button ID="btnEnviar" runat="server" CssClass="button" OnClick="btnEnviar_Click"
@@ -143,7 +147,7 @@
                     </tr>
                 </table>
             </asp:View>
-             <asp:View ID="viewInformacao" runat="server">
+            <asp:View ID="viewInformacao" runat="server">
                 <table style="width: 100%">
                     <tr>
                         <td align="center">
