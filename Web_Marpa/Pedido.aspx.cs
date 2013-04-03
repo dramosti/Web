@@ -582,10 +582,11 @@ public partial class Pedido : System.Web.UI.Page
                             {
                                 string sOPERVAL = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("TPDOC", "coalesce(cd_operval,'')", "cd_tipodoc = '" + sTipoDocumento + "'");
 
-                                if (sOPERVAL.Contains(scdOper))
+
+                                string sOperProd = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("produto", "coalesce(cd_oper,'')", "cd_prod = '" + sCD_PROD + "'");
+                                if (sOperProd != "")
                                 {
-                                    string sOperProd = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("produto", "coalesce(cd_oper,'')", "cd_prod = '" + sCD_PROD + "'");
-                                    if (sOperProd != "")
+                                    if (sOPERVAL.Contains(sOperProd))
                                     {
                                         scdOper = sOperProd;
                                     }

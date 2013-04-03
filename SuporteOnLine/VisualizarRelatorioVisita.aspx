@@ -52,7 +52,7 @@
             <tr>
                 <td style="padding: 5px; border: thin dotted #000000;">
                     <CR:CrystalReportViewer ID="RptVisita" runat="server" AutoDataBind="true" EnableDatabaseLogonPrompt="False"
-                        DisplayToolbar="False" />
+                        DisplayToolbar="False" ToolPanelView="None" />
                 </td>
             </tr>
         </table>
