@@ -22,6 +22,7 @@
 
     void Session_Start(object sender, EventArgs e) 
     {
+        Session.Timeout = 300;
         // Code that runs when a new session is started
         Session["IncluirClientePedido"] = false;
 

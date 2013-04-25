@@ -10,7 +10,7 @@ using HLP.Web;
 using System.Data;
 using System.IO;
 
-public partial class _Default : System.Web.UI.Page
+public partial class ViewPedidoComissao : System.Web.UI.Page
 {
     private ReportDocument rpt = new ReportDocument();
 
@@ -24,7 +24,8 @@ public partial class _Default : System.Web.UI.Page
                 Response.Redirect("~/Home.aspx");
             }
             rpt.Load(Server.MapPath("rptPedidoComissao.rpt"));
-            rpt.SetDataSource((DataSet)Session["DataSetPedidoComissao"]);
+            rpt.SetDataSource((List<belComissao>)Session["DataSetPedidoComissao"]);
+            rpt.DataDefinition.FormulaFields["f_vendedor"].Text = "\"" + ((List<belComissao>)Session["DataSetPedidoComissao"]).FirstOrDefault().NM_VEND + "\"";
             CrystalReportViewer1.ReportSource = rpt;
             GerarPDF();
         }

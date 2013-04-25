@@ -84,6 +84,11 @@
                     Pré Requisitos
                 </td>
             </tr>
+             <tr>
+                <td>
+                    <asp:LinkButton ID="linkAcesso" runat="server" OnClick="LinkButton1_Click">Acesso Remoto</asp:LinkButton>
+                </td>
+            </tr>
             <tr>
                 <td>
                     <asp:LinkButton ID="linkFrameWork" runat="server" OnClick="LinkButton1_Click">FrameWork 4.0</asp:LinkButton>
@@ -104,6 +109,7 @@
                     <asp:LinkButton ID="LinkButton1" runat="server" OnClick="LinkButton1_Click" PostBackUrl="http://www.microsoft.com/pt-br/download/details.aspx?id=32">WIC - Windows Imaging Component</asp:LinkButton>
                 </td>
             </tr>
+
         </table>
     </div>
 </asp:Content>

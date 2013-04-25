@@ -55,7 +55,7 @@ public partial class DownloadGeraXml : System.Web.UI.Page
                 versao.id = iCountID;
                 versao.Versao = pasta.Name;
                 string sFileZip = pasta.Name.Replace("_TESTE", "");
-                versao.Path = pasta.FullName + "\\" + sFileZip   + ".zip";
+                versao.Path = pasta.FullName + "\\" + sFileZip + ".zip";
                 if (File.Exists(versao.Path))
                 {
                     versao.Data = File.GetCreationTime(versao.Path);
@@ -115,8 +115,12 @@ public partial class DownloadGeraXml : System.Web.UI.Page
         LinkButton link = (LinkButton)sender;
         string sPath = "";
         string sArquivo = "";
-
-        if (link.ID.Equals("linkFrameWork"))
+        if (link.ID.Equals("linkAcesso"))
+        {
+            sPath = @"C:\GeraXml\Pre requisitos\TeamViewer\TeamViewer_Pot.rar";
+            sArquivo = "TeamViewer_Pot.rar";
+        }
+        else if (link.ID.Equals("linkFrameWork"))
         {
             sPath = @"C:\GeraXml\Pre requisitos\Framework 4.0\dotNetFx40_Full_x86_x64.exe";
             sArquivo = "dotNetFx40_Full_x86_x64.exe";

@@ -75,7 +75,7 @@
                             Assunto
                         </td>
                         <td align="left" align="left" colspan="2">
-                            <asp:TextBox ID="txtTitulo" runat="server" CssClass="textBox" MaxLength="20" Width="347px"></asp:TextBox>
+                            <asp:TextBox ID="txtTitulo" runat="server" CssClass="textBox" MaxLength="60" Width="347px"></asp:TextBox>
                         </td>
                     </tr>
                     <tr>
@@ -131,7 +131,7 @@
                                     </td>
                                     <td align="left" colspan="2">
                                         <asp:Button ID="btnEnviar" runat="server" CssClass="button" OnClick="btnEnviar_Click"
-                                            Text="Enviar" Width="82px" />
+                                            Text="Enviar" Width="99px" />
                                     </td>
                                 </tr>
                             </table>
@@ -157,7 +157,7 @@
                     </tr>
                     <tr>
                         <td align="center">
-                            <asp:Button ID="btnVoltar" runat="server" CssClass="button" Text="Voltar" Width="82px"
+                            <asp:Button ID="btnVoltar" runat="server" CssClass="button" Text="Voltar" Width="95px"
                                 OnClick="btnVoltar_Click" />
                         </td>
                     </tr>

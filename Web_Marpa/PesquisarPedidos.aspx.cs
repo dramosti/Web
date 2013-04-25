@@ -43,20 +43,23 @@ public partial class PesquisarPedidos : System.Web.UI.Page
         bFiltroValido = VerificaDataPedidos(bFiltroValido, objParametros, strErros);
         if (bFiltroValido)
         {
-            if (rdbEspecifico.Checked)
-            {
-                bFiltroValido = txtNumeroPedido.ValorValido();
-                if (bFiltroValido)
-                    objParametros.AddCriterio("(PEDIDO.CD_PEDIDO = '" + txtNumeroPedido.Text + "')");
-                else
-                    strErros.Append("Número de pedido inválido!");
-            }
-            
+            objParametros.dtINI = txtDataInicial.Text != "" ? Convert.ToDateTime(txtDataInicial.Text) : DateTime.Today;
+            objParametros.dtFIM = txtDataFinal.Text != "" ? Convert.ToDateTime(txtDataFinal.Text) : DateTime.Today;
+
+            //if (rdbEspecifico.Checked)
+            //{
+            //    bFiltroValido = txtNumeroPedido.ValorValido();
+            //    if (bFiltroValido)
+            //        objParametros.AddCriterio("(PEDIDO.CD_PEDIDO = '" + txtNumeroPedido.Text + "')");
+            //    else
+            //        strErros.Append("Número de pedido inválido!");
+            //}
+
         }
 
         if (bFiltroValido)
         {
-            string sNomeCliente = txtNomeCliente.Text.Trim().ToUpperInvariant().ToString();
+            string sNomeCliente = ""; // txtNomeCliente.Text.Trim().ToUpperInvariant().ToString();
             if (!sNomeCliente.Equals(String.Empty))
                 objParametros.AddCriterio("(UPPER(PEDIDO.NM_CLIFOR) LIKE '%" +
                     sNomeCliente + "%')");
@@ -131,14 +134,14 @@ public partial class PesquisarPedidos : System.Web.UI.Page
 
     private void ConfigurarFiltroPedidoEspecifico()
     {
-        bool bFiltroAtivo = rdbEspecifico.Checked;
-        txtNumeroPedido.Enabled = bFiltroAtivo;
-        if (bFiltroAtivo)
-        {
-            txtNumeroPedido.Focus();
-        }
-        txtDataInicial.ReadOnly  = !bFiltroAtivo;
-        txtDataFinal.ReadOnly = !bFiltroAtivo;
+        //bool bFiltroAtivo = rdbEspecifico.Checked;
+        //txtNumeroPedido.Enabled = bFiltroAtivo;
+        //if (bFiltroAtivo)
+        //{
+        //    txtNumeroPedido.Focus();
+        //}
+        //txtDataInicial.ReadOnly = !bFiltroAtivo;
+        //txtDataFinal.ReadOnly = !bFiltroAtivo;
     }
 
     protected void rdbVariosPedidos_CheckedChanged(object sender, EventArgs e)

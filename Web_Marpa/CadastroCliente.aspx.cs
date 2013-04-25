@@ -32,11 +32,21 @@ public partial class CadastroCliente : System.Web.UI.Page, ITelaCadastroWeb
         }
 
         bool IncluiClientePedido = (bool)Session["IncluirClientePedido"];
+        bool PesquisaPedido = false;
+        if (Session["PesquisaPendencia"] != null)
+        {
+            PesquisaPedido = (bool)Session["PesquisaPendencia"];
+        }
 
 
         if (IncluiClientePedido)
         {
             btnConfirmar.Text = "Incluir Pedido";
+            SomenteLeitura(false);
+        }
+        else if (PesquisaPedido)
+        {
+            btnConfirmar.Text = "Verificar Pendencia";
             SomenteLeitura(false);
         }
         else
@@ -164,6 +174,13 @@ public partial class CadastroCliente : System.Web.UI.Page, ITelaCadastroWeb
             Session["IncluirClientePedido"] = false;
             Response.Redirect("~/Pedido.aspx");
         }
+        else if (btnConfirmar.Text == "Verificar Pendencia")
+        {
+            Session["CD_ALTER"] = lblCdClifor.Text.Trim();
+            Session["NM_CLIFOR"] = txtNmGuerra.Text.Trim();
+            Session["IncluirClientePedido"] = false;
+            Response.Redirect("~/PesquisaPendenciaCliente.aspx");
+        }
     }
 
     //Métodos
@@ -256,7 +273,7 @@ public partial class CadastroCliente : System.Web.UI.Page, ITelaCadastroWeb
             //Inicio OS - 21175 Colocar verificação na IE.
             if (!txtCdInsest.Text.ToUpper().Equals("ISENTO"))
             {
-                if (!ValidarInscEstadual(txtCdInsest.Text.Replace(".","")))
+                if (!ValidarInscEstadual(txtCdInsest.Text.Replace(".", "")))
                 {
                     MessageHLP.ShowPopUpMsg("Inscrição Estadual só pode conter números." + Environment.NewLine +
                         "Caso o cliente seja ISENTO preencha o campo com o valor ISENTO.", this.Page);

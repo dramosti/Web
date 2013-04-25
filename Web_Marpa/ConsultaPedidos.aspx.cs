@@ -27,7 +27,7 @@ public partial class ConsultaPedidos : System.Web.UI.Page
             string sTabela = WebConfigurationManager.AppSettings["TableItens"];
             if (sTabela.ToUpper() == "MOVIPEND")
             {
-                gridConsultaPedidos.Columns[3].Visible = false;
+                gridConsultaPedidos.Columns[4].Visible = false;
             }
 
             BaseDAO.CancelarOperacaoObjetoDAO((BaseDAO)Session["ObjetoPedidoDetalhado"]);
@@ -44,39 +44,8 @@ public partial class ConsultaPedidos : System.Web.UI.Page
         }
     }
 
-    private void PesquisarDados(string sWhere, string sHaving)
-    {
-        string sTabela = WebConfigurationManager.AppSettings["TableItens"];
-        UsuarioWeb objUsuario = (UsuarioWeb)Session["ObjetoUsuario"];
-        DataTable dtPedidos = (DataTable)Session["DadosConsultaPedidos"];
-        bool bPesquisarDados = (dtPedidos == null);
-        if (bPesquisarDados)
-        {
-            StringBuilder str = new StringBuilder();
-            str.Append("SELECT P.CD_EMPRESA, ");
-            str.Append("P.DT_PEDIDO, ");
-            str.Append("P.CD_PEDIDO, ");
-            str.Append("P.NM_CLIFOR ");
-            str.Append("FROM PEDIDO P ");
-            str.Append("LEFT OUTER JOIN {0} MOVI ON (MOVI.CD_EMPRESA = P.CD_EMPRESA) AND (MOVI.CD_PEDIDO = P.CD_PEDIDO) ");
-            str.Append("WHERE (P.CD_EMPRESA = '" + objUsuario.oTabelas.sEmpresa + "') AND ");
-            str.Append(sWhere + " ");
-            str.Append("GROUP BY P.CD_EMPRESA, P.DT_PEDIDO, P.CD_PEDIDO, P.NM_CLIFOR ");
 
-            if (!sHaving.Equals(String.Empty))
-                str.Append("HAVING " + sHaving);
-            dtPedidos = objUsuario.oTabelas.hlpDbFuncoes.qrySeekRet(
-              string.Format(str.ToString(), sTabela));
 
-            DataColumn[] ChavePrimaria = new DataColumn[] { dtPedidos.Columns["CD_PEDIDO"] };
-            dtPedidos.PrimaryKey = ChavePrimaria;
-            Session["DadosConsultaPedidos"] = dtPedidos;
-        }
-        if (dtPedidos.Rows.Count == 0)
-            MessageHLP.ShowPopUpMsg("Não existem registros no período selecionado", this.Page);
-        if (!Page.IsPostBack)
-            ProcessaDataBind();
-    }
 
     protected void gridConsultaPedidos_PageIndexChanging(object sender, GridViewPageEventArgs e)
     {
@@ -95,63 +64,80 @@ public partial class ConsultaPedidos : System.Web.UI.Page
         Response.Redirect("~/PesquisarPedidos.aspx");
     }
 
+    private void PesquisarDados(string sWhere, string sHaving)
+    {
+
+        string sTabela = WebConfigurationManager.AppSettings["TableItens"];
+        UsuarioWeb objUsuario = (UsuarioWeb)Session["ObjetoUsuario"];
+        DataTable dtPedidos = (DataTable)Session["DadosConsultaPedidos"];
+        ParametroPesquisa objParametros = (ParametroPesquisa)Session["FiltroPedidos"];
+        bool bPesquisarDados = (dtPedidos == null);
+        if (bPesquisarDados)
+        {
+            StringBuilder squery = new StringBuilder();
+            squery.Append("SELECT SUM(S.VL_TOTAL) VL_TOTAL, SUM(S.VL_TOTLIQ) VL_TOTPROD, ");
+            squery.Append("SUM(VL_COMISSAO) VL_COMISSAO, ");
+            squery.Append("CASE S.CD_TIPODOC ");
+            squery.Append("WHEN '006' THEN  10 ");
+            squery.Append("ELSE ");
+            squery.Append("CAST((CAST(SUM(S.VL_COMISSAO) AS NUMERIC(18, 4)) / ");
+            squery.Append("CAST(SUM(S.VL_TOTLIQ) AS NUMERIC(18, 4))) AS NUMERIC(18, 4)) * 100 ");
+            squery.Append("END AS VL_PERCOMISSAO , S.DT_DOC, ");
+            squery.Append("S.CD_EMPRESA, S.CD_VEND, S.CD_CLIFOR, S.DS_TIPODOC, S.CD_PEDIDO, ");
+            squery.Append("C.NM_CLIFOR,  V.NM_VEND ");
+            squery.Append("FROM SP_COMISSAO_MARPA ('{0}', '{1}', ");
+            squery.Append("'{2}', '{2}', ");
+            squery.Append("'{3}','{3}') S ");
+            squery.Append("LEFT JOIN CLIFOR C ON (C.CD_CLIFOR = S.CD_CLIFOR) ");
+            squery.Append("LEFT JOIN VENDEDOR V ON (V.CD_VEND = S.CD_VEND) ");
+            squery.Append("LEFT JOIN EMPRESA E ON (E.CD_EMPRESA=S.CD_EMPRESA) ");
+            //squery.Append("WHERE (P.CD_EMPRESA = '" + objUsuario.oTabelas.sEmpresa + "') AND ");
+            //squery.Append(sWhere + " ");
+            squery.Append("GROUP BY S.CD_EMPRESA,S.CD_VEND, S.DT_DOC, S.CD_CLIFOR, S.CD_PEDIDO, C.NM_CLIFOR, V.NM_VEND, S.CD_TIPODOC, S.DS_TIPODOC ");
+            squery.Append("ORDER BY S.CD_EMPRESA,S.CD_VEND, S.DT_DOC, S.CD_CLIFOR, S.CD_PEDIDO ");
+
+            if (!sHaving.Equals(String.Empty))
+                squery.Append("HAVING " + sHaving);
+            dtPedidos = objUsuario.oTabelas.hlpDbFuncoes.qrySeekRet(
+              string.Format(squery.ToString(), objParametros.dtINI.ToString("dd.MM.yyyy"), objParametros.dtFIM.ToString("dd.MM.yyyy"), objUsuario.CodigoVendedor, objUsuario.oTabelas.sEmpresa));
+
+            DataColumn[] ChavePrimaria = new DataColumn[] { dtPedidos.Columns["CD_PEDIDO"] };
+            dtPedidos.PrimaryKey = ChavePrimaria;
+            Session["DadosConsultaPedidos"] = dtPedidos;
+        }
+        if (dtPedidos.Rows.Count == 0)
+            MessageHLP.ShowPopUpMsg("Não existem registros no período selecionado", this.Page);
+        if (!Page.IsPostBack)
+            ProcessaDataBind();
+    }
+
     protected void btnComissao_Click(object sender, EventArgs e)
     {
         try
         {
-            string sTabela = WebConfigurationManager.AppSettings["TableItens"];
-            dsPedidoComissao ds = new dsPedidoComissao();
-            dsPedidoComissao.PedidoRow drPedido;
-            dsPedidoComissao.MovitemRow drow;
-            DataTable dtItensPedido;
-            UsuarioWeb objUsuario = (UsuarioWeb)Session["ObjetoUsuario"];
-
-            StringBuilder sQuery = new StringBuilder();
-            sQuery.Append("SELECT ");
-            sQuery.Append("NR_LANC, ");
-            sQuery.Append("CD_PEDIDO, ");
-            sQuery.Append("DS_PROD ,");
-            //  sQuery.Append("COALESCE(QT_PACOTES,0)QT_PACOTES, ");
-            sQuery.Append("QT_PROD, ");
-            sQuery.Append("VL_TOTLIQ, ");
-            sQuery.Append("VL_PERCOMI1 ");
-            sQuery.Append("FROM {0} WHERE CD_EMPRESA = '{1}' AND CD_PEDIDO= '{2}' ");
-
-
-            if (gridConsultaPedidos.Rows.Count > 0)
+            if (Session["DadosConsultaPedidos"] != null)
             {
-                foreach (GridViewRow row in gridConsultaPedidos.Rows)
+                DataTable dt = Session["DadosConsultaPedidos"] as DataTable;
+
+                List<belComissao> objListComissao = dt.AsEnumerable().Select(item => new belComissao()
                 {
-                    drPedido = ds.Pedido.NewPedidoRow();
-                    drPedido.CD_PEDIDO = row.Cells[0].Text;// (row.Cells[0].FindControl("hlPedido") as HyperLink).Text;
-                    drPedido.NM_GUERRA = (row.Cells[1].FindControl("lblNmGuerra") as Label).Text;
-                    drPedido.DT_PEDIDO = Convert.ToDateTime((row.Cells[2].FindControl("lblDtPedido") as Label).Text);
-                    ds.Pedido.AddPedidoRow(drPedido);
+                    CD_CLIFOR = item["CD_CLIFOR"].ToString(),
+                    CD_EMPRESA = item["CD_EMPRESA"].ToString(),
+                    CD_PEDIDO = item["CD_PEDIDO"].ToString(),
+                    DS_TIPODOC = item["DS_TIPODOC"].ToString(),
+                    DT_DOC = Convert.ToDateTime(item["DT_DOC"].ToString()),
+                    NM_CLIFOR = item["NM_CLIFOR"].ToString(),
+                    NM_VEND = item["NM_VEND"].ToString(),
+                    VL_COMISSAO = Convert.ToDecimal(item["VL_COMISSAO"].ToString()),
+                    VL_PERCOMISSAO = Convert.ToDecimal(item["VL_PERCOMISSAO"].ToString()),
+                    VL_TOTAL = Convert.ToDecimal(item["VL_TOTAL"].ToString()),
+                    VL_TOTPROD = Convert.ToDecimal(item["VL_TOTPROD"].ToString())
+                }).ToList();
 
-                    dtItensPedido = objUsuario.oTabelas.hlpDbFuncoes.qrySeekRet(string.Format(sQuery.ToString(), sTabela, objUsuario.oTabelas.sEmpresa, row.Cells[0].Text)); //(row.Cells[0].FindControl("hlPedido") as HyperLink).Text));
 
-                    foreach (DataRow rowItem in dtItensPedido.Rows)
-                    {
-                        drow = ds.Movitem.NewMovitemRow();
-                        drow.CD_PEDIDO = rowItem["CD_PEDIDO"].ToString(); // (row.Cells[0].FindControl("hlPedido") as HyperLink).Text;
-                        drow.NR_LANC = rowItem["NR_LANC"].ToString();
-                        drow.DS_PROD = rowItem["DS_PROD"].ToString();
-                        // drMovitem.QT_PACOTES = rowItem["QT_PACOTES"].ToString();
-                        drow.QT_PROD = Convert.ToDecimal(rowItem["QT_PROD"].ToString());
-                        drow.VL_TOTLIQ = Convert.ToDecimal(rowItem["VL_TOTLIQ"].ToString());
-                        drow.VL_PERCOMI1 = Convert.ToDecimal(rowItem["VL_PERCOMI1"].ToString());
-                        ds.Movitem.AddMovitemRow(drow);
-                    }
-                }
-                Session["DataSetPedidoComissao"] = ds;
+                Session["DataSetPedidoComissao"] = objListComissao;
                 Response.Redirect("~/ViewPedidoComissao.aspx");
                 //ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "_new", "window.open('ViewPedidoComissao.aspx');", true);
-
-
-            }
-            else
-            {
-                Session["DataSetPedidoComissao"] = null;
             }
 
         }

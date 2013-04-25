@@ -91,16 +91,20 @@
                                             <EditItemTemplate>
                                                 <asp:TextBox ID="TextBox1" runat="server" Text='<%# Bind("VL_PRECOVE") %>'></asp:TextBox>
                                             </EditItemTemplate>
-                                            <ItemStyle Font-Names="Segoe UI" Font-Size="13px" HorizontalAlign="Left" Width="60px"
+                                            <ItemStyle Font-Names="Segoe UI" Font-Size="13px" HorizontalAlign="Right" Width="60px"
                                                 Wrap="False" />
                                             <HeaderStyle Font-Names="Segoe UI" Font-Size="13px" HorizontalAlign="Left" Wrap="False" />
                                             <ItemTemplate>
                                                 <asp:Label ID="Label1" runat="server" Text='<%# Bind("VL_PRECOVE", "{0:N2}") %>'></asp:Label>
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:BoundField HeaderText="Vl. IVA" Visible="False">
-                                        <HeaderStyle HorizontalAlign="Left" />
-                                        <ItemStyle Width="60px" />
+                                        <asp:BoundField HeaderText="Vl. Preço Subst. (iva)" 
+                                            DataField="vl_precove_subst" DataFormatString="{0:n}">
+                                        <ItemStyle HorizontalAlign="Right" Width="80px" />
+                                        </asp:BoundField>
+                                        <asp:BoundField DataField="vl_subst" HeaderText="Vl. ICMS ST (iva)" 
+                                            DataFormatString="{0:n}">
+                                        <ItemStyle HorizontalAlign="Right" Width="80px" />
                                         </asp:BoundField>
                                         <asp:BoundField DataField="VL_PESOBRU" DataFormatString="{0:0.0000}" HeaderText="Peso"
                                             Visible="False">

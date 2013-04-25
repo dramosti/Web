@@ -55,6 +55,10 @@ namespace HLP.Web
             return bAindaNaoDefiniuFiltro;
         }
 
+        public DateTime dtINI { get; set; }
+
+        public DateTime dtFIM { get; set; }
+
         public static void InicializarParametro(string sNomeParametro,
             HttpSessionState Session)
         {

@@ -18,30 +18,27 @@
                     HeaderStyle-HorizontalAlign="Left" ItemStyle-HorizontalAlign="Left" >
 <HeaderStyle HorizontalAlign="Left"></HeaderStyle>
 
-<ItemStyle HorizontalAlign="Left"></ItemStyle>
+<ItemStyle HorizontalAlign="Left" Width="80px"></ItemStyle>
                 </asp:BoundField>
-                <asp:TemplateField HeaderText="Razão Social">
-                    <EditItemTemplate>
-                        <asp:TextBox runat="server" Text='<%# Bind("NM_CLIFOR") %>' ID="txtNmGuerra"></asp:TextBox>
-                    </EditItemTemplate>
-                    <HeaderStyle HorizontalAlign="Left" />
-                    <ItemStyle HorizontalAlign="Left" />
-                    <ItemTemplate>
-                        <asp:Label runat="server" Text='<%# Bind("NM_CLIFOR") %>' ID="lblNmGuerra"></asp:Label>
-                    </ItemTemplate>
-                </asp:TemplateField>
-                <asp:TemplateField HeaderText="Data de Emiss&#227;o" ItemStyle-Width="130px">
-                    <EditItemTemplate>
-                        <asp:TextBox runat="server" Text='<%# Bind("DT_PEDIDO") %>' ID="TextBox1"></asp:TextBox>
-                    </EditItemTemplate>
-                    <ItemTemplate>
-                        <asp:Label runat="server" Text='<%# Bind("DT_PEDIDO", "{0:dd/MM/yyyy}") %>' ID="lblDtPedido"></asp:Label>
-                    </ItemTemplate>
-                    <HeaderStyle HorizontalAlign="Left" />
-                    <ItemStyle HorizontalAlign="Left" />
-                </asp:TemplateField>
+                <asp:BoundField DataField="NM_CLIFOR" HeaderText="Razão Social">
+                </asp:BoundField>
+                <asp:BoundField DataField="DT_DOC" DataFormatString="{0:dd/MM/yyyy}" 
+                    HeaderText="Data Pedido">
+                <ItemStyle Width="100px" />
+                </asp:BoundField>
+                <asp:BoundField DataField="VL_TOTAL" DataFormatString="{0:n}" 
+                    HeaderText="Valor Pedido">
+                <ItemStyle HorizontalAlign="Right" Width="100px" />
+                </asp:BoundField>
+                <asp:BoundField DataField="VL_COMISSAO" DataFormatString="{0:n}" 
+                    HeaderText="Valor Comissão" Visible="False" />
+                <asp:BoundField DataField="VL_PERCOMISSAO" DataFormatString="{0:n}" 
+                    HeaderText="% Comissão" Visible="False" />
+                <asp:BoundField DataField="CD_PEDIDO" HeaderText="Nº da Nota / Ped." 
+                    Visible="False" />
+                <asp:BoundField DataField="DS_TIPODOC" Visible="False" />
                 <asp:ButtonField Text="Status" CommandName="Pedido" ItemStyle-ForeColor="Blue">
-                    <ItemStyle ForeColor="Blue" />
+                    <ItemStyle ForeColor="Blue" Width="70px" />
                 </asp:ButtonField>
                 <asp:ButtonField Text="Email/Visualizar" CommandName="Email" ItemStyle-ForeColor="Blue" ItemStyle-Width="160px">
                     <ItemStyle ForeColor="Blue" />

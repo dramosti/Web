@@ -20,8 +20,6 @@ using System.Linq;
 public partial class Pedido : System.Web.UI.Page
 {
 
-
-
     protected void Page_Load(object sender, EventArgs e)
     {
         if (!IsPostBack)
@@ -119,8 +117,8 @@ public partial class Pedido : System.Web.UI.Page
     }
     protected void btnIncluiItens_Click(object sender, EventArgs e)
     {
-
-
+        LimparSession();
+        Session["IncluirClientePedido"] = true;
         UsuarioWeb objUsuario = (UsuarioWeb)Session["ObjetoUsuario"];
 
         bool CamposObrigatorios = true;
@@ -157,6 +155,7 @@ public partial class Pedido : System.Web.UI.Page
             cbxListaPreco.SelectedValue = sListaPadrao;
             GridViewDb.DataSource = GetProdutoGrid();
             GridViewDb.DataBind();
+            txtTipoDoc.Text = cbxDS_TPDOCWEB.SelectedItem.ToString();
         }
         else
         {
@@ -418,10 +417,11 @@ public partial class Pedido : System.Web.UI.Page
     }
     protected void btnGravar_Click(object sender, EventArgs e)
     {
-        if (Session["CD_ALTER"] != null)
+        //if (Session["CD_ALTER"] != null)
+        if (txtCodCli.Text != "")
         {
             UsuarioWeb objUsuario = (UsuarioWeb)Session["ObjetoUsuario"];
-            string sCdClifor = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("CLIFOR", "CD_CLIFOR", "CD_ALTER = '" + Session["CD_ALTER"].ToString() + "'");
+            string sCdClifor = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("CLIFOR", "CD_CLIFOR", "CD_ALTER = '" + txtCodCli.Text + "'");
 
             string strConn = ConfigurationManager.ConnectionStrings["ConnectionStringFB"].ConnectionString.ToString();
 
@@ -440,6 +440,48 @@ public partial class Pedido : System.Web.UI.Page
             }
 
             string sTipoDocumento = cbxDS_TPDOCWEB.SelectedValue.ToString(); // WebConfigurationManager.AppSettings["CdTipoDocPedidoDefault"];
+            string Doc = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("TPDOC", "TP_DOC", "CD_TIPODOC='" + sTipoDocumento + "'");
+            string sGenerator = "PEDIDO" + objUsuario.oTabelas.sEmpresa + Doc;
+            string sCD_RELAPED = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("TPDOC", "coalesce(CD_RELAPED,'1')", "CD_TIPODOC='" + sTipoDocumento + "'");
+            if (sCD_RELAPED == "1")
+            {
+                sGenerator = "PEDIDO001NF";
+            }
+
+            if (!objUsuario.oTabelas.hlpDbFuncoes.VerificaExistenciaGenerator(sGenerator))
+            {
+                int iIni = 0;
+                switch (Doc)
+                {
+                    case "PE": iIni = 0;
+                        break;
+                    case "NE": iIni = 1000000;
+                        break;
+                    case "NS": iIni = 1000000;
+                        break;
+                    case "CF": iIni = 2000000;
+                        break;
+                    case "PC": iIni = 9000000;
+                        break;
+                    case "OR": iIni = 8000000;
+                        break;
+
+                    default:
+                        throw new Exception("O generator " + sGenerator + " não existe");
+                }
+                objUsuario.oTabelas.hlpDbFuncoes.CreateGenerator(sGenerator, iIni);
+
+            }
+            string sCD_PEDIDO = objUsuario.oTabelas.hlpDbFuncoes.RetornaProximoValorGenerator(sGenerator).PadLeft(7, '0');
+
+
+
+
+
+
+
+
+
             string sUFclifor = Session["CD_UFNOR"].ToString();
             string sUFempresa = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("EMPRESA", "cd_ufnor", string.Format("cd_empresa = '{0}'", objUsuario.oTabelas.sEmpresa.Trim()));
             string sCD_CFOP = "";
@@ -463,9 +505,6 @@ public partial class Pedido : System.Web.UI.Page
                 sDS_CFOP = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("cfops", "ds_cfopabv", string.Format("cd_cfops = '{0}'", sCD_CFOP));
             }
 
-
-            string sCD_PEDIDO = objUsuario.oTabelas.hlpDbFuncoes.RetornaProximoValorGenerator("GEN_PEDIDO_WEB").PadLeft(7, '0');
-
             cmdSelectPed.Parameters.Add("@SCD_EMPRESA", FbDbType.VarChar, 3).Value = objUsuario.oTabelas.sEmpresa.ToString();
             cmdSelectPed.Parameters.Add("@SCD_VEND1", FbDbType.VarChar, 7).Value = objUsuario.CodigoVendedor.ToString();
             cmdSelectPed.Parameters.Add("@SCD_PEDIDO", FbDbType.VarChar, 7).Value = sCD_PEDIDO;
@@ -485,6 +524,12 @@ public partial class Pedido : System.Web.UI.Page
                 strUpDatePed.Append(" UPDATE PEDIDO SET CD_PEDIDO = '" + strRetPedido.Trim());
                 strUpDatePed.Append("', ST_FRETE = '" + sST_FRETE);
                 strUpDatePed.Append("', VL_TOTALPED = '" + sVL_TOTALPED);
+                strUpDatePed.Append("', st_desccond = '" + "N");
+                strUpDatePed.Append("', ST_WEB = '" + "S");
+
+                strUpDatePed.Append("', VL_DESCONTO = '" + "-" + txtTotalDesconto.Text.Replace(".", "").Replace(",", "."));
+                strUpDatePed.Append("', VL_PERDESC = '" + "-" + txtDesconto.Text.Replace(".", "").Replace(",", "."));
+
                 strUpDatePed.Append("', CD_CLIENTE = '" + sCdClifor);
                 strUpDatePed.Append("', NM_GUERRA = '" + ((CliforDAO)(Session["ObjetoClienteDetalhado"])).RegistroAtual["NM_GUERRA"].ToString());
                 strUpDatePed.Append("', ST_DESC = '" + Session["ST_DESC"].ToString());
@@ -869,7 +914,7 @@ public partial class Pedido : System.Web.UI.Page
     public DataTable GetDuplicatasAbertas()
     {
         UsuarioWeb objUsuario = (UsuarioWeb)Session["ObjetoUsuario"];
-        string sCdClifor = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("CLIFOR", "CD_CLIFOR", "CD_ALTER = '" + (string)Session["CD_ALTER"] + "'");
+        string sCdClifor = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("CLIFOR", "CD_CLIFOR", "CD_ALTER = '" + (string)txtCodCli.Text + "'");
         string sWhere = "coalesce(st_baixa,'') <> 'B' and cd_empresa = '" + objUsuario.oTabelas.sEmpresa.ToString().Trim() + "' and cd_cliente = '" + sCdClifor + "'";
 
         DataTable dtDuplicatas = objUsuario.oTabelas.hlpDbFuncoes.qrySeekRet("DOC_CTR", "dt_venci, vl_doc ", sWhere);
@@ -925,11 +970,11 @@ public partial class Pedido : System.Web.UI.Page
         if (!txtProdDesc.Text.Equals(String.Empty))
             strWhere.Append("AND (PRODUTO.DS_PROD LIKE ('%" + txtProdDesc.Text.ToUpper().Trim() + "%')) ");
         strWhere.Append(" AND PRODUTO.CD_LINHA = '" + cbxLinhaProduto.SelectedValue.ToString() + "' "); // OS_27292
-
+        
         DataTable dtProduto = objUsuario.oTabelas.hlpDbFuncoes.qrySeekRet("PRECOS INNER JOIN PRODUTO ON (PRODUTO.CD_PROD = PRECOS.CD_PROD)" +
             " INNER JOIN CLAS_FIS ON PRODUTO.CD_CF = CLAS_FIS.CD_CF ",
             (st_atualizacao.Equals("M") ? "PRECOS.VL_PRECOVE" : "(PRECOS.VL_PRECOVE * " + vl_perc.ToString().Replace(',', '.') + ")VL_PRECOVE") +
-       ", PRODUTO.CD_BARRAS, PRODUTO.CD_PROD, PRODUTO.DS_DETALHE, PRODUTO.VL_PESOBRU, PRODUTO.QT_ESTOQUE, PRODUTO.CD_SITTRIB, " +
+       ", PRODUTO.CD_BARRAS, PRODUTO.CD_PROD, PRODUTO.DS_DETALHE, PRODUTO.VL_PESOBRU, PRODUTO.QT_ESTOQUE, PRODUTO.CD_SITTRIB, coalesce(precos.vl_precove_subst,0)vl_precove_subst, coalesce(precos.vl_subst,0)vl_subst, " +
        "CLAS_FIS.DS_CLASFIS, CLAS_FIS.VL_ALIIPI, CLAS_FIS.VL_REDBASE", strWhere.ToString(), "PRODUTO.DS_DETALHE");
 
 
@@ -951,6 +996,9 @@ public partial class Pedido : System.Web.UI.Page
         dtRetorno.Columns.Add("VL_ALIQUOT").DataType = System.Type.GetType("System.Double");
         dtRetorno.Columns.Add("VL_ALISUBS").DataType = System.Type.GetType("System.Double");
         dtRetorno.Columns.Add("CD_SITTRIB").DataType = System.Type.GetType("System.String");
+        dtRetorno.Columns.Add("vl_precove_subst").DataType = System.Type.GetType("System.Double");
+        dtRetorno.Columns.Add("vl_subst").DataType = System.Type.GetType("System.Double");
+
 
         DataColumn[] keys = new DataColumn[1];
         keys[0] = column;
@@ -965,12 +1013,14 @@ public partial class Pedido : System.Web.UI.Page
             drRet["CD_BARRAS"] = dr["CD_BARRAS"];
             drRet["DS_PROD"] = dr["DS_DETALHE"];
             drRet["CD_SITTRIB"] = dr["CD_SITTRIB"];
-            drRet["VL_PRECOVE"] = dr["VL_PRECOVE"];
-            drRet["VL_PESOBRU"] = dr["VL_PESOBRU"];
+            drRet["VL_PRECOVE"] = Convert.ToDecimal(dr["VL_PRECOVE"]);
+            drRet["VL_PESOBRU"] = Convert.ToDecimal(dr["VL_PESOBRU"]);
             drRet["QT_ESTOQUE"] = dr["QT_ESTOQUE"];
             drRet["DS_CLASFIS"] = dr["DS_CLASFIS"];
-            drRet["VL_ALIIPI"] = dr["VL_ALIIPI"];
+            drRet["VL_ALIIPI"] = Convert.ToDecimal(dr["VL_ALIIPI"]);
             drRet["VL_REDBASE"] = (dr["CD_SITTRIB"].ToString().Equals("040") ? 0 : 100 - Convert.ToDouble(dr["VL_REDBASE"]));
+            drRet["vl_precove_subst"] = Convert.ToDecimal(dr["vl_precove_subst"]);
+            drRet["vl_subst"] = Convert.ToDecimal(dr["vl_subst"]);
 
             DataTable dtAliquotas = objUsuario.oTabelas.hlpDbFuncoes.qrySeekRet("ICM", "VL_ALIQUOT, VL_ALISUBS ", "cd_ufnor = '" + Session["CD_UFNOR"] + "' and icm.cd_aliicms =  (SELECT  PRODUTO.cd_aliicms FROM PRODUTO  WHERE CD_PROD = '" + sCodProduto + "')");
 
@@ -1022,7 +1072,7 @@ public partial class Pedido : System.Web.UI.Page
                 dtTPDOC.Rows.Add(row);
             }
         }
-        string sCodClifor = (string)Session["CD_ALTER"];
+        string sCodClifor = (string)txtCodCli.Text;
         string stpDocCliFor = "000";
         if (sCodClifor != null)
         {

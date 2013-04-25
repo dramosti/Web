@@ -1,5 +1,5 @@
 ﻿<%@ Page Title="Comissão Pedido" Language="C#" MasterPageFile="~/Site.master" AutoEventWireup="true"
-    CodeFile="ViewPedidoComissao.aspx.cs" Inherits="_Default" %>
+    CodeFile="ViewPedidoComissao.aspx.cs" Inherits="ViewPedidoComissao" %>
 
 <%@ Register Assembly="CrystalDecisions.Web, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304"
     Namespace="CrystalDecisions.Web" TagPrefix="CR" %>

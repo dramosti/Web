@@ -80,7 +80,7 @@ public partial class EnviarEmail : System.Web.UI.Page
         {
             SmtpClient Cliente = new SmtpClient();
             Cliente.Host = "smtp.hlp.com.br";
-            Cliente.Port = 25;
+            Cliente.Port = 587;
 
             MailAddress Destino = new MailAddress(txtDestino.Text);
             MailAddress Remeter = new MailAddress("pedidoweb@hlp.com.br");

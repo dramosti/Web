@@ -94,8 +94,10 @@
                         <td align="left">
                             <asp:TextBox ID="txtCodCli" runat="server" CssClass="textBox" Enabled="True" Width="101px"></asp:TextBox>
                             <asp:TextBox ID="txtCliente" runat="server" CssClass="textBox" Enabled="False" Width="286px"></asp:TextBox>
+                            &nbsp;&nbsp;&nbsp;&nbsp;
                             <asp:Button ID="btnCliente" runat="server" CssClass="button" Height="26px" Text="Buscar Cliente"
                                 OnClick="btnCliente_Click" />
+                            &nbsp;&nbsp;&nbsp;&nbsp;
                             <asp:Button ID="btnPesqCliente" runat="server" CssClass="button" Height="26px" Text="Filtrar Pesquisar"
                                 OnClick="btnPesqCliente_Click" />
                         </td>
@@ -270,7 +272,7 @@
                                         <EditItemTemplate>
                                             <asp:TextBox ID="TextBox1" runat="server" Text='<%# Bind("VL_PRECOVE") %>'></asp:TextBox>
                                         </EditItemTemplate>
-                                        <ItemStyle Font-Names="Segoe UI" Font-Size="13px" HorizontalAlign="Left" Width="60px"
+                                        <ItemStyle Font-Names="Segoe UI" Font-Size="13px" HorizontalAlign="Right" Width="60px"
                                             Wrap="False" />
                                         <HeaderStyle Font-Names="Segoe UI" Font-Size="13px" HorizontalAlign="Left" Wrap="False" />
                                         <ItemTemplate>
@@ -314,7 +316,7 @@
                                 <AlternatingRowStyle BorderStyle="None" />
                                 <Fields>
                                     <asp:BoundField DataField="DS_PROD" HeaderText="Descrição">
-                                        <HeaderStyle Width="150px" />
+                                        <HeaderStyle Width="300px" />
                                         <ItemStyle Font-Bold="True" HorizontalAlign="Left" />
                                     </asp:BoundField>
                                     <asp:BoundField DataField="VL_PESOBRU" HeaderText="Peso">
@@ -341,6 +343,13 @@
                                     <asp:BoundField DataField="CD_SITTRIB" HeaderText="Situação Tributária">
                                         <ItemStyle Font-Bold="True" HorizontalAlign="Left" />
                                     </asp:BoundField>
+                                    <asp:BoundField DataField="vl_precove_subst" HeaderText="Preço de Venda com ST (IVA)">
+                                        <ItemStyle Font-Bold="True" HorizontalAlign="Left" />
+                                    </asp:BoundField>
+                                    <asp:BoundField DataField="vl_subst" HeaderText="Valor ICMS ST (IVA)">
+                                        <ItemStyle Font-Bold="True" HorizontalAlign="Left" />
+                                    </asp:BoundField>
+
                                 </Fields>
                                 <HeaderStyle HorizontalAlign="Left" />
                                 <PagerStyle CssClass="pgr" />
@@ -389,6 +398,15 @@
                             </asp:DropDownList>
                         </td>
                     </tr>
+                      <tr>
+                        <td align="right" class="style3">
+                            Tipo de Documento
+                        </td>
+                        <td align="left">
+                            <asp:TextBox ID="txtTipoDoc" runat="server" CssClass="textBox" MaxLength="4"
+                                BackColor="#CCCCCC" ReadOnly="True" Width="200px"></asp:TextBox>
+                        </td>
+                    </tr>
                     <tr>
                         <td align="center" colspan="2">
                             <asp:GridView ID="GridViewNovo" runat="server" AllowSorting="True" AutoGenerateColumns="False"
@@ -432,24 +450,27 @@
                                         <ItemStyle HorizontalAlign="Left" Width="200px" Wrap="False" />
                                     </asp:BoundField>
                                     <asp:BoundField DataField="VL_DESCONTO" HeaderText="Desconto" HeaderStyle-HorizontalAlign="Left"
-                                        ItemStyle-HorizontalAlign="Left" ItemStyle-Width="60px" />
+                                        ItemStyle-HorizontalAlign="Left" ItemStyle-Width="60px" >
+                                    <HeaderStyle HorizontalAlign="Left" />
+                                    <ItemStyle HorizontalAlign="Right" Width="60px" />
+                                    </asp:BoundField>
                                     <asp:BoundField DataField="CD_LISTA" HeaderText="Lista" ItemStyle-HorizontalAlign="Left"
                                         ItemStyle-Width="60px">
-                                        <ItemStyle HorizontalAlign="Left" Width="40px" Wrap="False" />
+                                        <ItemStyle HorizontalAlign="Right" Width="40px" Wrap="False" />
                                         <HeaderStyle HorizontalAlign="Left" />
                                     </asp:BoundField>
-                                    <asp:BoundField DataField="VL_PROD" DataFormatString="{0:N2}" HeaderText="Vl. Unitário">
-                                        <ItemStyle Width="60px" Wrap="False" />
+                                    <asp:BoundField DataField="VL_PROD" HeaderText="Vl. Unitário">
+                                        <ItemStyle Width="60px" Wrap="False" HorizontalAlign="Right" />
                                         <HeaderStyle Wrap="False" />
                                     </asp:BoundField>
-                                    <asp:BoundField DataField="VL_UNIPROD_SEM_DESC" DataFormatString="{0:N2}" Visible="true"
+                                    <asp:BoundField DataField="VL_UNIPROD_SEM_DESC" Visible="true"
                                         HeaderText="Vl. s/desc">
-                                        <ItemStyle Width="60px" Wrap="False" />
+                                        <ItemStyle Width="60px" Wrap="False" HorizontalAlign="Right" />
                                         <HeaderStyle Wrap="False" Width="60px" />
                                     </asp:BoundField>
-                                    <asp:BoundField DataField="SUBTOTAL" HeaderText="Vl. Total" DataFormatString="{0:N2}">
+                                    <asp:BoundField DataField="SUBTOTAL" HeaderText="Vl. Total">
                                         <HeaderStyle HorizontalAlign="Left" Wrap="False" Width="50" />
-                                        <ItemStyle HorizontalAlign="Left" Wrap="False" Width="50" />
+                                        <ItemStyle HorizontalAlign="Right" Wrap="False" Width="50" />
                                     </asp:BoundField>
                                 </Columns>
                                 <PagerStyle CssClass="pgr" />
@@ -654,17 +675,20 @@
                                 CssClass="mGrid" PagerStyle-CssClass="pgr" Font-Names="Segoe UI" Font-Size="13px"
                                 AlternatingRowStyle-CssClass="alt" CaptionAlign="Left" GridLines="None" ShowFooter="True"
                                 Width="100px" PageSize="15" OnRowDataBound="GridDuplicatas_RowDataBound" OnPageIndexChanging="GridDuplicatas_PageIndexChanging">
+                                <AlternatingRowStyle CssClass="alt" />
                                 <Columns>
-                                    <asp:BoundField DataField="DT_VENCI" HeaderText="Vencimento" DataFormatString="{0:dd/MM/yyyy}">
-                                        <ItemStyle HorizontalAlign="Left" Width="100px" Wrap="False" />
-                                        <HeaderStyle HorizontalAlign="Left" Wrap="True" />
+                                    <asp:BoundField DataField="DT_VENCI" DataFormatString="{0:dd/MM/yyyy}" 
+                                        HeaderText="Vencimento">
+                                    <ItemStyle HorizontalAlign="Left" Width="100px" Wrap="False" />
+                                    <HeaderStyle HorizontalAlign="Left" Wrap="True" />
                                     </asp:BoundField>
-                                    <asp:BoundField DataField="VL_DOC" HeaderText="Valor" DataFormatString="{0:c}">
-                                        <ItemStyle HorizontalAlign="Left" Width="150px" Wrap="False" />
-                                        <FooterStyle Font-Names="Segoe UI" Font-Size="13px" />
-                                        <HeaderStyle HorizontalAlign="Left" />
+                                    <asp:BoundField DataField="VL_DOC" DataFormatString="{0:c}" HeaderText="Valor">
+                                    <ItemStyle HorizontalAlign="Right" Width="150px" Wrap="False" />
+                                    <FooterStyle Font-Names="Segoe UI" Font-Size="13px" />
+                                    <HeaderStyle HorizontalAlign="Left" />
                                     </asp:BoundField>
                                 </Columns>
+                                <PagerStyle CssClass="pgr" />
                             </asp:GridView>
                         </td>
                     </tr>
