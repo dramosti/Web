@@ -5,7 +5,5 @@
     Namespace="CrystalDecisions.Web" TagPrefix="CR" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="Server">
 </asp:Content>
-<asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="Server" >
-    <CR:CrystalReportViewer ID="CrystalReportViewer1" runat="server" 
-        AutoDataBind="true" ToolPanelView="None" />
+<asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="Server" > 
 </asp:Content>

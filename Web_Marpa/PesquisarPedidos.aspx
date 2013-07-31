@@ -8,7 +8,7 @@
     <style type="text/css">
         .style1
         {
-            width: 114px;
+            width: 105px;
         }
     </style>
     <script type="text/javascript">
@@ -50,7 +50,8 @@
     <table width="100%">
         <tr align="center">
             <td width="30%">
-                &nbsp;</td>
+                &nbsp;
+            </td>
             <td>
                 <div style="text-align: center">
                     <table style="width: 100%">
@@ -98,12 +99,12 @@
                             </td>
                             <td style="width: 32px; height: 33px;">
                                 <cc1:HlpWebLabel ID="HlpWebLabel1" runat="server" CssClass="label">a</cc1:HlpWebLabel>
-                    <table style="width: 100%">
-                        <tr>
-                            <td style="width: 100px">
-                            </td>
-                        </tr>
-                    </table>
+                                <table style="width: 100%">
+                                    <tr>
+                                        <td style="width: 100px">
+                                        </td>
+                                    </tr>
+                                </table>
                             </td>
                             <td style="width: 89px; height: 33px;">
                                 <asp:TextBox runat="server" CssClass="textBox" ID="txtDataFinal" Width="100px" MaxLength="10"></asp:TextBox><asp:CalendarExtender
@@ -138,21 +139,25 @@
             </tr>
         </table>--%>
                     <br />
-                    <table style="width: 100%">
+                    <table style="width: 65%">
                         <tr>
-                            <td style="text-align:center">
-                             <cc1:HlpWebButton ID="btnPesquisar" runat="server" OnClick="btnPesquisar_Click" Text="Pesquisar"
-                                    Width="124px" CssClass="button" />
-                                &nbsp;
-                                <cc1:HlpWebButton ID="btnVoltar" runat="server" OnClick="btnVoltar_Click" Text="Voltar"
-                                    Width="116px" CssClass="button" />
+                            <td style="text-align: left">
+                                <cc1:HlpWebButton ID="btnPesquisarComissao" runat="server" OnClick="btnPesquisar_Click"
+                                    Text="Comissões" Width="124px" CssClass="button" />
                             </td>
-                            
+                            <td style="text-align: center">
+                                <cc1:HlpWebButton ID="btnPesquisarPedido" runat="server" OnClick="btnPesquisar_Click"
+                                    Text="Pedidos" Width="124px" CssClass="button" />
+                                <td style="text-align: right">
+                                    <cc1:HlpWebButton ID="btnVoltar" runat="server" OnClick="btnVoltar_Click" Text="Voltar"
+                                        Width="124px" CssClass="button" />
+                                </td>
                         </tr>
-                    </table>
-                </div>
             </td>
-            <td width="30%"></td>
+        </tr>
+    </table> </div> </td>
+        <td width="30%">
+        </td>
         </tr>
     </table>
     <table style="width: 100%">

@@ -40,11 +40,11 @@ public partial class DownloadGeraXml : System.Web.UI.Page
             DirectoryInfo[] diretorios;
             if (cbxTpExe.SelectedIndex == 0)
             {
-                diretorios = dinfo.GetDirectories().Where(c => !c.Name.ToUpper().Contains("TESTE")).OrderByDescending(c => c.Name).ToArray();
+                diretorios = dinfo.GetDirectories().Where(c => !c.Name.ToUpper().Contains("TESTE")).OrderByDescending(c => c.LastWriteTime).ToArray();
             }
             else
             {
-                diretorios = dinfo.GetDirectories().Where(c => c.Name.ToUpper().Contains("TESTE")).OrderByDescending(c => c.Name).ToArray();
+                diretorios = dinfo.GetDirectories().Where(c => c.Name.ToUpper().Contains("TESTE")).OrderByDescending(c => c.LastWriteTime).ToArray();
             }
             List<Versoes> lVersoes = new List<Versoes>();
             Versoes versao;

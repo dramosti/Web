@@ -27,9 +27,10 @@ public partial class ConsultaClientes : System.Web.UI.Page
             Session["Lista"] = null;
             Session["ListaPreco"] = null;
 
-
             BaseDAO.CancelarOperacaoObjetoDAO((BaseDAO)Session["ObjetoClienteDetalhado"]);
             ParametroPesquisa objParametros = (ParametroPesquisa)Session["FiltroClientes"];
+            Session["FiltroClientes"] = null;
+
             bool bParametrosValidos = (objParametros != null);
             if (bParametrosValidos)
                 bParametrosValidos = (!objParametros.AindaNaoDefiniuFiltro());
@@ -190,7 +191,7 @@ public partial class ConsultaClientes : System.Web.UI.Page
             GridViewRow RegistroAtual = gridConsultaClientes.Rows[index];
             DataRow Registro = dtClientes.Rows[RegistroAtual.DataItemIndex];
             Session["CD_ALTER"] = Registro["CD_ALTER"];
-            string sCdClifor = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("CLIFOR","CD_CLIFOR", "CD_ALTER = '" +  Registro["CD_ALTER"] +"'");
+            string sCdClifor = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("CLIFOR", "CD_CLIFOR", "CD_ALTER = '" + Registro["CD_ALTER"] + "'");
 
             DataTable dtRet = objUsuario.oTabelas.hlpDbFuncoes.qrySeekRet(string.Format("select count(NR_DOC)TOTAL from doc_ctr where coalesce(st_baixa,'') <> 'B' and cd_empresa = '{0}' and cd_cliente = '{1}' and dt_venci < current_date", objUsuario.oTabelas.sEmpresa, sCdClifor));
 
@@ -224,7 +225,7 @@ public partial class ConsultaClientes : System.Web.UI.Page
     {
         UsuarioWeb objUsuario = (UsuarioWeb)Session["ObjetoUsuario"];
         string sCdClifor = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("CLIFOR", "CD_CLIFOR", "CD_ALTER = '" + (string)Session["CD_ALTER"] + "'");
-      
+
         lblCliente.Text = "Cliente " + (string)Session["CD_ALTER"];
         string sWhere = "coalesce(st_baixa,'') <> 'B' and cd_empresa = '" + objUsuario.oTabelas.sEmpresa.ToString().Trim() + "' and cd_cliente = '" + sCdClifor + "'";
 

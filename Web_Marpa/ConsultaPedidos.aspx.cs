@@ -29,7 +29,6 @@ public partial class ConsultaPedidos : System.Web.UI.Page
             {
                 gridConsultaPedidos.Columns[4].Visible = false;
             }
-
             BaseDAO.CancelarOperacaoObjetoDAO((BaseDAO)Session["ObjetoPedidoDetalhado"]);
             ParametroPesquisa objParametros = (ParametroPesquisa)Session["FiltroPedidos"];
             bool bParametrosValidos = (objParametros != null);
@@ -40,7 +39,21 @@ public partial class ConsultaPedidos : System.Web.UI.Page
                 Response.Redirect("~/PesquisarPedidos.aspx");
                 return;
             }
-            PesquisarDados(objParametros.GetWhere(), objParametros.GetHaving());
+
+            Boolean bComissao = false;
+            if (Request["comissao"] != null)
+            {
+                bComissao = Convert.ToBoolean(Request["comissao"]);
+            }
+
+            if (!bComissao)
+            {
+                PesquisaDadosPedido(objParametros);
+            }
+            else
+            {
+                PesquisarDadosComissao(objParametros.GetWhere(), objParametros.GetHaving());
+            }
         }
     }
 
@@ -64,9 +77,53 @@ public partial class ConsultaPedidos : System.Web.UI.Page
         Response.Redirect("~/PesquisarPedidos.aspx");
     }
 
-    private void PesquisarDados(string sWhere, string sHaving)
+    private void PesquisaDadosPedido(ParametroPesquisa objParametros)
     {
+        try
+        {
+            btnComissao.Visible = false;
+            UsuarioWeb objUsuario = (UsuarioWeb)Session["ObjetoUsuario"];
+            DataTable dtPedidos = (DataTable)Session["DadosConsultaPedidos"];
+            bool bPesquisarDados = (dtPedidos == null);
+            if (bPesquisarDados)
+            {
+                StringBuilder squery = new StringBuilder();
+                squery.Append("SELECT P.vl_totalped VL_TOTAL, ");
+                squery.Append("P.dt_pedido DT_DOC, ");
+                squery.Append("P.cd_empresa, ");
+                squery.Append("P.cd_vend1 CD_VEND, ");
+                squery.Append("P.cd_cliente CD_CLIFOR, ");
+                squery.Append("p.cd_pedido, ");
+                squery.Append("p.nm_clifor ");
+                squery.Append("FROM pedido P ");
+                squery.Append("where p.dt_pedido between ('{0}') and ('{1}') ");
+                squery.Append("and p.cd_vend1 = '{2}' ");
+                squery.Append("and p.cd_empresa = '{3}'");
 
+                dtPedidos = objUsuario.oTabelas.hlpDbFuncoes.qrySeekRet(string.Format(squery.ToString(),
+                    objParametros.dtINI.ToString("dd.MM.yyyy"),
+                    objParametros.dtFIM.ToString("dd.MM.yyyy"),
+                    objUsuario.CodigoVendedor,
+                    objUsuario.oTabelas.sEmpresa));
+                DataColumn[] ChavePrimaria = new DataColumn[] { dtPedidos.Columns["CD_PEDIDO"] };
+                dtPedidos.PrimaryKey = ChavePrimaria;
+                Session["DadosConsultaPedidos"] = dtPedidos;
+            }
+            if (dtPedidos.Rows.Count == 0)
+                MessageHLP.ShowPopUpMsg("Não existem registros no período selecionado", this.Page);
+            if (!Page.IsPostBack)
+                ProcessaDataBind();
+
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+    }
+
+    private void PesquisarDadosComissao(string sWhere, string sHaving)
+    {
+        btnComissao.Visible = true;
         string sTabela = WebConfigurationManager.AppSettings["TableItens"];
         UsuarioWeb objUsuario = (UsuarioWeb)Session["ObjetoUsuario"];
         DataTable dtPedidos = (DataTable)Session["DadosConsultaPedidos"];
@@ -155,37 +212,74 @@ public partial class ConsultaPedidos : System.Web.UI.Page
         string sTabela = WebConfigurationManager.AppSettings["TableItens"];
         if (e.CommandName == "Pedido")
         {
+            int iCountFaturados = 0;
+            int iCountItens = 0;
+            string sNF = "";
             int index = Convert.ToInt32(e.CommandArgument);
             GridViewRow row = gridConsultaPedidos.Rows[index];
             string sCodigoPedido = row.Cells[0].Text;
             UsuarioWeb objUsuario = (UsuarioWeb)Session["ObjetoUsuario"];
             string sCodigoEmpresa = objUsuario.oTabelas.sEmpresa.Trim();
             string sCodigoVendedor = objUsuario.CodigoVendedor.Trim();
-
-            string str = string.Format("select count(cd_pedido)TOTAL from {0} m where coalesce(m.cd_pedido,'0000000') = '{1}'and m.cd_empresa = '{2}'", sTabela, sCodigoPedido, sCodigoEmpresa);
-            DataTable dtCountItens = objUsuario.oTabelas.hlpDbFuncoes.qrySeekRet(str);
-            int iCountItens = Convert.ToInt32(dtCountItens.Rows[0]["TOTAL"].ToString());
-
-            str = string.Format("select count(m.cd_docorigem)TOTAL, nr_lanc from {0} m where coalesce(m.cd_docorigem,'0000000') = '{1}' and m.cd_empresa = '{2}' group by nr_lanc", sTabela, sCodigoPedido, sCodigoEmpresa);
-            dtCountItens = objUsuario.oTabelas.hlpDbFuncoes.qrySeekRet(str);
-            int iCountFaturados = 0;
-            string sNF = "";
-            if (dtCountItens.Rows.Count > 0)
+            if (sTabela == "MOVITEM")
             {
-                iCountFaturados = Convert.ToInt32(dtCountItens.Rows[0]["TOTAL"].ToString());
-                sNF = dtCountItens.Rows[0]["nr_lanc"].ToString();
-            }
+                string str = string.Format("select count(cd_pedido)TOTAL from {0} m where coalesce(m.cd_pedido,'0000000') = '{1}'and m.cd_empresa = '{2}'", sTabela, sCodigoPedido, sCodigoEmpresa);
+                DataTable dtCountItens = objUsuario.oTabelas.hlpDbFuncoes.qrySeekRet(str);
+                iCountItens = Convert.ToInt32(dtCountItens.Rows[0]["TOTAL"].ToString());
 
-            if (iCountItens > 0)
-            {
-                if (iCountItens == iCountFaturados)
+                str = string.Format("select count(m.cd_docorigem)TOTAL, nr_lanc from {0} m where coalesce(m.cd_docorigem,'0000000') = '{1}' and m.cd_empresa = '{2}' group by nr_lanc", sTabela, sCodigoPedido, sCodigoEmpresa);
+                dtCountItens = objUsuario.oTabelas.hlpDbFuncoes.qrySeekRet(str);
+
+
+                if (dtCountItens.Rows.Count > 0)
                 {
-                    MessageHLP.ShowPopUpMsg("Pedido se encontra faturado! NF:" + sNF, this.Page);
+                    iCountFaturados = Convert.ToInt32(dtCountItens.Rows[0]["TOTAL"].ToString());
+                    sNF = dtCountItens.Rows[0]["nr_lanc"].ToString();
                 }
-                else
+
+                if (iCountItens > 0)
                 {
+                    if (iCountItens == iCountFaturados)
+                    {
+                        MessageHLP.ShowPopUpMsg("Pedido se encontra faturado! NF:" + sNF, this.Page);
+                    }
+                    else
+                    {
+                        MessageHLP.ShowPopUpMsg("Pedido ainda não foi faturado!", this.Page);
+                    }
+                }
+            }
+            else
+            {
+                string str = string.Format("select count(cd_pedido)TOTAL from MOVIPEND m where coalesce(m.cd_pedido,'0000000') = '{1}'and m.cd_empresa = '{2}'", sTabela, sCodigoPedido, sCodigoEmpresa);
+                DataTable dtCountItens = objUsuario.oTabelas.hlpDbFuncoes.qrySeekRet(str);
+                iCountItens = Convert.ToInt32(dtCountItens.Rows[0]["TOTAL"].ToString());
+
+                str = string.Format("select count(cd_pedido)TOTAL from MOVITEM m where coalesce(m.cd_pedido,'0000000') = '{1}'and m.cd_empresa = '{2}' ", sTabela, sCodigoPedido, sCodigoEmpresa);
+                dtCountItens = objUsuario.oTabelas.hlpDbFuncoes.qrySeekRet(str);
+
+
+                if (dtCountItens.Rows.Count > 0)
+                {
+                    iCountFaturados = Convert.ToInt32(dtCountItens.Rows[0]["TOTAL"].ToString());
+                }
+
+                if (iCountItens == 0)
+                {
+                    //faturado
+                    MessageHLP.ShowPopUpMsg("Pedido se encontra faturado!", this.Page);
+                }
+                else if (iCountFaturados == 0)
+                {
+                    // não faturado
                     MessageHLP.ShowPopUpMsg("Pedido ainda não foi faturado!", this.Page);
                 }
+                else if (iCountItens > 0 && iCountFaturados > 0)
+                {
+                    // parcial                    
+                    MessageHLP.ShowPopUpMsg("Pedido parcialmente faturado! ", this.Page);
+                }
+
             }
         }
         else if (e.CommandName == "Email")

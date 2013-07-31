@@ -36,25 +36,13 @@ public partial class PesquisarPedidos : System.Web.UI.Page
     {
         ParametroPesquisa objParametros =
             (ParametroPesquisa)Session["FiltroPedidos"];
-
         StringBuilder strErros = new StringBuilder();
-
         bool bFiltroValido = (objParametros != null);
         bFiltroValido = VerificaDataPedidos(bFiltroValido, objParametros, strErros);
         if (bFiltroValido)
         {
             objParametros.dtINI = txtDataInicial.Text != "" ? Convert.ToDateTime(txtDataInicial.Text) : DateTime.Today;
             objParametros.dtFIM = txtDataFinal.Text != "" ? Convert.ToDateTime(txtDataFinal.Text) : DateTime.Today;
-
-            //if (rdbEspecifico.Checked)
-            //{
-            //    bFiltroValido = txtNumeroPedido.ValorValido();
-            //    if (bFiltroValido)
-            //        objParametros.AddCriterio("(PEDIDO.CD_PEDIDO = '" + txtNumeroPedido.Text + "')");
-            //    else
-            //        strErros.Append("Número de pedido inválido!");
-            //}
-
         }
 
         if (bFiltroValido)
@@ -63,7 +51,7 @@ public partial class PesquisarPedidos : System.Web.UI.Page
             if (!sNomeCliente.Equals(String.Empty))
                 objParametros.AddCriterio("(UPPER(PEDIDO.NM_CLIFOR) LIKE '%" +
                     sNomeCliente + "%')");
-            Response.Redirect("~/ConsultaPedidos.aspx");
+            Response.Redirect(string.Format("~/ConsultaPedidos.aspx?comissao={0}", (sender == btnPesquisarComissao).ToString()));
         }
         else
         {

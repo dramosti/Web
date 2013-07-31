@@ -47,10 +47,8 @@ public partial class Informativo : System.Web.UI.Page
     {
         if (this.btnImprimir.Text == "Visualizar Pedido")
         {
-            CarregaDataTableParaImpressao();
-            Response.Redirect("~/ViewPedido.aspx");
-
-            //ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "_new", "window.open('ViewPedido.aspx');", true);
+            ExportPDF();
+            Response.Redirect("~/ViewPedido.aspx?ANEXO=" + sCodigoPedido);
         }
     }
 
@@ -197,8 +195,6 @@ public partial class Informativo : System.Web.UI.Page
             //lblInfo.Text = ex.Message + (ex.InnerException != null ? ex.InnerException.Message : "");
         }
     }
-
-
 
     protected void btnEmail0_Click(object sender, EventArgs e)
     {
