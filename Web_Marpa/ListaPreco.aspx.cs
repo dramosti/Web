@@ -117,7 +117,7 @@ public partial class ListaPreco : System.Web.UI.Page
             drRet["CD_PROD"] = dr["CD_PROD"];
             drRet["CD_BARRAS"] = dr["CD_BARRAS"];
             drRet["DS_PROD"] = dr["DS_DETALHE"];
-            drRet["VL_PRECOVE"] = Convert.ToDecimal(dr["VL_PRECOVE"]).ToString("#0,00");
+            drRet["VL_PRECOVE"] = dr["VL_PRECOVE"]; // Convert.ToDecimal(dr["VL_PRECOVE"]).ToString("#0,00");
             drRet["VL_PESOBRU"] = dr["VL_PESOBRU"];
             drRet["QT_ESTOQUE"] = dr["QT_ESTOQUE"];
             drRet["DS_CLASFIS"] = dr["DS_CLASFIS"];
