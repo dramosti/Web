@@ -41,6 +41,8 @@
         });
     </script>
     <script type="text/javascript">
+
+
         $('#<%=txtDesconto.ClientID%>').live("blur", function () {
             var valor = $('#<%=txtDesconto.ClientID%>').val();
             var valido = /^\d{1,3}(\,\d{1,2})?$/.test(valor);
@@ -428,16 +430,16 @@
                                     <asp:TemplateField HeaderText="Qtde">
                                         <ItemTemplate>
                                             <cc1:HlpWebTextBoxInteiro ID="txtQtde" runat="server" BackColor="Info" BorderColor="#E0E0E0"
-                                                Font-Names="Segoe UI" Font-Size="13px" MaxLength="4" Text='<%# Bind("QT_PROD") %>'
-                                                Width="50px"></cc1:HlpWebTextBoxInteiro>
+                                                Font-Names="Segoe UI" Font-Size="13px" MaxLength="9" Text='<%# Bind("QT_PROD") %>'
+                                                Width="65px"></cc1:HlpWebTextBoxInteiro>
                                             <%--&nbsp;<asp:TextBox ID="txtQtde" runat="server" BackColor="Info" BorderColor="#E0E0E0"
                                                                     Font-Names="Segoe UI" Font-Size="13px" MaxLength="4" Text='<%# Bind("QT_PROD") %>'
                                                                     Width="50px"></asp:TextBox>--%>
                                         </ItemTemplate>
                                         <EditItemTemplate>
                                             <cc1:HlpWebTextBoxInteiro ID="txtQtde" runat="server" BackColor="White" BorderColor="#E0E0E0"
-                                                Font-Names="Segoe UI" Font-Size="13px" MaxLength="3" Text='<%# Bind("QT_PROD") %>'
-                                                Width="50px"></cc1:HlpWebTextBoxInteiro>
+                                                Font-Names="Segoe UI" Font-Size="13px" MaxLength="9" Text='<%# Bind("QT_PROD") %>'
+                                                Width="65px" onfocus="this.select()" ></cc1:HlpWebTextBoxInteiro>
                                             <%-- <asp:TextBox ID="txtQtde" runat="server" BackColor="White" BorderColor="#E0E0E0"
                                                                     Font-Names="Segoe UI" Font-Size="13px" MaxLength="3" Text='<%# Bind("QT_PROD") %>'
                                                                     Width="50px"></asp:TextBox>--%>
@@ -676,7 +678,7 @@
                                 AlternatingRowStyle-CssClass="alt" CaptionAlign="Left" GridLines="None" ShowFooter="True"
                                 Width="100px" PageSize="15" OnRowDataBound="GridDuplicatas_RowDataBound" OnPageIndexChanging="GridDuplicatas_PageIndexChanging">
                                 <AlternatingRowStyle CssClass="alt" />
-                                <Columns>
+                                <Columns>                                    
                                     <asp:BoundField DataField="DT_VENCI" DataFormatString="{0:dd/MM/yyyy}" 
                                         HeaderText="Vencimento">
                                     <ItemStyle HorizontalAlign="Left" Width="100px" Wrap="False" />
@@ -686,6 +688,9 @@
                                     <ItemStyle HorizontalAlign="Right" Width="150px" Wrap="False" />
                                     <FooterStyle Font-Names="Segoe UI" Font-Size="13px" />
                                     <HeaderStyle HorizontalAlign="Left" />
+                                    </asp:BoundField>
+                                    <asp:BoundField DataField="CD_DUPLI" HeaderText="Duplicata">
+                                    <ItemStyle Width="100px" />
                                     </asp:BoundField>
                                 </Columns>
                                 <PagerStyle CssClass="pgr" />

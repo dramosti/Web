@@ -24,6 +24,8 @@ public partial class Pedido : System.Web.UI.Page
     {
         if (!IsPostBack)
         {
+            txtCodCli.Text = "";
+            txtCliente.Text = "";
             string sUser = UsuarioWeb.GetNomeUsuarioConectado(Session);
             if (sUser == "")
             {
@@ -35,7 +37,7 @@ public partial class Pedido : System.Web.UI.Page
             CarregaDadosCliente(out CodigoCliente, out sCdClifor);
             CarregaDocs(CodigoCliente, sCdClifor);
 
-            Session["lsCodigoInseridos"] = new Dictionary<string, int>();//OS 28143
+            Session["lsCodigoInseridos"] = new Dictionary<string, double>();//OS 28143
         }
     }
 
@@ -178,6 +180,7 @@ public partial class Pedido : System.Web.UI.Page
         {
             double dqtde = 1;
             TextBox txtQtde = (TextBox)Linha.Cells[5].FindControl("txtQtde");
+            txtQtde.Text = txtQtde.Text.Replace('.', ',');
             if (!bBuscaQtdSession)
             {
                 if (reg.IsMatch(String.Format("{0:N2}", txtQtde.Text)))
@@ -192,7 +195,7 @@ public partial class Pedido : System.Web.UI.Page
             else
             {
                 string sCD_PROD = Linha.Cells[1].Text;
-                txtQtde.Text = (Session["lsCodigoInseridos"] as Dictionary<string, int>).FirstOrDefault(c => c.Key == sCD_PROD).Value.ToString();//OS 28143
+                txtQtde.Text = (Session["lsCodigoInseridos"] as Dictionary<string, double>).FirstOrDefault(c => c.Key == sCD_PROD).Value.ToString();//OS 28143
                 dqtde = Convert.ToDouble(String.Format("{0:N2}", txtQtde.Text));
             }
             double dVL_UNIPROD = 0;
@@ -231,6 +234,7 @@ public partial class Pedido : System.Web.UI.Page
     protected void GridViewNovo_RowEditing(object sender, GridViewEditEventArgs e)
     {
         TextBox txtQtde = (TextBox)GridViewNovo.Rows[e.NewEditIndex].Cells[2].FindControl("txtQtde");
+        txtQtde.Text = txtQtde.Text.Replace('.', ',');
         double dqtde = Convert.ToDouble(String.Format("{0:N2}", txtQtde.Text));
         double Valor = Convert.ToDouble(GridViewNovo.Rows[e.NewEditIndex].Cells[6].Text);
         double Total = dqtde * Valor;
@@ -255,7 +259,7 @@ public partial class Pedido : System.Web.UI.Page
             int index = Convert.ToInt32(e.CommandArgument);
             GridViewRow row = GridViewNovo.Rows[index];
             ExcluirItem(Server.HtmlDecode(row.Cells[1].Text), Server.HtmlDecode(row.Cells[3].Text));
-            (Session["lsCodigoInseridos"] as Dictionary<string, int>).Remove(Server.HtmlDecode(row.Cells[1].Text));//OS 28143
+            (Session["lsCodigoInseridos"] as Dictionary<string, double>).Remove(Server.HtmlDecode(row.Cells[1].Text));//OS 28143
             ColoriItensJaSelecionadosNaPesquisa();
             RecalculaGridNovo(true);
         }
@@ -272,9 +276,9 @@ public partial class Pedido : System.Web.UI.Page
             IncluirNaLista(Server.HtmlDecode(row.Cells[1].Text), Server.HtmlDecode(row.Cells[3].Text), Server.HtmlDecode(row.Cells[1].Text), Server.HtmlDecode(lblValor.Text));
 
 
-            if (!(((Session["lsCodigoInseridos"] as Dictionary<string, int>).Where(c => c.Key == Server.HtmlDecode(row.Cells[1].Text)).Count()) > 0))
+            if (!(((Session["lsCodigoInseridos"] as Dictionary<string, double>).Where(c => c.Key == Server.HtmlDecode(row.Cells[1].Text)).Count()) > 0))
             {
-                (Session["lsCodigoInseridos"] as Dictionary<string, int>).Add(Server.HtmlDecode(row.Cells[1].Text), 1);
+                (Session["lsCodigoInseridos"] as Dictionary<string, double>).Add(Server.HtmlDecode(row.Cells[1].Text), 1);
             }
 
             ColoriItensJaSelecionadosNaPesquisa();
@@ -329,12 +333,13 @@ public partial class Pedido : System.Web.UI.Page
     private void CarregaSessionDadosInseridos()
     {
         //OS 28143 - INICIO
-        Dictionary<string, int> dicDadosInseridos = new Dictionary<string, int>();
+        Dictionary<string, double> dicDadosInseridos = new Dictionary<string, double>();
         foreach (GridViewRow r in GridViewNovo.Rows)
         {
             TextBox txtQtde = (TextBox)r.Cells[5].FindControl("txtQtde");
+            txtQtde.Text = txtQtde.Text.Replace('.', ',');
             string svalor = txtQtde.Text;
-            dicDadosInseridos.Add(r.Cells[1].Text, Convert.ToInt32(txtQtde.Text));
+            dicDadosInseridos.Add(r.Cells[1].Text, Convert.ToDouble(txtQtde.Text));
         }
         Session["lsCodigoInseridos"] = dicDadosInseridos;
         //OS 28143 - FIM
@@ -355,6 +360,7 @@ public partial class Pedido : System.Web.UI.Page
         if (e.Row.RowType == DataControlRowType.DataRow)
         {
             TextBox txtQtde = (TextBox)e.Row.Cells[2].FindControl("txtQtde");
+            txtQtde.Text = txtQtde.Text.Replace('.', ',');
             double dqtde = Convert.ToDouble(String.Format("{0:N2}", txtQtde.Text));
             double ValorUnitario = Convert.ToDouble(e.Row.Cells[6].Text);
             double ValorTotal = dqtde * ValorUnitario;
@@ -378,7 +384,7 @@ public partial class Pedido : System.Web.UI.Page
     {
         foreach (GridViewRow row in GridViewDb.Rows)
         {
-            if (((Session["lsCodigoInseridos"] as Dictionary<string, int>).Where(c => c.Key == row.Cells[1].Text.Trim())).Count() > 0)//OS 28143
+            if (((Session["lsCodigoInseridos"] as Dictionary<string, double>).Where(c => c.Key == row.Cells[1].Text.Trim())).Count() > 0)//OS 28143
             {
                 row.BackColor = System.Drawing.ColorTranslator.FromHtml("#FFB3B3");//Color.Red;
             }
@@ -387,7 +393,7 @@ public partial class Pedido : System.Web.UI.Page
                 row.BackColor = Color.White;
             }
         }
-        GridViewNovo.Caption = "<b>" + (Session["lsCodigoInseridos"] as Dictionary<string, int>).Count.ToString() + " Produto(s) inserido(s)</b>";//OS 28143
+        GridViewNovo.Caption = "<b>" + (Session["lsCodigoInseridos"] as Dictionary<string, double>).Count.ToString() + " Produto(s) inserido(s)</b>";//OS 28143
     }
     protected void btnVoltar_Click(object sender, EventArgs e)
     {
@@ -417,409 +423,417 @@ public partial class Pedido : System.Web.UI.Page
     }
     protected void btnGravar_Click(object sender, EventArgs e)
     {
-        //if (Session["CD_ALTER"] != null)
-        if (txtCodCli.Text != "")
+        try
         {
-            UsuarioWeb objUsuario = (UsuarioWeb)Session["ObjetoUsuario"];
-            string sCdClifor = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("CLIFOR", "CD_CLIFOR", "CD_ALTER = '" + txtCodCli.Text + "'");
-
-            string strConn = ConfigurationManager.ConnectionStrings["ConnectionStringFB"].ConnectionString.ToString();
-
-            FbConnection Conn = new FbConnection(strConn);
-
-            FbCommand cmdSelectPed = new FbCommand();
-            cmdSelectPed.CommandText = "SP_INCLUI_PEDIDO_WEB";
-            cmdSelectPed.CommandType = CommandType.StoredProcedure;
-            cmdSelectPed.Connection = Conn;
-
-            Conn.Open();
-            if ((!objUsuario.oTabelas.hlpDbFuncoes.VerificaExistenciaGenerator("GEN_PEDIDO_WEB")))
+            //if (Session["CD_ALTER"] != null)
+            if (txtCodCli.Text != "")
             {
-                objUsuario.oTabelas.hlpDbFuncoes.CreateGenerator("GEN_PEDIDO_WEB", 3000000);
+                UsuarioWeb objUsuario = (UsuarioWeb)Session["ObjetoUsuario"];
+                string sCdClifor = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("CLIFOR", "CD_CLIFOR", "CD_ALTER = '" + txtCodCli.Text + "'");
 
-            }
+                string strConn = ConfigurationManager.ConnectionStrings["ConnectionStringFB"].ConnectionString.ToString();
 
-            string sTipoDocumento = cbxDS_TPDOCWEB.SelectedValue.ToString(); // WebConfigurationManager.AppSettings["CdTipoDocPedidoDefault"];
-            string Doc = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("TPDOC", "TP_DOC", "CD_TIPODOC='" + sTipoDocumento + "'");
-            string sGenerator = "PEDIDO" + objUsuario.oTabelas.sEmpresa + Doc;
-            string sCD_RELAPED = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("TPDOC", "coalesce(CD_RELAPED,'1')", "CD_TIPODOC='" + sTipoDocumento + "'");
-            if (sCD_RELAPED == "1")
-            {
-                sGenerator = "PEDIDO001NF";
-            }
+                FbConnection Conn = new FbConnection(strConn);
 
-            if (!objUsuario.oTabelas.hlpDbFuncoes.VerificaExistenciaGenerator(sGenerator))
-            {
-                int iIni = 0;
-                switch (Doc)
+                FbCommand cmdSelectPed = new FbCommand();
+                cmdSelectPed.CommandText = "SP_INCLUI_PEDIDO_WEB";
+                cmdSelectPed.CommandType = CommandType.StoredProcedure;
+                cmdSelectPed.Connection = Conn;
+
+                Conn.Open();
+                if ((!objUsuario.oTabelas.hlpDbFuncoes.VerificaExistenciaGenerator("GEN_PEDIDO_WEB")))
                 {
-                    case "PE": iIni = 0;
-                        break;
-                    case "NE": iIni = 1000000;
-                        break;
-                    case "NS": iIni = 1000000;
-                        break;
-                    case "CF": iIni = 2000000;
-                        break;
-                    case "PC": iIni = 9000000;
-                        break;
-                    case "OR": iIni = 8000000;
-                        break;
+                    objUsuario.oTabelas.hlpDbFuncoes.CreateGenerator("GEN_PEDIDO_WEB", 3000000);
 
-                    default:
-                        throw new Exception("O generator " + sGenerator + " não existe");
                 }
-                objUsuario.oTabelas.hlpDbFuncoes.CreateGenerator(sGenerator, iIni);
 
-            }
-            string sCD_PEDIDO = objUsuario.oTabelas.hlpDbFuncoes.RetornaProximoValorGenerator(sGenerator).PadLeft(7, '0');
-
-
-
-
-
-
-
-
-
-            string sUFclifor = Session["CD_UFNOR"].ToString();
-            string sUFempresa = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("EMPRESA", "cd_ufnor", string.Format("cd_empresa = '{0}'", objUsuario.oTabelas.sEmpresa.Trim()));
-            string sCD_CFOP = "";
-            string sDS_CFOP = "";
-
-            if (sUFclifor.Equals("EX"))
-            {
-                sCD_CFOP = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("TPDOC", "cd_cfopext", string.Format("cd_tipodoc = '{0}'", sTipoDocumento));
-            }
-            else if (sUFclifor == sUFempresa)
-            {
-                sCD_CFOP = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("TPDOC", "cd_cfopest", string.Format("cd_tipodoc = '{0}'", sTipoDocumento));
-            }
-            else
-            {
-                sCD_CFOP = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("TPDOC", "cd_cfopfes", string.Format("cd_tipodoc = '{0}'", sTipoDocumento));
-            }
-
-            if (sCD_CFOP != "")
-            {
-                sDS_CFOP = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("cfops", "ds_cfopabv", string.Format("cd_cfops = '{0}'", sCD_CFOP));
-            }
-
-            cmdSelectPed.Parameters.Add("@SCD_EMPRESA", FbDbType.VarChar, 3).Value = objUsuario.oTabelas.sEmpresa.ToString();
-            cmdSelectPed.Parameters.Add("@SCD_VEND1", FbDbType.VarChar, 7).Value = objUsuario.CodigoVendedor.ToString();
-            cmdSelectPed.Parameters.Add("@SCD_PEDIDO", FbDbType.VarChar, 7).Value = sCD_PEDIDO;
-
-            string strRetPedido = cmdSelectPed.ExecuteScalar().ToString();
-
-            Conn.Close();
-
-            if (strRetPedido != null)
-            {
-
-                StringBuilder strUpDatePed = new StringBuilder();
-
-                string sVL_TOTALPED = GridViewNovo.FooterRow.Cells[8].Text.Replace(".", "").Replace(",", ".");
-                string sST_FRETE = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("EMPRESA", "ST_RESPONSAVEL_FRETE", "CD_EMPRESA = '" + objUsuario.oTabelas.sEmpresa.Trim() + "'");
-
-                strUpDatePed.Append(" UPDATE PEDIDO SET CD_PEDIDO = '" + strRetPedido.Trim());
-                strUpDatePed.Append("', ST_FRETE = '" + sST_FRETE);
-                strUpDatePed.Append("', VL_TOTALPED = '" + sVL_TOTALPED);
-                strUpDatePed.Append("', st_desccond = '" + "N");
-                strUpDatePed.Append("', ST_WEB = '" + "S");
-
-                strUpDatePed.Append("', VL_DESCONTO = '" + "-" + txtTotalDesconto.Text.Replace(".", "").Replace(",", "."));
-                strUpDatePed.Append("', VL_PERDESC = '" + "-" + txtDesconto.Text.Replace(".", "").Replace(",", "."));
-
-                strUpDatePed.Append("', CD_CLIENTE = '" + sCdClifor);
-                strUpDatePed.Append("', NM_GUERRA = '" + ((CliforDAO)(Session["ObjetoClienteDetalhado"])).RegistroAtual["NM_GUERRA"].ToString());
-                strUpDatePed.Append("', ST_DESC = '" + Session["ST_DESC"].ToString());
-                strUpDatePed.Append("', NM_CLIFOR = '" + ((CliforDAO)(Session["ObjetoClienteDetalhado"])).RegistroAtual["NM_CLIFOR"].ToString());
-                strUpDatePed.Append("', DS_ENDNOR = '" + ((CliforDAO)(Session["ObjetoClienteDetalhado"])).RegistroAtual["DS_ENDNOR"].ToString());
-                strUpDatePed.Append("', NR_ENDNOR = '" + ((CliforDAO)(Session["ObjetoClienteDetalhado"])).RegistroAtual["NR_ENDNOR"].ToString());
-                strUpDatePed.Append("', NM_BAIRRONOR = '" + ((CliforDAO)(Session["ObjetoClienteDetalhado"])).RegistroAtual["NM_BAIRRONOR"].ToString());
-                strUpDatePed.Append("', NM_CIDNOR = '" + ((CliforDAO)(Session["ObjetoClienteDetalhado"])).RegistroAtual["NM_CIDNOR"].ToString());
-                strUpDatePed.Append("', CD_UFNOR = '" + ((CliforDAO)(Session["ObjetoClienteDetalhado"])).RegistroAtual["CD_UFNOR"].ToString());
-                strUpDatePed.Append("', ST_PESSOAJ = '" + ((CliforDAO)(Session["ObjetoClienteDetalhado"])).RegistroAtual["ST_PESSOAJ"].ToString());
-
-                if (((CliforDAO)(Session["ObjetoClienteDetalhado"])).RegistroAtual["ST_PESSOAJ"].ToString() == "S")
+                string sTipoDocumento = cbxDS_TPDOCWEB.SelectedValue.ToString(); // WebConfigurationManager.AppSettings["CdTipoDocPedidoDefault"];
+                string Doc = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("TPDOC", "TP_DOC", "CD_TIPODOC='" + sTipoDocumento + "'");
+                string sGenerator = "PEDIDO" + objUsuario.oTabelas.sEmpresa + Doc;
+                string sCD_RELAPED = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("TPDOC", "coalesce(CD_RELAPED,'1')", "CD_TIPODOC='" + sTipoDocumento + "'");
+                if (sCD_RELAPED == "1")
                 {
-                    strUpDatePed.Append("', CD_CGCCPF = '" + ((CliforDAO)(Session["ObjetoClienteDetalhado"])).RegistroAtual["CD_CGC"].ToString());
-                    strUpDatePed.Append("', CD_INSEST_RG = '" + ((CliforDAO)(Session["ObjetoClienteDetalhado"])).RegistroAtual["cd_insest"].ToString());
+                    sGenerator = "PEDIDO001NF";
+                }
+
+                if (!objUsuario.oTabelas.hlpDbFuncoes.VerificaExistenciaGenerator(sGenerator))
+                {
+                    int iIni = 0;
+                    switch (Doc)
+                    {
+                        case "PE": iIni = 0;
+                            break;
+                        case "NE": iIni = 1000000;
+                            break;
+                        case "NS": iIni = 1000000;
+                            break;
+                        case "CF": iIni = 2000000;
+                            break;
+                        case "PC": iIni = 9000000;
+                            break;
+                        case "OR": iIni = 8000000;
+                            break;
+
+                        default:
+                            throw new Exception("O generator " + sGenerator + " não existe");
+                    }
+                    objUsuario.oTabelas.hlpDbFuncoes.CreateGenerator(sGenerator, iIni);
+
+                }
+                string sCD_PEDIDO = objUsuario.oTabelas.hlpDbFuncoes.RetornaProximoValorGenerator(sGenerator).PadLeft(7, '0');
+
+
+
+
+
+
+
+
+
+                string sUFclifor = Session["CD_UFNOR"].ToString();
+                string sUFempresa = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("EMPRESA", "cd_ufnor", string.Format("cd_empresa = '{0}'", objUsuario.oTabelas.sEmpresa.Trim()));
+                string sCD_CFOP = "";
+                string sDS_CFOP = "";
+
+                if (sUFclifor.Equals("EX"))
+                {
+                    sCD_CFOP = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("TPDOC", "cd_cfopext", string.Format("cd_tipodoc = '{0}'", sTipoDocumento));
+                }
+                else if (sUFclifor == sUFempresa)
+                {
+                    sCD_CFOP = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("TPDOC", "cd_cfopest", string.Format("cd_tipodoc = '{0}'", sTipoDocumento));
                 }
                 else
                 {
-                    strUpDatePed.Append("', CD_CGCCPF = '" + ((CliforDAO)(Session["ObjetoClienteDetalhado"])).RegistroAtual["CD_CPF"].ToString());
-                    strUpDatePed.Append("', CD_INSEST_RG = '" + ((CliforDAO)(Session["ObjetoClienteDetalhado"])).RegistroAtual["CD_RG"].ToString());
+                    sCD_CFOP = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("TPDOC", "cd_cfopfes", string.Format("cd_tipodoc = '{0}'", sTipoDocumento));
                 }
-                strUpDatePed.Append("', CD_CEPNOR = '" + ((CliforDAO)(Session["ObjetoClienteDetalhado"])).RegistroAtual["CD_CEPNOR"].ToString());
-                strUpDatePed.Append("', CD_FONENOR = '" + ((CliforDAO)(Session["ObjetoClienteDetalhado"])).RegistroAtual["CD_FONENOR"].ToString());
-                strUpDatePed.Append("', CD_FAXNOR = '" + ((CliforDAO)(Session["ObjetoClienteDetalhado"])).RegistroAtual["CD_FAXNOR"].ToString());
 
-
-                strUpDatePed.Append("', DT_PEDIDO = '" + txtDataPedido.Text.Replace("/", "."));
                 if (sCD_CFOP != "")
                 {
-                    strUpDatePed.Append("', cd_cfops = '" + sCD_CFOP);
-                    strUpDatePed.Append("', ds_cfop = '" + sDS_CFOP);
+                    sDS_CFOP = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("cfops", "ds_cfopabv", string.Format("cd_cfops = '{0}'", sCD_CFOP));
                 }
-                strUpDatePed.Append("', CD_TIPODOC = '" + sTipoDocumento);
-                strUpDatePed.Append("', CD_PRAZO = '" + cbxCD_PRAZO.SelectedItem.Value.Trim());
-                strUpDatePed.Append("', CD_TRANS = '" + objUsuario.oTabelas.TRANSP.ToString().Trim());
-                strUpDatePed.Append("', DS_OBS_WEB = '" + txtObs.Text.ToUpper().Trim());
-                strUpDatePed.Append("', DT_ABER = '" + txtDataPedido.Text.Replace("/", "."));
-                strUpDatePed.Append("', CD_USUINC ='" + objUsuario.oTabelas.CdUsuarioAtual);
-                strUpDatePed.Append("', CD_VEND1 = '" + objUsuario.oTabelas.CdVendedorAtual + "'");
 
+                cmdSelectPed.Parameters.Add("@SCD_EMPRESA", FbDbType.VarChar, 3).Value = objUsuario.oTabelas.sEmpresa.ToString();
+                cmdSelectPed.Parameters.Add("@SCD_VEND1", FbDbType.VarChar, 7).Value = objUsuario.CodigoVendedor.ToString();
+                cmdSelectPed.Parameters.Add("@SCD_PEDIDO", FbDbType.VarChar, 7).Value = sCD_PEDIDO;
 
-                strUpDatePed.Append(" WHERE (CD_PEDIDO = '" + strRetPedido.Trim() + "') AND (CD_EMPRESA = '" + objUsuario.oTabelas.sEmpresa.Trim() + "')");
-
-                FbCommand cmdUpDatePedido = new FbCommand(strConn);
-                cmdUpDatePedido.CommandText = strUpDatePed.ToString();
-                cmdUpDatePedido.CommandType = CommandType.Text;
-                cmdUpDatePedido.Connection = Conn;
-
-                Conn.Open();
-
-                int Ret = cmdUpDatePedido.ExecuteNonQuery();
+                string strRetPedido = cmdSelectPed.ExecuteScalar().ToString();
 
                 Conn.Close();
 
-                if (Ret > 0)
+                if (strRetPedido != null)
                 {
-                    Ret = 0;
-                    int iCountSeq = 1;
-                    foreach (GridViewRow row in GridViewNovo.Rows)
+
+                    StringBuilder strUpDatePed = new StringBuilder();
+
+                    string sVL_TOTALPED = GridViewNovo.FooterRow.Cells[8].Text.Replace(".", "").Replace(",", ".");
+                    string sST_FRETE = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("EMPRESA", "ST_RESPONSAVEL_FRETE", "CD_EMPRESA = '" + objUsuario.oTabelas.sEmpresa.Trim() + "'");
+
+                    strUpDatePed.Append(" UPDATE PEDIDO SET CD_PEDIDO = '" + strRetPedido.Trim());
+                    strUpDatePed.Append("', ST_FRETE = '" + sST_FRETE);
+                    strUpDatePed.Append("', VL_TOTALPED = '" + sVL_TOTALPED);
+                    strUpDatePed.Append("', st_desccond = '" + "N");
+                    strUpDatePed.Append("', ST_WEB = '" + "S");
+
+                    strUpDatePed.Append("', VL_DESCONTO = '" + "-" + txtTotalDesconto.Text.Replace(".", "").Replace(",", "."));
+                    strUpDatePed.Append("', VL_PERDESC = '" + "-" + txtDesconto.Text.Replace(".", "").Replace(",", "."));
+
+                    strUpDatePed.Append("', CD_CLIENTE = '" + sCdClifor);
+                    strUpDatePed.Append("', NM_GUERRA = '" + ((CliforDAO)(Session["ObjetoClienteDetalhado"])).RegistroAtual["NM_GUERRA"].ToString());
+                    strUpDatePed.Append("', ST_DESC = '" + Session["ST_DESC"].ToString());
+                    strUpDatePed.Append("', NM_CLIFOR = '" + ((CliforDAO)(Session["ObjetoClienteDetalhado"])).RegistroAtual["NM_CLIFOR"].ToString());
+                    strUpDatePed.Append("', DS_ENDNOR = '" + ((CliforDAO)(Session["ObjetoClienteDetalhado"])).RegistroAtual["DS_ENDNOR"].ToString());
+                    strUpDatePed.Append("', NR_ENDNOR = '" + ((CliforDAO)(Session["ObjetoClienteDetalhado"])).RegistroAtual["NR_ENDNOR"].ToString());
+                    strUpDatePed.Append("', NM_BAIRRONOR = '" + ((CliforDAO)(Session["ObjetoClienteDetalhado"])).RegistroAtual["NM_BAIRRONOR"].ToString());
+                    strUpDatePed.Append("', NM_CIDNOR = '" + ((CliforDAO)(Session["ObjetoClienteDetalhado"])).RegistroAtual["NM_CIDNOR"].ToString());
+                    strUpDatePed.Append("', CD_UFNOR = '" + ((CliforDAO)(Session["ObjetoClienteDetalhado"])).RegistroAtual["CD_UFNOR"].ToString());
+                    strUpDatePed.Append("', ST_PESSOAJ = '" + ((CliforDAO)(Session["ObjetoClienteDetalhado"])).RegistroAtual["ST_PESSOAJ"].ToString());
+
+                    if (((CliforDAO)(Session["ObjetoClienteDetalhado"])).RegistroAtual["ST_PESSOAJ"].ToString() == "S")
                     {
-                        string sTableItens = (WebConfigurationManager.AppSettings["TableItens"]).ToUpper();
-
-                        FbCommand cmdSelectMoviPend = new FbCommand();
-                        cmdSelectMoviPend.CommandText = sTableItens.Equals("MOVITEM") ? "SP_INCLUI_MOVITEM_WEB" : "sp_inclui_movipend_web";
-                        cmdSelectMoviPend.CommandType = CommandType.StoredProcedure;
-                        cmdSelectMoviPend.Connection = Conn;
-                        Conn.Open();
-                        cmdSelectMoviPend.Parameters.Add("@SCD_EMPRESA", FbDbType.VarChar, 3).Value = objUsuario.oTabelas.sEmpresa.ToString();
-                        cmdSelectMoviPend.Parameters.Add("@SCD_PEDIDO", FbDbType.VarChar, 7).Value = strRetPedido.Trim();
-                        string strRetMoviPend = cmdSelectMoviPend.ExecuteScalar().ToString();
-                        Conn.Close();
-
-
-                        //ITENS DA GRID INSERIDOS.
-                        string sCD_PROD = row.Cells[1].Text.Trim();
-                        string sCD_ALTER = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("PRODUTO", "CD_ALTER", "CD_EMPRESA = '" + objUsuario.oTabelas.sEmpresa.Trim() + "' AND CD_PROD ='" + sCD_PROD + "'");
-                        TextBox txtQtde = (TextBox)row.Cells[2].FindControl("txtQtde");
-                        string sQTDE = txtQtde.Text.Replace(".", "").Replace(",", ".");
-                        string sDESC = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("PRODUTO", "DS_PROD", "CD_EMPRESA = '" + objUsuario.oTabelas.sEmpresa.Trim() + "' AND CD_PROD ='" + sCD_PROD + "'");
-                        string dVL_DESCONTO = row.Cells[4].Text.Trim().Replace(".", "").Replace(",", ".");
-                        string sCD_LISTA = row.Cells[5].Text.Trim();
-                        string dVL_PROD = row.Cells[6].Text.Trim().Replace(".", "").Replace(",", ".");
-                        string dVL_UNIPROD_SEM_DESC = row.Cells[7].Text.Trim().Replace(".", "").Replace(",", ".");
-                        string dSUBTOTAL = row.Cells[8].Text.Trim().Replace(".", "").Replace(",", ".");
-
-                        if (strRetMoviPend != null)
-                        {
-                            strUpDatePed.Length = 0;
-                            string CF = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("PRODUTO", "CD_CF", "CD_PROD = '" + sCD_PROD + "'");
-                            string UNID = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("PRODUTO", "CD_TPUNID", "CD_PROD = '" + sCD_PROD + "'");
-                            string CODICMS = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("PRODUTO", "CD_ALIICMS", "CD_PROD = '" + sCD_PROD + "'");
-                            string SITTRIB = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("PRODUTO", "CD_SITTRIB", "CD_PROD = '" + sCD_PROD + "'");
-                            string scdOper = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("tpdoc", "substring(tpdoc.cd_operval from 1 for 3) cd_operval", "cd_tipodoc = '" + sTipoDocumento + "'");
-                            if (objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("TPDOC", "coalesce(tp_doc,'')", "cd_tipodoc = '" + sTipoDocumento + "'").Equals("PE"))
-                            {
-                                string sOPERVAL = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("TPDOC", "coalesce(cd_operval,'')", "cd_tipodoc = '" + sTipoDocumento + "'");
-
-
-                                string sOperProd = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("produto", "coalesce(cd_oper,'')", "cd_prod = '" + sCD_PROD + "'");
-                                if (sOperProd != "")
-                                {
-                                    if (sOPERVAL.Contains(sOperProd))
-                                    {
-                                        scdOper = sOperProd;
-                                    }
-                                }
-                            }
-
-
-
-                            string sSittribipi = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("PRODUTO", "cd_sittribipi", "CD_PROD = '" + sCD_PROD + "' and CD_EMPRESA = '" + objUsuario.oTabelas.sEmpresa + "'");
-                            string sSittribpis = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("clas_fis", "cd_sittribpis", "cd_cf = '" + CF + "' and CD_EMPRESA = '" + objUsuario.oTabelas.sEmpresa + "'");
-                            string sSittribcofins = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("clas_fis", "cd_sittribcof", "cd_cf = '" + CF + "' and CD_EMPRESA = '" + objUsuario.oTabelas.sEmpresa + "'");
-                            string sTipoPrazo = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("PRAZOS", "DS_FORMULA", "CD_PRAZO = '" + cbxCD_PRAZO.SelectedItem.Value.Trim() + "'");
-
-
-                            if (sSittribipi == "")
-                            {
-                                sSittribipi = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("OPEREVE", "cd_sittribipi", "CD_OPER = '" + scdOper + "'");
-                            }
-                            if (sSittribpis == "")
-                            {
-                                sSittribpis = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("OPEREVE", "cd_sittribpis", "CD_OPER = '" + scdOper + "'");
-                            }
-                            if (sSittribcofins == "")
-                            {
-                                sSittribcofins = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("OPEREVE", "cd_sittribcof", "CD_OPER = '" + scdOper + "'");
-                            }
-
-                            #region Busca Valor % de comissão
-
-                            string dVL_PERCOMI1 = "0";
-                            string dVL_PERCOMI2 = "0";
-                            //Verifica se o TPDOC se encontra no cadastro de empresa, caso sim, zera comissão.
-                            string sCD_TPDOCBONI = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("EMPRESA", "cd_tpdocboni", "CD_EMPRESA = '" + objUsuario.oTabelas.sEmpresa + "'");
-                            if (!sCD_TPDOCBONI.Contains(cbxDS_TPDOCWEB.SelectedValue.ToString()))
-                            {
-                                string sST_COMREP = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("CLIFOR", "COALESCE(ST_COMREP,'C')", "CD_CLIFOR = '" + sCdClifor + "'");
-                                switch (sST_COMREP)
-                                {
-                                    case "C": //busca comissão do cliente
-                                        {
-                                            dVL_PERCOMI1 = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("CLIFOR", "COALESCE(vl_percomi1,'0')", "CD_CLIFOR = '" + sCdClifor + "'");
-                                            dVL_PERCOMI2 = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("CLIFOR", "COALESCE(vl_percomi2,'0')", "CD_CLIFOR = '" + sCdClifor + "'");
-                                        } break;
-                                    case "P":
-                                        {
-                                            dVL_PERCOMI1 = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("PRODUTO", "COALESCE(vl_percomi1,'0')", "CD_PROD = '" + sCD_PROD + "'");
-                                            dVL_PERCOMI2 = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("PRODUTO", "COALESCE(vl_percomi2,'0')", "CD_PROD = '" + sCD_PROD + "'");
-                                        } break;
-                                    case "L":
-                                        {
-                                            FbCommand cmdSP_PRECOS = new FbCommand();
-                                            cmdSP_PRECOS.CommandText = "SP_PRECOS";
-                                            cmdSP_PRECOS.CommandType = CommandType.StoredProcedure;
-                                            cmdSP_PRECOS.Connection = Conn;
-                                            Conn.Open();
-
-                                            //CD_EMPRESAINP VARCHAR(3),
-                                            //CD_LISTAINI VARCHAR(5),
-                                            //CD_LISTAFIM VARCHAR(5),
-                                            //CD_PRODINI VARCHAR(7),
-                                            //CD_PRODFIM VARCHAR(7))                                            
-                                            cmdSP_PRECOS.Parameters.Add("@CD_EMPRESAINP", FbDbType.VarChar, 3).Value = objUsuario.oTabelas.sEmpresa;
-                                            cmdSP_PRECOS.Parameters.Add("@CD_LISTAINI", FbDbType.VarChar, 5).Value = sCD_LISTA;
-                                            cmdSP_PRECOS.Parameters.Add("@CD_LISTAFIM", FbDbType.VarChar, 5).Value = sCD_LISTA;
-                                            cmdSP_PRECOS.Parameters.Add("@CD_PRODINI", FbDbType.VarChar, 7).Value = sCD_PROD;
-                                            cmdSP_PRECOS.Parameters.Add("@CD_PRODFIM", FbDbType.VarChar, 7).Value = sCD_PROD;
-
-                                            FbDataReader dr = cmdSP_PRECOS.ExecuteReader();
-                                            dr.Read();
-                                            dVL_PERCOMI1 = dr["VL_COMIVEN"].ToString();
-                                            dVL_PERCOMI2 = dVL_PERCOMI1.Replace(".", "").Replace(",", ".");
-                                            Conn.Close();
-
-                                        } break;
-                                    case "Q":
-                                        {
-                                            string sFORMULA = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("PRAZOS", "COALESCE(DS_FORMULA,'')", "CD_PRAZO = '" + cbxCD_PRAZO.SelectedValue.ToString() + "'");
-                                            bool bAVISTA = false;
-                                            if (sFORMULA.Length > 0)
-                                            {
-                                                bAVISTA = sFORMULA[0].Equals("0") ? true : false;
-                                            }
-                                            if (bAVISTA)
-                                            {
-                                                if (Convert.ToInt32(objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("vendcomi", "count(*)", "CD_PROD = '" + sCD_PROD + "' and CD_VEND = '" + objUsuario.oTabelas.CdVendedorAtual + "'")) > 0)
-                                                {
-                                                    dVL_PERCOMI1 = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("vendcomi", "coalesce(VL_PERCOAV,0)", "CD_PROD = '" + sCD_PROD + "' and CD_VEND = '" + objUsuario.oTabelas.CdVendedorAtual + "'");
-                                                    dVL_PERCOMI2 = dVL_PERCOMI1;
-                                                }
-                                            }
-                                            else
-                                            {
-                                                if (Convert.ToInt32(objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("vendcomi", "count(*)", "CD_PROD = '" + sCD_PROD + "' and CD_VEND = '" + objUsuario.oTabelas.CdVendedorAtual + "'")) > 0)
-                                                {
-                                                    dVL_PERCOMI1 = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("vendcomi", "coalesce(VL_PERCOAP,0)", "CD_PROD = '" + sCD_PROD + "' and CD_VEND = '" + objUsuario.oTabelas.CdVendedorAtual + "'");
-                                                    dVL_PERCOMI2 = dVL_PERCOMI1;
-                                                }
-                                            }
-
-                                        } break;
-                                }
-                            }
-                            #endregion
-
-
-                            #region Calcula Desconto Item
-
-                            //decimal dVL_PERDESC = Convert.ToDecimal(objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("CLIFOR", "COALESCE(VL_PERDESC,0) VL_PERDESC", "CD_CLIFOR = '" + Session["CD_CLIFOR"].ToString() + "'"));
-                            decimal dCOEFDESC = 100 - Convert.ToDecimal(txtDesconto.Text.Replace('.', ','));
-                            dCOEFDESC = dCOEFDESC / 100;
-
-                            // Geral ->    UNITARIO,U; TOTAL,T
-
-                            #endregion
-
-
-
-                            string sUpdateItens = "Update {0} set {1} where {2} ;";
-
-                            List<update> obljup = new List<update>();
-                            obljup.Add(new update { sCampo = "CD_VEND1", sValor = objUsuario.oTabelas.CdVendedorAtual });
-                            obljup.Add(new update { sCampo = "VL_PERENTR", sValor = "100.00" });
-                            obljup.Add(new update { sCampo = "NR_LANC", sValor = strRetMoviPend.Trim() });
-                            obljup.Add(new update { sCampo = "CD_PEDIDO", sValor = strRetPedido.Trim() });
-                            obljup.Add(new update { sCampo = "DS_PROD", sValor = sDESC });
-                            obljup.Add(new update { sCampo = "CD_LISTA", sValor = sCD_LISTA });
-                            obljup.Add(new update { sCampo = "CD_PROD", sValor = sCD_PROD });
-                            obljup.Add(new update { sCampo = "CD_ALTER", sValor = sCD_ALTER });
-                            obljup.Add(new update { sCampo = "QT_PROD", sValor = sQTDE });
-                            obljup.Add(new update { sCampo = "VL_UNIPROD_SEM_DESC", sValor = dVL_UNIPROD_SEM_DESC });
-                            obljup.Add(new update { sCampo = "VL_TOTLIQ", sValor = dSUBTOTAL });
-                            obljup.Add(new update { sCampo = "VL_DESCONTO_VALOR", sValor = dVL_DESCONTO });
-                            obljup.Add(new update { sCampo = "VL_UNIPROD", sValor = dVL_PROD });
-                            obljup.Add(new update { sCampo = "CD_USUINC", sValor = objUsuario.oTabelas.CdUsuarioAtual.ToString() });
-                            obljup.Add(new update { sCampo = "DT_LANC", sValor = txtDataPedido.Text.Replace("/", ".") });
-                            obljup.Add(new update { sCampo = "CD_USUALT", sValor = objUsuario.oTabelas.CdUsuarioAtual.ToString() });
-                            obljup.Add(new update { sCampo = "CD_CF", sValor = (CF.Equals(String.Empty) ? "0000000" : CF.Trim()) });
-                            obljup.Add(new update { sCampo = "CD_TPUNID", sValor = UNID.Trim() });
-                            obljup.Add(new update { sCampo = "CD_ALIICMS", sValor = CODICMS.Trim() });
-                            obljup.Add(new update { sCampo = "CD_SITTRIB", sValor = SITTRIB.Trim() });
-                            obljup.Add(new update { sCampo = "VL_COEF", sValor = dCOEFDESC.ToString().Replace(",", ".") });
-                            obljup.Add(new update { sCampo = "VL_PERCOMI1", sValor = dVL_PERCOMI1.ToString() });
-                            obljup.Add(new update { sCampo = "DT_PRAZOEN", sValor = txtDataPedido.Text.Replace("/", ".") });
-                            obljup.Add(new update { sCampo = "VL_ALIIPI", sValor = HlpFuncoesFaturamento.GetAliquotaIPI(objUsuario.oTabelas.GetOperacaoDefault("CD_OPER"), txtCodCli.Text.Trim(), CF, objUsuario.oTabelas).ToString() });
-                            obljup.Add(new update { sCampo = "CD_OPER", sValor = scdOper });
-                            obljup.Add(new update { sCampo = "cd_sittribipi", sValor = sSittribipi });
-                            obljup.Add(new update { sCampo = "cd_sittribpis", sValor = sSittribpis });
-                            obljup.Add(new update { sCampo = "cd_sittribcof", sValor = sSittribcofins });
-
-
-                            if (sTableItens.ToUpper().Equals("MOVITEM"))
-                            {
-                                obljup.Add(new update { sCampo = "CD_SEQPED", sValor = iCountSeq.ToString().PadLeft(2, '0') });
-                                obljup.Add(new update { sCampo = "DT_DOC", sValor = txtDataPedido.Text.Replace("/", ".") });
-                            }
-
-                            string sCampos = string.Empty;
-                            foreach (update up in obljup)
-                            {
-                                sCampos += up.sCampo + " = '" + up.sValor + "'" + Environment.NewLine + " ,";
-                            }
-                            sCampos = sCampos.Remove(sCampos.Length - 1, 1);
-
-                            string sWhere = " (NR_LANC = '" + strRetMoviPend.Trim() + "') AND (CD_EMPRESA = '" + objUsuario.oTabelas.sEmpresa.Trim() + "')";
-
-                            sUpdateItens = string.Format(sUpdateItens, sTableItens, sCampos, sWhere);
-
-                            FbCommand cmdUpDateMoviPend = new FbCommand();
-                            cmdUpDateMoviPend.CommandText = sUpdateItens;
-                            cmdUpDateMoviPend.CommandType = CommandType.Text;
-                            cmdUpDateMoviPend.Connection = Conn;
-                            Conn.Open();
-                            Ret = cmdUpDateMoviPend.ExecuteNonQuery();
-                            Conn.Close();
-                            iCountSeq++;
-                        }
-                    }
-                    if (Ret > 0)
-                    {
-                        //EnviarEmailPedido(strRetPedido);
-                        LimparSession();
-                        Response.Redirect("~/Informativo.aspx?PARAMETERCODIGO=" + strRetPedido);
+                        strUpDatePed.Append("', CD_CGCCPF = '" + ((CliforDAO)(Session["ObjetoClienteDetalhado"])).RegistroAtual["CD_CGC"].ToString());
+                        strUpDatePed.Append("', CD_INSEST_RG = '" + ((CliforDAO)(Session["ObjetoClienteDetalhado"])).RegistroAtual["cd_insest"].ToString());
                     }
                     else
-                        MessageHLP.ShowPopUpMsg("Cadastro não foi concluído!", this.Page);
-                }
+                    {
+                        strUpDatePed.Append("', CD_CGCCPF = '" + ((CliforDAO)(Session["ObjetoClienteDetalhado"])).RegistroAtual["CD_CPF"].ToString());
+                        strUpDatePed.Append("', CD_INSEST_RG = '" + ((CliforDAO)(Session["ObjetoClienteDetalhado"])).RegistroAtual["CD_RG"].ToString());
+                    }
+                    strUpDatePed.Append("', CD_CEPNOR = '" + ((CliforDAO)(Session["ObjetoClienteDetalhado"])).RegistroAtual["CD_CEPNOR"].ToString());
+                    strUpDatePed.Append("', CD_FONENOR = '" + ((CliforDAO)(Session["ObjetoClienteDetalhado"])).RegistroAtual["CD_FONENOR"].ToString());
+                    strUpDatePed.Append("', CD_FAXNOR = '" + ((CliforDAO)(Session["ObjetoClienteDetalhado"])).RegistroAtual["CD_FAXNOR"].ToString());
 
+
+                    strUpDatePed.Append("', DT_PEDIDO = '" + txtDataPedido.Text.Replace("/", "."));
+                    if (sCD_CFOP != "")
+                    {
+                        strUpDatePed.Append("', cd_cfops = '" + sCD_CFOP);
+                        strUpDatePed.Append("', ds_cfop = '" + sDS_CFOP);
+                    }
+                    strUpDatePed.Append("', CD_TIPODOC = '" + sTipoDocumento);
+                    strUpDatePed.Append("', CD_PRAZO = '" + cbxCD_PRAZO.SelectedItem.Value.Trim());
+                    strUpDatePed.Append("', CD_TRANS = '" + objUsuario.oTabelas.TRANSP.ToString().Trim());
+                    strUpDatePed.Append("', DS_OBS_WEB = '" + txtObs.Text.ToUpper().Trim());
+                    strUpDatePed.Append("', DT_ABER = '" + txtDataPedido.Text.Replace("/", "."));
+                    strUpDatePed.Append("', CD_USUINC ='" + objUsuario.oTabelas.CdUsuarioAtual);
+                    strUpDatePed.Append("', CD_VEND1 = '" + objUsuario.oTabelas.CdVendedorAtual + "'");
+
+
+                    strUpDatePed.Append(" WHERE (CD_PEDIDO = '" + strRetPedido.Trim() + "') AND (CD_EMPRESA = '" + objUsuario.oTabelas.sEmpresa.Trim() + "')");
+
+                    FbCommand cmdUpDatePedido = new FbCommand(strConn);
+                    cmdUpDatePedido.CommandText = strUpDatePed.ToString();
+                    cmdUpDatePedido.CommandType = CommandType.Text;
+                    cmdUpDatePedido.Connection = Conn;
+
+                    Conn.Open();
+
+                    int Ret = cmdUpDatePedido.ExecuteNonQuery();
+
+                    Conn.Close();
+
+                    if (Ret > 0)
+                    {
+                        Ret = 0;
+                        int iCountSeq = 1;
+                        foreach (GridViewRow row in GridViewNovo.Rows)
+                        {
+                            string sTableItens = (WebConfigurationManager.AppSettings["TableItens"]).ToUpper();
+
+                            FbCommand cmdSelectMoviPend = new FbCommand();
+                            cmdSelectMoviPend.CommandText = sTableItens.Equals("MOVITEM") ? "SP_INCLUI_MOVITEM_WEB" : "sp_inclui_movipend_web";
+                            cmdSelectMoviPend.CommandType = CommandType.StoredProcedure;
+                            cmdSelectMoviPend.Connection = Conn;
+                            Conn.Open();
+                            cmdSelectMoviPend.Parameters.Add("@SCD_EMPRESA", FbDbType.VarChar, 3).Value = objUsuario.oTabelas.sEmpresa.ToString();
+                            cmdSelectMoviPend.Parameters.Add("@SCD_PEDIDO", FbDbType.VarChar, 7).Value = strRetPedido.Trim();
+                            string strRetMoviPend = cmdSelectMoviPend.ExecuteScalar().ToString();
+                            Conn.Close();
+
+
+                            //ITENS DA GRID INSERIDOS.
+                            string sCD_PROD = row.Cells[1].Text.Trim();
+                            string sCD_ALTER = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("PRODUTO", "CD_ALTER", "CD_EMPRESA = '" + objUsuario.oTabelas.sEmpresa.Trim() + "' AND CD_PROD ='" + sCD_PROD + "'");
+                            TextBox txtQtde = (TextBox)row.Cells[2].FindControl("txtQtde");
+                            string sQTDE = txtQtde.Text.Replace(".", "").Replace(",", ".");
+                            string sDESC = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("PRODUTO", "DS_PROD", "CD_EMPRESA = '" + objUsuario.oTabelas.sEmpresa.Trim() + "' AND CD_PROD ='" + sCD_PROD + "'");
+                            string dVL_DESCONTO = row.Cells[4].Text.Trim().Replace(".", "").Replace(",", ".");
+                            string sCD_LISTA = row.Cells[5].Text.Trim();
+                            string dVL_PROD = row.Cells[6].Text.Trim().Replace(".", "").Replace(",", ".");
+                            string dVL_UNIPROD_SEM_DESC = row.Cells[7].Text.Trim().Replace(".", "").Replace(",", ".");
+                            string dSUBTOTAL = row.Cells[8].Text.Trim().Replace(".", "").Replace(",", ".");
+
+                            if (strRetMoviPend != null)
+                            {
+                                strUpDatePed.Length = 0;
+                                string CF = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("PRODUTO", "CD_CF", "CD_PROD = '" + sCD_PROD + "'");
+                                string UNID = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("PRODUTO", "CD_TPUNID", "CD_PROD = '" + sCD_PROD + "'");
+                                string CODICMS = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("PRODUTO", "CD_ALIICMS", "CD_PROD = '" + sCD_PROD + "'");
+                                string SITTRIB = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("PRODUTO", "CD_SITTRIB", "CD_PROD = '" + sCD_PROD + "'");
+                                string scdOper = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("tpdoc", "substring(tpdoc.cd_operval from 1 for 3) cd_operval", "cd_tipodoc = '" + sTipoDocumento + "'");
+                                if (objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("TPDOC", "coalesce(tp_doc,'')", "cd_tipodoc = '" + sTipoDocumento + "'").Equals("PE"))
+                                {
+                                    string sOPERVAL = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("TPDOC", "coalesce(cd_operval,'')", "cd_tipodoc = '" + sTipoDocumento + "'");
+
+
+                                    string sOperProd = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("produto", "coalesce(cd_oper,'')", "cd_prod = '" + sCD_PROD + "'");
+                                    if (sOperProd != "")
+                                    {
+                                        if (sOPERVAL.Contains(sOperProd))
+                                        {
+                                            scdOper = sOperProd;
+                                        }
+                                    }
+                                }
+
+
+
+                                string sSittribipi = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("PRODUTO", "cd_sittribipi", "CD_PROD = '" + sCD_PROD + "' and CD_EMPRESA = '" + objUsuario.oTabelas.sEmpresa + "'");
+                                string sSittribpis = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("clas_fis", "cd_sittribpis", "cd_cf = '" + CF + "' and CD_EMPRESA = '" + objUsuario.oTabelas.sEmpresa + "'");
+                                string sSittribcofins = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("clas_fis", "cd_sittribcof", "cd_cf = '" + CF + "' and CD_EMPRESA = '" + objUsuario.oTabelas.sEmpresa + "'");
+                                string sTipoPrazo = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("PRAZOS", "DS_FORMULA", "CD_PRAZO = '" + cbxCD_PRAZO.SelectedItem.Value.Trim() + "'");
+
+
+                                if (sSittribipi == "")
+                                {
+                                    sSittribipi = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("OPEREVE", "cd_sittribipi", "CD_OPER = '" + scdOper + "'");
+                                }
+                                if (sSittribpis == "")
+                                {
+                                    sSittribpis = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("OPEREVE", "cd_sittribpis", "CD_OPER = '" + scdOper + "'");
+                                }
+                                if (sSittribcofins == "")
+                                {
+                                    sSittribcofins = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("OPEREVE", "cd_sittribcof", "CD_OPER = '" + scdOper + "'");
+                                }
+
+                                #region Busca Valor % de comissão
+
+                                string dVL_PERCOMI1 = "0";
+                                string dVL_PERCOMI2 = "0";
+                                //Verifica se o TPDOC se encontra no cadastro de empresa, caso sim, zera comissão.
+                                string sCD_TPDOCBONI = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("EMPRESA", "cd_tpdocboni", "CD_EMPRESA = '" + objUsuario.oTabelas.sEmpresa + "'");
+                                if (!sCD_TPDOCBONI.Contains(cbxDS_TPDOCWEB.SelectedValue.ToString()))
+                                {
+                                    string sST_COMREP = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("CLIFOR", "COALESCE(ST_COMREP,'C')", "CD_CLIFOR = '" + sCdClifor + "'");
+                                    switch (sST_COMREP)
+                                    {
+                                        case "C": //busca comissão do cliente
+                                            {
+                                                dVL_PERCOMI1 = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("CLIFOR", "COALESCE(vl_percomi1,'0')", "CD_CLIFOR = '" + sCdClifor + "'");
+                                                dVL_PERCOMI2 = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("CLIFOR", "COALESCE(vl_percomi2,'0')", "CD_CLIFOR = '" + sCdClifor + "'");
+                                            } break;
+                                        case "P":
+                                            {
+                                                dVL_PERCOMI1 = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("PRODUTO", "COALESCE(vl_percomi1,'0')", "CD_PROD = '" + sCD_PROD + "'");
+                                                dVL_PERCOMI2 = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("PRODUTO", "COALESCE(vl_percomi2,'0')", "CD_PROD = '" + sCD_PROD + "'");
+                                            } break;
+                                        case "L":
+                                            {
+                                                FbCommand cmdSP_PRECOS = new FbCommand();
+                                                cmdSP_PRECOS.CommandText = "SP_PRECOS";
+                                                cmdSP_PRECOS.CommandType = CommandType.StoredProcedure;
+                                                cmdSP_PRECOS.Connection = Conn;
+                                                Conn.Open();
+
+                                                //CD_EMPRESAINP VARCHAR(3),
+                                                //CD_LISTAINI VARCHAR(5),
+                                                //CD_LISTAFIM VARCHAR(5),
+                                                //CD_PRODINI VARCHAR(7),
+                                                //CD_PRODFIM VARCHAR(7))                                            
+                                                cmdSP_PRECOS.Parameters.Add("@CD_EMPRESAINP", FbDbType.VarChar, 3).Value = objUsuario.oTabelas.sEmpresa;
+                                                cmdSP_PRECOS.Parameters.Add("@CD_LISTAINI", FbDbType.VarChar, 5).Value = sCD_LISTA;
+                                                cmdSP_PRECOS.Parameters.Add("@CD_LISTAFIM", FbDbType.VarChar, 5).Value = sCD_LISTA;
+                                                cmdSP_PRECOS.Parameters.Add("@CD_PRODINI", FbDbType.VarChar, 7).Value = sCD_PROD;
+                                                cmdSP_PRECOS.Parameters.Add("@CD_PRODFIM", FbDbType.VarChar, 7).Value = sCD_PROD;
+
+                                                FbDataReader dr = cmdSP_PRECOS.ExecuteReader();
+                                                dr.Read();
+                                                dVL_PERCOMI1 = dr["VL_COMIVEN"].ToString();
+                                                dVL_PERCOMI2 = dVL_PERCOMI1.Replace(".", "").Replace(",", ".");
+                                                Conn.Close();
+
+                                            } break;
+                                        case "Q":
+                                            {
+                                                string sFORMULA = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("PRAZOS", "COALESCE(DS_FORMULA,'')", "CD_PRAZO = '" + cbxCD_PRAZO.SelectedValue.ToString() + "'");
+                                                bool bAVISTA = false;
+                                                if (sFORMULA.Length > 0)
+                                                {
+                                                    bAVISTA = sFORMULA[0].Equals("0") ? true : false;
+                                                }
+                                                if (bAVISTA)
+                                                {
+                                                    if (Convert.ToInt32(objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("vendcomi", "count(*)", "CD_PROD = '" + sCD_PROD + "' and CD_VEND = '" + objUsuario.oTabelas.CdVendedorAtual + "'")) > 0)
+                                                    {
+                                                        dVL_PERCOMI1 = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("vendcomi", "coalesce(VL_PERCOAV,0)", "CD_PROD = '" + sCD_PROD + "' and CD_VEND = '" + objUsuario.oTabelas.CdVendedorAtual + "'");
+                                                        dVL_PERCOMI2 = dVL_PERCOMI1;
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    if (Convert.ToInt32(objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("vendcomi", "count(*)", "CD_PROD = '" + sCD_PROD + "' and CD_VEND = '" + objUsuario.oTabelas.CdVendedorAtual + "'")) > 0)
+                                                    {
+                                                        dVL_PERCOMI1 = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("vendcomi", "coalesce(VL_PERCOAP,0)", "CD_PROD = '" + sCD_PROD + "' and CD_VEND = '" + objUsuario.oTabelas.CdVendedorAtual + "'");
+                                                        dVL_PERCOMI2 = dVL_PERCOMI1;
+                                                    }
+                                                }
+
+                                            } break;
+                                    }
+                                }
+                                #endregion
+
+
+                                #region Calcula Desconto Item
+
+                                //decimal dVL_PERDESC = Convert.ToDecimal(objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("CLIFOR", "COALESCE(VL_PERDESC,0) VL_PERDESC", "CD_CLIFOR = '" + Session["CD_CLIFOR"].ToString() + "'"));
+                                decimal dCOEFDESC = 100 - Convert.ToDecimal(txtDesconto.Text.Replace('.', ','));
+                                dCOEFDESC = dCOEFDESC / 100;
+
+                                // Geral ->    UNITARIO,U; TOTAL,T
+
+                                #endregion
+
+
+
+                                string sUpdateItens = "Update {0} set {1} where {2} ;";
+
+                                List<update> obljup = new List<update>();
+                                obljup.Add(new update { sCampo = "CD_VEND1", sValor = objUsuario.oTabelas.CdVendedorAtual });
+                                obljup.Add(new update { sCampo = "VL_PERENTR", sValor = "100.00" });
+                                obljup.Add(new update { sCampo = "NR_LANC", sValor = strRetMoviPend.Trim() });
+                                obljup.Add(new update { sCampo = "CD_PEDIDO", sValor = strRetPedido.Trim() });
+                                obljup.Add(new update { sCampo = "DS_PROD", sValor = sDESC });
+                                obljup.Add(new update { sCampo = "CD_LISTA", sValor = sCD_LISTA });
+                                obljup.Add(new update { sCampo = "CD_PROD", sValor = sCD_PROD });
+                                obljup.Add(new update { sCampo = "CD_ALTER", sValor = sCD_ALTER });
+                                obljup.Add(new update { sCampo = "QT_PROD", sValor = sQTDE });
+                                obljup.Add(new update { sCampo = "VL_UNIPROD_SEM_DESC", sValor = dVL_UNIPROD_SEM_DESC });
+                                obljup.Add(new update { sCampo = "VL_TOTLIQ", sValor = dSUBTOTAL });
+                                obljup.Add(new update { sCampo = "VL_DESCONTO_VALOR", sValor = dVL_DESCONTO });
+                                obljup.Add(new update { sCampo = "VL_UNIPROD", sValor = dVL_PROD });
+                                obljup.Add(new update { sCampo = "CD_USUINC", sValor = objUsuario.oTabelas.CdUsuarioAtual.ToString() });
+                                obljup.Add(new update { sCampo = "DT_LANC", sValor = txtDataPedido.Text.Replace("/", ".") });
+                                obljup.Add(new update { sCampo = "CD_USUALT", sValor = objUsuario.oTabelas.CdUsuarioAtual.ToString() });
+                                obljup.Add(new update { sCampo = "CD_CF", sValor = (CF.Equals(String.Empty) ? "0000000" : CF.Trim()) });
+                                obljup.Add(new update { sCampo = "CD_TPUNID", sValor = UNID.Trim() });
+                                obljup.Add(new update { sCampo = "CD_ALIICMS", sValor = CODICMS.Trim() });
+                                obljup.Add(new update { sCampo = "CD_SITTRIB", sValor = SITTRIB.Trim() });
+                                obljup.Add(new update { sCampo = "VL_COEF", sValor = dCOEFDESC.ToString().Replace(",", ".") });
+                                obljup.Add(new update { sCampo = "VL_PERCOMI1", sValor = dVL_PERCOMI1.ToString() });
+                                obljup.Add(new update { sCampo = "DT_PRAZOEN", sValor = txtDataPedido.Text.Replace("/", ".") });
+                                obljup.Add(new update { sCampo = "VL_ALIIPI", sValor = HlpFuncoesFaturamento.GetAliquotaIPI(objUsuario.oTabelas.GetOperacaoDefault("CD_OPER"), txtCodCli.Text.Trim(), CF, objUsuario.oTabelas).ToString() });
+                                obljup.Add(new update { sCampo = "CD_OPER", sValor = scdOper });
+                                obljup.Add(new update { sCampo = "cd_sittribipi", sValor = sSittribipi });
+                                obljup.Add(new update { sCampo = "cd_sittribpis", sValor = sSittribpis });
+                                obljup.Add(new update { sCampo = "cd_sittribcof", sValor = sSittribcofins });
+
+
+                                if (sTableItens.ToUpper().Equals("MOVITEM"))
+                                {
+                                    obljup.Add(new update { sCampo = "CD_SEQPED", sValor = iCountSeq.ToString().PadLeft(2, '0') });
+                                    obljup.Add(new update { sCampo = "DT_DOC", sValor = txtDataPedido.Text.Replace("/", ".") });
+                                }
+
+                                string sCampos = string.Empty;
+                                foreach (update up in obljup)
+                                {
+                                    sCampos += up.sCampo + " = '" + up.sValor + "'" + Environment.NewLine + " ,";
+                                }
+                                sCampos = sCampos.Remove(sCampos.Length - 1, 1);
+
+                                string sWhere = " (NR_LANC = '" + strRetMoviPend.Trim() + "') AND (CD_EMPRESA = '" + objUsuario.oTabelas.sEmpresa.Trim() + "')";
+
+                                sUpdateItens = string.Format(sUpdateItens, sTableItens, sCampos, sWhere);
+
+                                FbCommand cmdUpDateMoviPend = new FbCommand();
+                                cmdUpDateMoviPend.CommandText = sUpdateItens;
+                                cmdUpDateMoviPend.CommandType = CommandType.Text;
+                                cmdUpDateMoviPend.Connection = Conn;
+                                Conn.Open();
+                                Ret = cmdUpDateMoviPend.ExecuteNonQuery();
+                                Conn.Close();
+                                iCountSeq++;
+                            }
+                        }
+                        if (Ret > 0)
+                        {
+                            //EnviarEmailPedido(strRetPedido);
+                            LimparSession();
+                            Response.Redirect("~/Informativo.aspx?PARAMETERCODIGO=" + strRetPedido);
+                        }
+                        else
+                            MessageHLP.ShowPopUpMsg("Cadastro não foi concluído!", this.Page);
+                    }
+
+                }
             }
+        }
+        catch (Exception ex)
+        {
+            MessageHLP.ShowPopUpMsg("Cadastro não foi concluído com sucesso!" + Environment.NewLine +
+                    ex.Message, this.Page);
         }
     }
     protected void btnAvancar_Click(object sender, EventArgs e)
@@ -917,9 +931,10 @@ public partial class Pedido : System.Web.UI.Page
         string sCdClifor = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("CLIFOR", "CD_CLIFOR", "CD_ALTER = '" + (string)txtCodCli.Text + "'");
         string sWhere = "coalesce(st_baixa,'') <> 'B' and cd_empresa = '" + objUsuario.oTabelas.sEmpresa.ToString().Trim() + "' and cd_cliente = '" + sCdClifor + "'";
 
-        DataTable dtDuplicatas = objUsuario.oTabelas.hlpDbFuncoes.qrySeekRet("DOC_CTR", "dt_venci, vl_doc ", sWhere);
+        DataTable dtDuplicatas = objUsuario.oTabelas.hlpDbFuncoes.qrySeekRet("DOC_CTR", "CD_DUPLI,dt_venci, vl_doc ", sWhere);
 
         DataTable dtRetono = new DataTable("TabelaDuplicatas");
+        dtRetono.Columns.Add("CD_DUPLI").DataType = System.Type.GetType("System.String");
         dtRetono.Columns.Add("DT_VENCI").DataType = System.Type.GetType("System.DateTime");
         dtRetono.Columns.Add("VL_DOC").DataType = System.Type.GetType("System.Double");
         dtRetono.Columns.Add("TOT_VL_DOC", System.Type.GetType("System.Double"), "SUM(VL_DOC)");
@@ -930,6 +945,7 @@ public partial class Pedido : System.Web.UI.Page
         foreach (DataRow dr in dtDuplicatas.Rows)
         {
             dtRet = dtRetono.NewRow();
+            dtRet["CD_DUPLI"] = dr["CD_DUPLI"];
             dtRet["DT_VENCI"] = dr["DT_VENCI"];
             dtRet["VL_DOC"] = dr["VL_DOC"];
 
@@ -970,7 +986,7 @@ public partial class Pedido : System.Web.UI.Page
         if (!txtProdDesc.Text.Equals(String.Empty))
             strWhere.Append("AND (PRODUTO.DS_PROD LIKE ('%" + txtProdDesc.Text.ToUpper().Trim() + "%')) ");
         strWhere.Append(" AND PRODUTO.CD_LINHA = '" + cbxLinhaProduto.SelectedValue.ToString() + "' "); // OS_27292
-        
+
         DataTable dtProduto = objUsuario.oTabelas.hlpDbFuncoes.qrySeekRet("PRECOS INNER JOIN PRODUTO ON (PRODUTO.CD_PROD = PRECOS.CD_PROD)" +
             " INNER JOIN CLAS_FIS ON PRODUTO.CD_CF = CLAS_FIS.CD_CF ",
             (st_atualizacao.Equals("M") ? "PRECOS.VL_PRECOVE" : "(PRECOS.VL_PRECOVE * " + vl_perc.ToString().Replace(',', '.') + ")VL_PRECOVE") +
@@ -1147,7 +1163,7 @@ public partial class Pedido : System.Web.UI.Page
             ListaProduto.Rows.Add(row);
             GridViewNovo.DataSource = ListaProduto;
             GridViewNovo.DataBind();
-            //RecalculaGridNovo(true);
+            //RecalculaGridNovo(true);            
         }
         else
         {
@@ -1295,7 +1311,7 @@ public partial class Pedido : System.Web.UI.Page
 
             CarregaDocs(CodigoCliente, sCdClifor);
 
-            Session["lsCodigoInseridos"] = new Dictionary<string, int>();//OS 28143
+            Session["lsCodigoInseridos"] = new Dictionary<string, double>();//OS 28143
         }
 
     }

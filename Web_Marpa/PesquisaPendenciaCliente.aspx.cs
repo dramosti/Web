@@ -127,6 +127,7 @@ public partial class PesquisaPendenciaCliente : System.Web.UI.Page
             {
                 sql = new StringBuilder();
                 sql.Append("select cast(d.DT_VENCI as date) DT_VENCI, ");
+                sql.Append("d.CD_DUPLI, ");
                 sql.Append("v.NM_VEND, ");
                 sql.Append("d.CD_CLIENTE, ");
                 sql.Append("d.CD_VEND1, ");

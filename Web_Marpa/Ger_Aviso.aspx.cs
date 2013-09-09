@@ -21,6 +21,7 @@ public partial class Ger_Aviso : System.Web.UI.Page
                 Response.Redirect("~/Login.aspx");
             }
             CarregaRepresentantes();
+           
         }
 
     }
@@ -28,7 +29,7 @@ public partial class Ger_Aviso : System.Web.UI.Page
     protected void CarregaRepresentantes()
     {
         UsuarioWeb objUsuario = (UsuarioWeb)Session["ObjetoUsuario"];
-        DataTable dtRepres = objUsuario.oTabelas.hlpDbFuncoes.qrySeekRet("select v.cd_vend, v.nm_vend from vendedor v where v.st_acessa_web = 'S'");
+        DataTable dtRepres = objUsuario.oTabelas.hlpDbFuncoes.qrySeekRet("SELECT a.cd_vend, a.nm_operado nm_vend  FROM acesso a where acesso.cd_vend is not null and a.tp_operado = 'WEB'");
         cboRepresentante.DataSource = dtRepres;
         cboRepresentante.DataBind();
     }
