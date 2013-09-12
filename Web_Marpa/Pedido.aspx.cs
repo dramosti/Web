@@ -169,6 +169,28 @@ public partial class Pedido : System.Web.UI.Page
         RecalculaGridNovo(false);
     }
 
+    private double ValidaValorTextBoxQtde(TextBox txt)
+    {
+        Regex reg = new Regex(@"^\d{1,5}(\,\d{1,2})?$");
+
+        if (txt.Text == "")
+        {
+            return 1;
+        }
+        else
+        {
+            if (reg.IsMatch(String.Format("{0:N2}", txt.Text)))
+            {
+                return Convert.ToDouble(String.Format("{0:N2}", txt.Text));
+            }
+            else
+            {
+                txt.Text = "1";
+                return 1;
+            }
+        }
+    }
+
     private void RecalculaGridNovo(bool bBuscaQtdSession)
     {
         double TotalAtual = 0;
@@ -183,14 +205,8 @@ public partial class Pedido : System.Web.UI.Page
             txtQtde.Text = txtQtde.Text.Replace('.', ',');
             if (!bBuscaQtdSession)
             {
-                if (reg.IsMatch(String.Format("{0:N2}", txtQtde.Text)))
-                {
-                    dqtde = Convert.ToDouble(String.Format("{0:N2}", txtQtde.Text));
-                }
-                else
-                {
-                    txtQtde.Text = "1";
-                }
+                dqtde = ValidaValorTextBoxQtde(txtQtde);
+                txtQtde.Text = dqtde.ToString();
             }
             else
             {
@@ -1070,30 +1086,24 @@ public partial class Pedido : System.Web.UI.Page
     private void GetTPDOC()
     {
         UsuarioWeb objUsuario = (UsuarioWeb)Session["ObjetoUsuario"];
-
-        string stpdocs = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("EMPRESA", "DS_TPDOCWEB", "CD_EMPRESA = '" + objUsuario.oTabelas.sEmpresa + "'");
-
         DataTable dtTPDOC = new DataTable();
         dtTPDOC.Columns.Add("CD_TPDOC", System.Type.GetType("System.String"));
         dtTPDOC.Columns.Add("DS_TPDOC", System.Type.GetType("System.String"));
-
-        foreach (string item in stpdocs.Split(';'))
+        DataRow rowItem;
+        foreach (DataRow row in objUsuario.oTabelas.hlpDbFuncoes.qrySeekRet("select t.ds_tipodoc DS_TPDOC, t.cd_tipodoc CD_TPDOC from tpdoc t where t.st_utiliza_web = 'S'").Rows)
         {
-            DataRow row = dtTPDOC.NewRow();
-            string[] tpdoc = item.Split(',');
-            if (tpdoc.Length > 1)
-            {
-                row["CD_TPDOC"] = tpdoc[1].ToString().Trim();
-                row["DS_TPDOC"] = tpdoc[0].ToString().Trim();
-                dtTPDOC.Rows.Add(row);
-            }
+            rowItem = dtTPDOC.NewRow();
+            rowItem["CD_TPDOC"] = row["CD_TPDOC"].ToString().Trim();
+            rowItem["DS_TPDOC"] = row["DS_TPDOC"].ToString().Trim();
+            dtTPDOC.Rows.Add(rowItem);
         }
+
         string sCodClifor = (string)txtCodCli.Text;
         string stpDocCliFor = "000";
         if (sCodClifor != null)
         {
             stpDocCliFor = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("CLIFOR", "coalesce(cd_tipodoc,'000')", "CD_ALTER = '" + sCodClifor + "'");
-            if (stpDocCliFor != "000")
+            if (stpDocCliFor != "000" && stpDocCliFor != "")
             {
                 DataRow row = dtTPDOC.NewRow();
                 row["CD_TPDOC"] = stpDocCliFor;
@@ -1157,7 +1167,7 @@ public partial class Pedido : System.Web.UI.Page
             row["VL_PROD"] = String.Format("{0:N4}", dVL_PROD);
             row["VL_UNIPROD_SEM_DESC"] = String.Format("{0:N4}", dVL_PROD);
             row["SUBTOTAL"] = string.Format("{0:N2}", dVL_PROD - dVL_DESC);
-            row["QT_PROD"] = 1;
+            row["QT_PROD"] = "1";
             row["CD_PROD"] = strCodigo;
 
             ListaProduto.Rows.Add(row);
@@ -1191,7 +1201,7 @@ public partial class Pedido : System.Web.UI.Page
             dt.Columns.Add("VL_PROD", System.Type.GetType("System.Decimal"), "");
             dt.Columns.Add("VL_UNIPROD_SEM_DESC", System.Type.GetType("System.Decimal"), "");
             dt.Columns.Add("VL_DESCONTO", System.Type.GetType("System.Decimal"), "");
-            dt.Columns.Add("QT_PROD", System.Type.GetType("System.Decimal"), "");
+            dt.Columns.Add("QT_PROD", System.Type.GetType("System.String"), "");
             dt.Columns.Add("VL_PESOBRU", System.Type.GetType("System.Decimal"), "");
             dt.Columns.Add("TOTAL", System.Type.GetType("System.Decimal"), "SUM(SUBTOTAL)");
 

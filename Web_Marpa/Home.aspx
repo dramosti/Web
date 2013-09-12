@@ -46,13 +46,16 @@
                     Gráficos
                 </td>
             </tr>
-            <tr>
-                <td class="label">
-                    <asp:LinkButton ID="LinkButton1" runat="server" OnClick="btnCarregaGrafico_Click">Carregar Gráficos</asp:LinkButton>
-                </td>
-            </tr>
         </table>
         <table width="100%">
+            <tr>
+                <td class="label" align="left">
+                    <asp:LinkButton ID="LinkButton1" runat="server" OnClick="btnCarregaGrafico_Click">Vendas no Ano</asp:LinkButton>
+                </td>
+               <td class="label" align="left">
+                    <asp:LinkButton ID="LinkButton2" runat="server" onclick="LinkButton2_Click">Top 5 Produtos</asp:LinkButton>
+                </td>
+            </tr>
             <tr>
                 <td align="left" class="style10">
                     <asp:Chart ID="graficoVendasAnuais" runat="server" BackColor="WhiteSmoke" BackGradientStyle="TopBottom"
@@ -131,7 +134,6 @@
                         </ChartAreas>
                     </asp:Chart>
                 </td>
-                </td>
             </tr>
         </table>
     </div>
@@ -150,7 +152,7 @@
             </tr>
             <tr align="center">
                 <td style="text-align: center;" class="style5" colspan="3">
-                   <asp:GridView ID="gridAvisos" runat="server" AllowPaging="True" AutoGenerateColumns="False"
+                    <asp:GridView ID="gridAvisos" runat="server" AllowPaging="True" AutoGenerateColumns="False"
                         CssClass="mGrid" PagerStyle-CssClass="pgr" AlternatingRowStyle-CssClass="alt"
                         GridLines="None" Font-Names="Segoe UI" Font-Size="13px" Width="500px" DataKeyNames="CD_AVISO"
                         Font-Bold="False" PageSize="50" OnSelectedIndexChanged="gridAvisos_SelectedIndexChanged"
@@ -171,19 +173,21 @@
                         <PagerSettings FirstPageText="Início" LastPageText="Fim" Mode="NextPreviousFirstLast"
                             NextPageText="Próximo" PreviousPageText="Anterior" />
                     </asp:GridView>
-                        <asp:DetailsView ID="dvAviso" runat="server" BackColor="White" BorderColor="#CCCCCC"
+                    <asp:DetailsView ID="dvAviso" runat="server" BackColor="White" BorderColor="#CCCCCC"
                         CssClass="mGrid" BorderStyle="None" BorderWidth="1px" CellPadding="4" ForeColor="Black"
                         GridLines="Horizontal" Height="50px" Width="500px" AutoGenerateRows="False" Font-Bold="False"
-                       Font-Names="Segoe UI" Font-Size="13px">
+                        Font-Names="Segoe UI" Font-Size="13px">
                         <EditRowStyle BackColor="#CC3333" Font-Bold="True" ForeColor="White" />
                         <Fields>
                             <asp:BoundField DataField="DS_AVISO" ShowHeader="False">
-                                <ItemStyle HorizontalAlign="Left" Font-Names="Segoe UI" Font-Size="13px"  Font-Bold="False" />
+                                <ItemStyle HorizontalAlign="Left" Font-Names="Segoe UI" Font-Size="13px" Font-Bold="False" />
                             </asp:BoundField>
                         </Fields>
-                        <FooterStyle BackColor="#CCCC99"  Font-Names="Segoe UI" Font-Size="13px" ForeColor="Black" />
-                        <HeaderStyle BackColor="#3a4f63" Font-Bold="false"  Font-Names="Segoe UI" Font-Size="13px" ForeColor="White" />
-                        <PagerStyle BackColor="White"  Font-Names="Segoe UI" Font-Size="13px" ForeColor="Black" HorizontalAlign="Left" />
+                        <FooterStyle BackColor="#CCCC99" Font-Names="Segoe UI" Font-Size="13px" ForeColor="Black" />
+                        <HeaderStyle BackColor="#3a4f63" Font-Bold="false" Font-Names="Segoe UI" Font-Size="13px"
+                            ForeColor="White" />
+                        <PagerStyle BackColor="White" Font-Names="Segoe UI" Font-Size="13px" ForeColor="Black"
+                            HorizontalAlign="Left" />
                     </asp:DetailsView>
                 </td>
             </tr>

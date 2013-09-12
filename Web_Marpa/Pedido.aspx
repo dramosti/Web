@@ -41,8 +41,6 @@
         });
     </script>
     <script type="text/javascript">
-
-
         $('#<%=txtDesconto.ClientID%>').live("blur", function () {
             var valor = $('#<%=txtDesconto.ClientID%>').val();
             var valido = /^\d{1,3}(\,\d{1,2})?$/.test(valor);
@@ -110,7 +108,8 @@
                         </td>
                         <td align="left">
                             <asp:DropDownList ID="cbxDS_TPDOCWEB" runat="server" AutoPostBack="True" CssClass="textBox"
-                                DataTextField="DS_TPDOC" DataValueField="CD_TPDOC" Enabled="true" Width="185px">
+                                DataTextField="DS_TPDOC" DataValueField="CD_TPDOC" Enabled="true" 
+                                Width="268px">
                             </asp:DropDownList>
                         </td>
                     </tr>
@@ -351,7 +350,6 @@
                                     <asp:BoundField DataField="vl_subst" HeaderText="Valor ICMS ST (IVA)">
                                         <ItemStyle Font-Bold="True" HorizontalAlign="Left" />
                                     </asp:BoundField>
-
                                 </Fields>
                                 <HeaderStyle HorizontalAlign="Left" />
                                 <PagerStyle CssClass="pgr" />
@@ -400,13 +398,13 @@
                             </asp:DropDownList>
                         </td>
                     </tr>
-                      <tr>
+                    <tr>
                         <td align="right" class="style3">
                             Tipo de Documento
                         </td>
                         <td align="left">
-                            <asp:TextBox ID="txtTipoDoc" runat="server" CssClass="textBox" MaxLength="4"
-                                BackColor="#CCCCCC" ReadOnly="True" Width="200px"></asp:TextBox>
+                            <asp:TextBox ID="txtTipoDoc" runat="server" CssClass="textBox" MaxLength="4" BackColor="#CCCCCC"
+                                ReadOnly="True" Width="200px"></asp:TextBox>
                         </td>
                     </tr>
                     <tr>
@@ -429,20 +427,19 @@
                                     </asp:BoundField>
                                     <asp:TemplateField HeaderText="Qtde">
                                         <ItemTemplate>
-                                            <cc1:HlpWebTextBoxInteiro ID="txtQtde" runat="server" BackColor="Info" BorderColor="#E0E0E0"
+                                            <%--<cc1:HlpWebTextBoxInteiro ID="txtQtde" runat="server" BackColor="Info" BorderColor="#E0E0E0"
                                                 Font-Names="Segoe UI" Font-Size="13px" MaxLength="9" Text='<%# Bind("QT_PROD") %>'
-                                                Width="65px"></cc1:HlpWebTextBoxInteiro>
-                                            <%--&nbsp;<asp:TextBox ID="txtQtde" runat="server" BackColor="Info" BorderColor="#E0E0E0"
-                                                                    Font-Names="Segoe UI" Font-Size="13px" MaxLength="4" Text='<%# Bind("QT_PROD") %>'
-                                                                    Width="50px"></asp:TextBox>--%>
+                                                Width="65px"></cc1:HlpWebTextBoxInteiro>--%>
+                                            <asp:TextBox ID="txtQtde" runat="server" BackColor="Info" BorderColor="#E0E0E0" Font-Names="Segoe UI"
+                                                Font-Size="13px" MaxLength="9" Text='<%# Bind("QT_PROD") %>' Width="65px"></asp:TextBox>
                                         </ItemTemplate>
                                         <EditItemTemplate>
-                                            <cc1:HlpWebTextBoxInteiro ID="txtQtde" runat="server" BackColor="White" BorderColor="#E0E0E0"
+                                            <%--  <cc1:HlpWebTextBoxInteiro ID="txtQtde" runat="server" BackColor="White" BorderColor="#E0E0E0"
                                                 Font-Names="Segoe UI" Font-Size="13px" MaxLength="9" Text='<%# Bind("QT_PROD") %>'
-                                                Width="65px" onfocus="this.select()" ></cc1:HlpWebTextBoxInteiro>
-                                            <%-- <asp:TextBox ID="txtQtde" runat="server" BackColor="White" BorderColor="#E0E0E0"
-                                                                    Font-Names="Segoe UI" Font-Size="13px" MaxLength="3" Text='<%# Bind("QT_PROD") %>'
-                                                                    Width="50px"></asp:TextBox>--%>
+                                                Width="65px" onfocus="this.select()"></cc1:HlpWebTextBoxInteiro>--%>
+                                            <asp:TextBox ID="txtQtde" runat="server" BackColor="White" BorderColor="#E0E0E0"
+                                                Font-Names="Segoe UI" Font-Size="13px" MaxLength="9" Text='<%# Bind("QT_PROD") %>'
+                                                Width="65px"></asp:TextBox>
                                         </EditItemTemplate>
                                         <HeaderStyle HorizontalAlign="Left" />
                                         <ItemStyle HorizontalAlign="Left" Width="60px" Wrap="False" />
@@ -452,9 +449,9 @@
                                         <ItemStyle HorizontalAlign="Left" Width="200px" Wrap="False" />
                                     </asp:BoundField>
                                     <asp:BoundField DataField="VL_DESCONTO" HeaderText="Desconto" HeaderStyle-HorizontalAlign="Left"
-                                        ItemStyle-HorizontalAlign="Left" ItemStyle-Width="60px" >
-                                    <HeaderStyle HorizontalAlign="Left" />
-                                    <ItemStyle HorizontalAlign="Right" Width="60px" />
+                                        ItemStyle-HorizontalAlign="Left" ItemStyle-Width="60px">
+                                        <HeaderStyle HorizontalAlign="Left" />
+                                        <ItemStyle HorizontalAlign="Right" Width="60px" />
                                     </asp:BoundField>
                                     <asp:BoundField DataField="CD_LISTA" HeaderText="Lista" ItemStyle-HorizontalAlign="Left"
                                         ItemStyle-Width="60px">
@@ -465,8 +462,7 @@
                                         <ItemStyle Width="60px" Wrap="False" HorizontalAlign="Right" />
                                         <HeaderStyle Wrap="False" />
                                     </asp:BoundField>
-                                    <asp:BoundField DataField="VL_UNIPROD_SEM_DESC" Visible="true"
-                                        HeaderText="Vl. s/desc">
+                                    <asp:BoundField DataField="VL_UNIPROD_SEM_DESC" Visible="true" HeaderText="Vl. s/desc">
                                         <ItemStyle Width="60px" Wrap="False" HorizontalAlign="Right" />
                                         <HeaderStyle Wrap="False" Width="60px" />
                                     </asp:BoundField>
@@ -678,19 +674,18 @@
                                 AlternatingRowStyle-CssClass="alt" CaptionAlign="Left" GridLines="None" ShowFooter="True"
                                 Width="100px" PageSize="15" OnRowDataBound="GridDuplicatas_RowDataBound" OnPageIndexChanging="GridDuplicatas_PageIndexChanging">
                                 <AlternatingRowStyle CssClass="alt" />
-                                <Columns>                                    
-                                    <asp:BoundField DataField="DT_VENCI" DataFormatString="{0:dd/MM/yyyy}" 
-                                        HeaderText="Vencimento">
-                                    <ItemStyle HorizontalAlign="Left" Width="100px" Wrap="False" />
-                                    <HeaderStyle HorizontalAlign="Left" Wrap="True" />
+                                <Columns>
+                                    <asp:BoundField DataField="DT_VENCI" DataFormatString="{0:dd/MM/yyyy}" HeaderText="Vencimento">
+                                        <ItemStyle HorizontalAlign="Left" Width="100px" Wrap="False" />
+                                        <HeaderStyle HorizontalAlign="Left" Wrap="True" />
                                     </asp:BoundField>
                                     <asp:BoundField DataField="VL_DOC" DataFormatString="{0:c}" HeaderText="Valor">
-                                    <ItemStyle HorizontalAlign="Right" Width="150px" Wrap="False" />
-                                    <FooterStyle Font-Names="Segoe UI" Font-Size="13px" />
-                                    <HeaderStyle HorizontalAlign="Left" />
+                                        <ItemStyle HorizontalAlign="Right" Width="150px" Wrap="False" />
+                                        <FooterStyle Font-Names="Segoe UI" Font-Size="13px" />
+                                        <HeaderStyle HorizontalAlign="Left" />
                                     </asp:BoundField>
                                     <asp:BoundField DataField="CD_DUPLI" HeaderText="Duplicata">
-                                    <ItemStyle Width="100px" />
+                                        <ItemStyle Width="100px" />
                                     </asp:BoundField>
                                 </Columns>
                                 <PagerStyle CssClass="pgr" />

@@ -4,7 +4,7 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "Web_Marpa", ".", "{774B1FB6-8ED1-44EC-A99F-5D4BF2218456}"
 	ProjectSection(WebsiteProperties) = preProject
 		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
-		ProjectReferences = "{5F1CAB19-EADA-41DF-85A2-4951F3AB11BD}|HLP.Web.dll;"
+		ProjectReferences = "{5F1CAB19-EADA-41DF-85A2-4951F3AB11BD}|HLP.Web.dll;{9EA6AF5A-7C40-4E63-8D34-24557AD166C1}|HLP.Dados.dll;"
 		Debug.AspNetCompiler.VirtualPath = "/Marpa"
 		Debug.AspNetCompiler.PhysicalPath = "..\Web_Marpa\"
 		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\Marpa\"
@@ -24,6 +24,10 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "Web_Marpa", ".", "{774B1FB6
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HLP.Web", "..\Web_Estrutura\HLP.Web\HLP.Web.csproj", "{5F1CAB19-EADA-41DF-85A2-4951F3AB11BD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HLP.Dados", "..\Web_Estrutura\HLP.Dados\HLP.Dados\HLP.Dados.csproj", "{9EA6AF5A-7C40-4E63-8D34-24557AD166C1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HLP.Dados.Vendas", "..\Web_Estrutura\HLP.Dados.Vendas\HLP.Dados.Vendas\HLP.Dados.Vendas.csproj", "{92A63FBC-D462-47CE-8DBB-0064C20C163A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -38,6 +42,14 @@ Global
 		{5F1CAB19-EADA-41DF-85A2-4951F3AB11BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5F1CAB19-EADA-41DF-85A2-4951F3AB11BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5F1CAB19-EADA-41DF-85A2-4951F3AB11BD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9EA6AF5A-7C40-4E63-8D34-24557AD166C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9EA6AF5A-7C40-4E63-8D34-24557AD166C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9EA6AF5A-7C40-4E63-8D34-24557AD166C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9EA6AF5A-7C40-4E63-8D34-24557AD166C1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{92A63FBC-D462-47CE-8DBB-0064C20C163A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92A63FBC-D462-47CE-8DBB-0064C20C163A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{92A63FBC-D462-47CE-8DBB-0064C20C163A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{92A63FBC-D462-47CE-8DBB-0064C20C163A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

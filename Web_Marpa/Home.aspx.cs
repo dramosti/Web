@@ -50,19 +50,7 @@ public partial class Home : System.Web.UI.Page
         }
     }
 
-    private void CarregaGraficos()
-    {
-        graficoVendasAnuais.Visible = true;
-        graficoTopCincoProd.Visible = true;
-
-        UsuarioWeb objUsuario = Session["ObjetoUsuario"] as UsuarioWeb;
-        graficoVendasAnuais.DataSource = HLP.Dados.Vendas.HlpFuncoesVendas.GetVendasPorRepresentanteAnual(objUsuario.oTabelas, DateTime.Now.Year.ToString(), objUsuario.oTabelas.CdVendedorAtual);
-        graficoVendasAnuais.DataBind();
-        string sTableItens = (WebConfigurationManager.AppSettings["TableItens"]).ToUpper();
-
-        graficoTopCincoProd.DataSource = HLP.Dados.Vendas.HlpFuncoesVendas.GetProdutosMaisVendidos(objUsuario.oTabelas, sTableItens, 5, (DateTime.Now.AddDays(-30)), DateTime.Today);
-        graficoTopCincoProd.DataBind();
-    }
+   
     protected void btnAcessar_Click(object sender, EventArgs e)
     {
         Page.Response.Redirect("~/Login.aspx");
@@ -155,6 +143,26 @@ public partial class Home : System.Web.UI.Page
 
     protected void btnCarregaGrafico_Click(object sender, EventArgs e)
     {
-        CarregaGraficos();
+        CarregaGraficoVendas();
+    }
+    protected void LinkButton2_Click(object sender, EventArgs e)
+    {
+        CarregaGraficoTop5Produto();
+    }
+
+    private void CarregaGraficoVendas()
+    {
+        graficoVendasAnuais.Visible = true;
+        UsuarioWeb objUsuario = Session["ObjetoUsuario"] as UsuarioWeb;
+        graficoVendasAnuais.DataSource = HLP.Dados.Vendas.HlpFuncoesVendas.GetVendasPorRepresentanteAnual(objUsuario.oTabelas, DateTime.Now.Year.ToString(), objUsuario.oTabelas.CdVendedorAtual);
+        graficoVendasAnuais.DataBind();
+    }
+    private void CarregaGraficoTop5Produto()
+    {
+        graficoTopCincoProd.Visible = true;
+        UsuarioWeb objUsuario = Session["ObjetoUsuario"] as UsuarioWeb;
+        string sTableItens = (WebConfigurationManager.AppSettings["TableItens"]).ToUpper();
+        graficoTopCincoProd.DataSource = HLP.Dados.Vendas.HlpFuncoesVendas.GetProdutosMaisVendidos(objUsuario.oTabelas, sTableItens, 5, (DateTime.Now.AddDays(-30)), DateTime.Today);
+        graficoTopCincoProd.DataBind();
     }
 }
