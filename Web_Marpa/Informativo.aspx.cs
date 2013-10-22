@@ -105,6 +105,7 @@ public partial class Informativo : System.Web.UI.Page
         dr.DS_TIPODOC = row["DS_TIPODOC"].ToString();
         dr.ST_PEDIDO = row["ST_PEDIDO"].ToString();
         dr.VL_DESC = row["VL_DESCONTO_VALOR"].ToString();
+        dr.CD_PROD = row["CD_PROD"].ToString();
     }
 
     private string MontaQueryPedido(UsuarioWeb objUsuario, string sTabelaFilho)
@@ -131,7 +132,7 @@ public partial class Informativo : System.Web.UI.Page
         str.Append("M.VL_UNIPROD, ");
         str.Append("M.QT_PROD, ");
         str.Append("M.VL_DESCONTO_VALOR, ");
-        str.Append("M.DS_PROD ");
+        str.Append("M.DS_PROD , M.CD_PROD ");
         str.Append("FROM PEDIDO ");
         str.Append("INNER JOIN EMPRESA ON (EMPRESA.CD_EMPRESA = PEDIDO.CD_EMPRESA) ");
         str.Append("LEFT OUTER JOIN {0} M ON ((M.CD_EMPRESA = PEDIDO.CD_EMPRESA) AND (M.CD_PEDIDO = PEDIDO.CD_PEDIDO)) ");

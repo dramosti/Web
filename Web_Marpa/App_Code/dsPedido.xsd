@@ -12,7 +12,7 @@
   <xs:element name="dsPedido" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:Generator_DataSetName="dsPedido" msprop:Generator_UserDSName="dsPedido">
     <xs:complexType>
       <xs:choice minOccurs="0" maxOccurs="unbounded">
-        <xs:element name="Pedido" msprop:Generator_TableClassName="PedidoDataTable" msprop:Generator_TableVarName="tablePedido" msprop:Generator_RowChangedName="PedidoRowChanged" msprop:Generator_TablePropName="Pedido" msprop:Generator_RowDeletingName="PedidoRowDeleting" msprop:Generator_RowChangingName="PedidoRowChanging" msprop:Generator_RowEvHandlerName="PedidoRowChangeEventHandler" msprop:Generator_RowDeletedName="PedidoRowDeleted" msprop:Generator_RowClassName="PedidoRow" msprop:Generator_UserTableName="Pedido" msprop:Generator_RowEvArgName="PedidoRowChangeEvent">
+        <xs:element name="Pedido" msprop:Generator_TableClassName="PedidoDataTable" msprop:Generator_TableVarName="tablePedido" msprop:Generator_TablePropName="Pedido" msprop:Generator_RowDeletingName="PedidoRowDeleting" msprop:Generator_RowChangingName="PedidoRowChanging" msprop:Generator_RowEvHandlerName="PedidoRowChangeEventHandler" msprop:Generator_RowDeletedName="PedidoRowDeleted" msprop:Generator_UserTableName="Pedido" msprop:Generator_RowChangedName="PedidoRowChanged" msprop:Generator_RowEvArgName="PedidoRowChangeEvent" msprop:Generator_RowClassName="PedidoRow">
           <xs:complexType>
             <xs:sequence>
               <xs:element name="DT_PEDIDO" msprop:Generator_ColumnVarNameInTable="columnDT_PEDIDO" msprop:Generator_ColumnPropNameInRow="DT_PEDIDO" msprop:Generator_ColumnPropNameInTable="DT_PEDIDOColumn" msprop:Generator_UserColumnName="DT_PEDIDO" type="xs:string" minOccurs="0" />
@@ -35,6 +35,7 @@
               <xs:element name="DS_TIPODOC" msprop:Generator_ColumnVarNameInTable="columnDS_TIPODOC" msprop:Generator_ColumnPropNameInRow="DS_TIPODOC" msprop:Generator_ColumnPropNameInTable="DS_TIPODOCColumn" msprop:Generator_UserColumnName="DS_TIPODOC" type="xs:string" minOccurs="0" />
               <xs:element name="ST_PEDIDO" msprop:Generator_ColumnVarNameInTable="columnST_PEDIDO" msprop:Generator_ColumnPropNameInRow="ST_PEDIDO" msprop:Generator_ColumnPropNameInTable="ST_PEDIDOColumn" msprop:Generator_UserColumnName="ST_PEDIDO" type="xs:string" minOccurs="0" />
               <xs:element name="VL_DESC" msprop:Generator_ColumnVarNameInTable="columnVL_DESC" msprop:Generator_ColumnPropNameInRow="VL_DESC" msprop:Generator_ColumnPropNameInTable="VL_DESCColumn" msprop:Generator_UserColumnName="VL_DESC" type="xs:string" minOccurs="0" />
+              <xs:element name="CD_PROD" msprop:Generator_ColumnVarNameInTable="columnCD_PROD" msprop:Generator_ColumnPropNameInRow="CD_PROD" msprop:Generator_ColumnPropNameInTable="CD_PRODColumn" msprop:Generator_UserColumnName="CD_PROD" type="xs:string" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>

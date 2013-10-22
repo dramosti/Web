@@ -27,7 +27,7 @@ public partial class ConsultaPedidos : System.Web.UI.Page
             string sTabela = WebConfigurationManager.AppSettings["TableItens"];
             if (sTabela.ToUpper() == "MOVIPEND")
             {
-                gridConsultaPedidos.Columns[4].Visible = false;
+                gridConsultaPedidos.Columns[5].Visible = false;
             }
             BaseDAO.CancelarOperacaoObjetoDAO((BaseDAO)Session["ObjetoPedidoDetalhado"]);
             ParametroPesquisa objParametros = (ParametroPesquisa)Session["FiltroPedidos"];
@@ -88,23 +88,19 @@ public partial class ConsultaPedidos : System.Web.UI.Page
             if (bPesquisarDados)
             {
                 StringBuilder squery = new StringBuilder();
-                squery.Append("SELECT P.vl_totalped VL_TOTAL, ");
+                squery.Append("SELECT P.vl_total_reservado_com_desc VL_TOTAL_RES, P.vl_total_liberado_com_desc VL_TOTAL_LIB, ");
                 squery.Append("P.dt_pedido DT_DOC, ");
                 squery.Append("P.cd_empresa, ");
                 squery.Append("P.cd_vend1 CD_VEND, ");
                 squery.Append("P.cd_cliente CD_CLIFOR, ");
                 squery.Append("p.cd_pedido, ");
                 squery.Append("p.nm_clifor ");
-                squery.Append("FROM pedido P ");
+                squery.Append("FROM pedido P left join pedseq ps on p.cd_pedido = ps.cd_pedido and p.cd_empresa = ps.cd_empresa ");
                 squery.Append("where p.dt_pedido between ('{0}') and ('{1}') ");
                 squery.Append("and p.cd_vend1 = '{2}' ");
-                squery.Append("and p.cd_empresa = '{3}'");
+                squery.Append("and p.cd_empresa = '{3}' and coalesce(ps.st_canped,'N') <> 'S' ");
 
-                dtPedidos = objUsuario.oTabelas.hlpDbFuncoes.qrySeekRet(string.Format(squery.ToString(),
-                    objParametros.dtINI.ToString("dd.MM.yyyy"),
-                    objParametros.dtFIM.ToString("dd.MM.yyyy"),
-                    objUsuario.CodigoVendedor,
-                    objUsuario.oTabelas.sEmpresa));
+                dtPedidos = objUsuario.oTabelas.hlpDbFuncoes.qrySeekRet(string.Format(squery.ToString(),objParametros.dtINI.ToString("dd.MM.yyyy"), objParametros.dtFIM.ToString("dd.MM.yyyy"),objUsuario.CodigoVendedor,objUsuario.oTabelas.sEmpresa));
                 DataColumn[] ChavePrimaria = new DataColumn[] { dtPedidos.Columns["CD_PEDIDO"] };
                 dtPedidos.PrimaryKey = ChavePrimaria;
                 Session["DadosConsultaPedidos"] = dtPedidos;
@@ -132,7 +128,7 @@ public partial class ConsultaPedidos : System.Web.UI.Page
         if (bPesquisarDados)
         {
             StringBuilder squery = new StringBuilder();
-            squery.Append("SELECT SUM(S.VL_TOTAL) VL_TOTAL, SUM(S.VL_TOTLIQ) VL_TOTPROD, ");
+            squery.Append("SELECT '0,00'VL_TOTAL_RES, SUM(S.VL_TOTAL) VL_TOTAL_LIB, SUM(S.VL_TOTLIQ) VL_TOTPROD, ");
             squery.Append("SUM(VL_COMISSAO) VL_COMISSAO, ");
             squery.Append("CASE S.CD_TIPODOC ");
             squery.Append("WHEN '006' THEN  10 ");

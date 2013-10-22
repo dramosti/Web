@@ -127,17 +127,26 @@ public partial class ListaPreco : System.Web.UI.Page
             drRet["vl_precove_subst"] = dr["vl_precove_subst"];
             drRet["vl_subst"] = dr["vl_subst"];
 
-            DataTable dtAliquotas = objUsuario.oTabelas.hlpDbFuncoes.qrySeekRet("ICM", "VL_ALIQUOT, VL_ALISUBS ", "cd_ufnor = '" + Session["CD_UFNOR"] + "' and icm.cd_aliicms =  (SELECT  PRODUTO.cd_aliicms FROM PRODUTO  WHERE CD_PROD = '" + sCodProduto + "')");
-            if (dtAliquotas.Rows.Count > 0)
+
+            drRet["VL_ALIQUOT"] = 0;
+            drRet["VL_ALISUBS"] = 0;
+
+            if (drRet["CD_SITTRIB"] != null)
             {
-                drRet["VL_ALIQUOT"] = Convert.ToDouble(dtAliquotas.Rows[0]["VL_ALIQUOT"].ToString());
-                drRet["VL_ALISUBS"] = Convert.ToDouble(dtAliquotas.Rows[0]["VL_ALISUBS"].ToString());
+                int itotCaracter = drRet["CD_SITTRIB"].ToString().Count();
+                string[] arr1 = new string[] { "00", "10", "20","70" };
+
+                if (arr1.Contains(drRet["CD_SITTRIB"].ToString().Substring(itotCaracter-2,2)))
+                {
+                    DataTable dtAliquotas = objUsuario.oTabelas.hlpDbFuncoes.qrySeekRet("ICM", "VL_ALIQUOT, VL_ALISUBS ", "cd_ufnor = 'SP' and icm.cd_aliicms =  (SELECT  PRODUTO.cd_aliicms FROM PRODUTO  WHERE CD_PROD = '" + sCodProduto + "')");
+                    if (dtAliquotas.Rows.Count > 0)
+                    {
+                        drRet["VL_ALIQUOT"] = Convert.ToDouble(dtAliquotas.Rows[0]["VL_ALIQUOT"].ToString());
+                        drRet["VL_ALISUBS"] = Convert.ToDouble(dtAliquotas.Rows[0]["VL_ALISUBS"].ToString());
+                    }                             
+                }
             }
-            else
-            {
-                drRet["VL_ALIQUOT"] = 0;
-                drRet["VL_ALISUBS"] = 0;
-            }
+            
             dtRetorno.Rows.Add(drRet);
         }
         Session["DadosConsultaProduto"] = dtRetorno;

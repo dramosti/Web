@@ -14,33 +14,32 @@
             OnRowCommand="gridConsultaPedidos_RowCommand">
             <AlternatingRowStyle CssClass="alt" />
             <Columns>
-                <asp:BoundField DataField="CD_PEDIDO" HeaderText="Pedido" 
-                    HeaderStyle-HorizontalAlign="Left" ItemStyle-HorizontalAlign="Left" >
-<HeaderStyle HorizontalAlign="Left"></HeaderStyle>
-
-<ItemStyle HorizontalAlign="Left" Width="80px"></ItemStyle>
+                <asp:BoundField DataField="CD_PEDIDO" HeaderText="Pedido" HeaderStyle-HorizontalAlign="Left"
+                    ItemStyle-HorizontalAlign="Left">
+                    <HeaderStyle HorizontalAlign="Left"></HeaderStyle>
+                    <ItemStyle HorizontalAlign="Left" Width="80px"></ItemStyle>
                 </asp:BoundField>
-                <asp:BoundField DataField="NM_CLIFOR" HeaderText="Razão Social">
+                <asp:BoundField DataField="NM_CLIFOR" HeaderText="Razão Social"></asp:BoundField>
+                <asp:BoundField DataField="DT_DOC" DataFormatString="{0:dd/MM/yyyy}" HeaderText="Data Pedido">
+                    <ItemStyle Width="100px" />
                 </asp:BoundField>
-                <asp:BoundField DataField="DT_DOC" DataFormatString="{0:dd/MM/yyyy}" 
-                    HeaderText="Data Pedido">
-                <ItemStyle Width="100px" />
+                <asp:BoundField DataField="VL_TOTAL_RES" DataFormatString="{0:n}" HeaderText="Valor Reservado">
+                    <ItemStyle HorizontalAlign="Right" Width="100px" />
                 </asp:BoundField>
-                <asp:BoundField DataField="VL_TOTAL" DataFormatString="{0:n}" 
-                    HeaderText="Valor Pedido">
-                <ItemStyle HorizontalAlign="Right" Width="100px" />
+                <asp:BoundField DataField="VL_TOTAL_LIB" DataFormatString="{0:n}" HeaderText="Valor Liberado">
+                    <ItemStyle HorizontalAlign="Right" Width="100px" />
                 </asp:BoundField>
-                <asp:BoundField DataField="VL_COMISSAO" DataFormatString="{0:n}" 
-                    HeaderText="Valor Comissão" Visible="False" />
-                <asp:BoundField DataField="VL_PERCOMISSAO" DataFormatString="{0:n}" 
-                    HeaderText="% Comissão" Visible="False" />
-                <asp:BoundField DataField="CD_PEDIDO" HeaderText="Nº da Nota / Ped." 
+                <asp:BoundField DataField="VL_COMISSAO" DataFormatString="{0:n}" HeaderText="Valor Comissão"
                     Visible="False" />
+                <asp:BoundField DataField="VL_PERCOMISSAO" DataFormatString="{0:n}" HeaderText="% Comissão"
+                    Visible="False" />
+                <asp:BoundField DataField="CD_PEDIDO" HeaderText="Nº da Nota / Ped." Visible="False" />
                 <asp:BoundField DataField="DS_TIPODOC" Visible="False" />
                 <asp:ButtonField Text="Status" CommandName="Pedido" ItemStyle-ForeColor="Blue">
                     <ItemStyle ForeColor="Blue" Width="70px" />
                 </asp:ButtonField>
-                <asp:ButtonField Text="Email/Visualizar" CommandName="Email" ItemStyle-ForeColor="Blue" ItemStyle-Width="160px">
+                <asp:ButtonField Text="Email/Visualizar" CommandName="Email" ItemStyle-ForeColor="Blue"
+                    ItemStyle-Width="160px">
                     <ItemStyle ForeColor="Blue" />
                 </asp:ButtonField>
             </Columns>

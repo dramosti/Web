@@ -34,7 +34,14 @@
         }
         .style10
         {
-            width: 660px;
+            width: 739px;
+        }
+        .style11
+        {
+            font-size: 14px;
+            font-family: Segoe UI;
+            color: Black;
+            width: 739px;
         }
     </style>
 </asp:Content>
@@ -49,22 +56,19 @@
         </table>
         <table width="100%">
             <tr>
-                <td class="label" align="left">
+                <td class="style11" align="left">
                     <asp:LinkButton ID="LinkButton1" runat="server" OnClick="btnCarregaGrafico_Click">Vendas no Ano</asp:LinkButton>
-                </td>
-               <td class="label" align="left">
-                    <asp:LinkButton ID="LinkButton2" runat="server" onclick="LinkButton2_Click">Top 5 Produtos</asp:LinkButton>
                 </td>
             </tr>
             <tr>
-                <td align="left" class="style10">
+                <td align="center" class="style10">
                     <asp:Chart ID="graficoVendasAnuais" runat="server" BackColor="WhiteSmoke" BackGradientStyle="TopBottom"
-                        BackSecondaryColor="White" BorderColor="#1A3B69" BorderlineDashStyle="Solid"
-                        BorderWidth="2px" Height="230px" ImageLocation="~/TempImages/ChartPic_#SEQ(300,3)"
-                        Width="420px" EnableViewState="True" Visible="False">
+                        BackSecondaryColor="White" BorderColor="#1A3B69" BorderWidth="2px" Height="230px"
+                        ImageLocation="~/TempImages/ChartPic_#SEQ(300,3)" Width="960px" EnableViewState="True"
+                        Visible="False">
                         <Titles>
                             <asp:Title Font="Trebuchet MS, 12px, style=Bold" ForeColor="26, 59, 105" ShadowColor="32, 0, 0, 0"
-                                ShadowOffset="3" Text="Vendas no Ano">
+                                ShadowOffset="3" Text="Vendas no Ano que representam faturamento.">
                             </asp:Title>
                         </Titles>
                         <Legends>
@@ -75,8 +79,7 @@
                         <BorderSkin SkinStyle="Emboss" />
                         <Series>
                             <asp:Series BorderColor="180, 26, 59, 105" ChartArea="ChartArea1" Color="220, 65, 140, 240"
-                                Name="Series1" XValueMember="Mes" YValueMembers="Total" IsValueShownAsLabel="True"
-                                ChartType="Line">
+                                Name="Series1" XValueMember="Mes" YValueMembers="Total" IsValueShownAsLabel="True">
                             </asp:Series>
                         </Series>
                         <ChartAreas>
@@ -96,9 +99,17 @@
                         </ChartAreas>
                     </asp:Chart>
                 </td>
-                <td align="right">
-                    <asp:Chart ID="graficoTopCincoProd" runat="server" Width="420px" Height="230px" BackColor="WhiteSmoke"
-                        BorderlineDashStyle="Solid" BackGradientStyle="TopBottom" BorderWidth="2px" BorderColor="#1A3B69"
+            </tr>
+            <tr>
+                <td class="label" align="left">
+                    <asp:LinkButton ID="LinkButton2" runat="server" OnClick="LinkButton2_Click">Top 5 Produtos</asp:LinkButton>
+                </td>
+            </tr>
+            <tr>
+                <td align="left">
+                    <asp:Chart ID="graficoTopCincoProd" runat="server" Width="700px" Height="230px" BackColor="WhiteSmoke"
+                        BorderlineDashStyle="Solid" BackGradientStyle="TopBottom" 
+                        BorderWidth="2px" BorderColor="#1A3B69"
                         ImageLocation="~/TempImages/ChartPic_#SEQ(300,3)" BackSecondaryColor="White"
                         EnableViewState="True" Visible="False">
                         <Legends>
