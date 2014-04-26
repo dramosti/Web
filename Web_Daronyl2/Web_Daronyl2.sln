@@ -1,0 +1,66 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "Web_Daronyl2", "http://localhost:51637", "{49FA9544-5893-4ECA-83AF-EFCD7B6DFE14}"
+	ProjectSection(WebsiteProperties) = preProject
+		UseIISExpress = "true"
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
+		ProjectReferences = "{D2268833-12BA-4E52-A2C5-9213F6A50F7A}|HLP.Geral.dll;{9ea6af5a-7c40-4e63-8d34-24557ad166c1}|HLP.Dados.dll;"
+		Debug.AspNetCompiler.VirtualPath = "/localhost_51637"
+		Debug.AspNetCompiler.PhysicalPath = "..\Web_Daronyl2\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_51637\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/localhost_51637"
+		Release.AspNetCompiler.PhysicalPath = "..\Web_Daronyl2\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_51637\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		SlnRelativePath = "..\Web_Daronyl2\"
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HLP.Dados", "..\GitHub\HLP\Web\Web_Estrutura\HLP.Dados\HLP.Dados\HLP.Dados.csproj", "{9EA6AF5A-7C40-4E63-8D34-24557AD166C1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HLP.Dados.Cadastro", "..\GitHub\HLP\Web\Web_Estrutura\HLP.Dados.Cadastro\HLP.Dados.Cadastro.csproj", "{FFCC3C3D-4285-4AB3-ACCE-F2A7654EE1D6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HLP.Geral", "..\GitHub\HLP\Web\Web_Estrutura\HLP.Geral\HLP.Geral.csproj", "{D2268833-12BA-4E52-A2C5-9213F6A50F7A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HLP.Dados.Vendas", "..\GitHub\HLP\Web\Web_Estrutura\HLP.Dados.Vendas\HLP.Dados.Vendas\HLP.Dados.Vendas.csproj", "{92A63FBC-D462-47CE-8DBB-0064C20C163A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{49FA9544-5893-4ECA-83AF-EFCD7B6DFE14}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{49FA9544-5893-4ECA-83AF-EFCD7B6DFE14}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{49FA9544-5893-4ECA-83AF-EFCD7B6DFE14}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{49FA9544-5893-4ECA-83AF-EFCD7B6DFE14}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{9EA6AF5A-7C40-4E63-8D34-24557AD166C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9EA6AF5A-7C40-4E63-8D34-24557AD166C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9EA6AF5A-7C40-4E63-8D34-24557AD166C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9EA6AF5A-7C40-4E63-8D34-24557AD166C1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FFCC3C3D-4285-4AB3-ACCE-F2A7654EE1D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FFCC3C3D-4285-4AB3-ACCE-F2A7654EE1D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FFCC3C3D-4285-4AB3-ACCE-F2A7654EE1D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FFCC3C3D-4285-4AB3-ACCE-F2A7654EE1D6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D2268833-12BA-4E52-A2C5-9213F6A50F7A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D2268833-12BA-4E52-A2C5-9213F6A50F7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D2268833-12BA-4E52-A2C5-9213F6A50F7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D2268833-12BA-4E52-A2C5-9213F6A50F7A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{92A63FBC-D462-47CE-8DBB-0064C20C163A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92A63FBC-D462-47CE-8DBB-0064C20C163A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{92A63FBC-D462-47CE-8DBB-0064C20C163A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{92A63FBC-D462-47CE-8DBB-0064C20C163A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

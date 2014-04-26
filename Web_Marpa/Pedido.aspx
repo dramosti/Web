@@ -40,6 +40,20 @@
             }
         });
     </script>
+    
+
+    <%--<script language="javascript"  type="text/javascript">  
+        window.onload = GetComputerName();
+        function GetComputerName() {
+            try {
+                var network = new ActiveXObject('WScript.Network');
+                // Show a pop up if it works
+                alert(network.computerName);
+                
+            }
+            catch (e) { }
+        }
+    </script>--%>
     <script type="text/javascript">
         $('#<%=txtDesconto.ClientID%>').live("blur", function () {
             var valor = $('#<%=txtDesconto.ClientID%>').val();
@@ -593,7 +607,11 @@
                                                 <td style="width: 100px">
                                                 </td>
                                                 <td style="width: 100px">
-                                                    <asp:Button ID="btnGravar" runat="server" Text="Gravar Pedido" Width="130px" OnClick="btnGravar_Click"
+                                                    <asp:Button ID="btnGravar" 
+                                                        OnClientClick="this.disabled = true; this.value = 'Aguarde...'" 
+                                                        runat="server" 
+                                                        Text="Gravar Pedido" Width="130px" OnClick="btnGravar_Click"
+                                                        UseSubmitBehavior="false" 
                                                         CssClass="button" />
                                                 </td>
                                             </tr>

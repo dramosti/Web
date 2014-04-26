@@ -146,7 +146,6 @@ public partial class ListaPreco : System.Web.UI.Page
                     }                             
                 }
             }
-            
             dtRetorno.Rows.Add(drRet);
         }
         Session["DadosConsultaProduto"] = dtRetorno;

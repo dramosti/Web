@@ -88,7 +88,7 @@ public partial class ConsultaPedidos : System.Web.UI.Page
             if (bPesquisarDados)
             {
                 StringBuilder squery = new StringBuilder();
-                squery.Append("SELECT P.vl_total_reservado_com_desc VL_TOTAL_RES, P.vl_total_liberado_com_desc VL_TOTAL_LIB, ");
+                squery.Append("SELECT distinct P.vl_total_reservado_com_desc VL_TOTAL_RES, P.vl_total_liberado_com_desc VL_TOTAL_LIB, ");
                 squery.Append("P.dt_pedido DT_DOC, ");
                 squery.Append("P.cd_empresa, ");
                 squery.Append("P.cd_vend1 CD_VEND, ");
@@ -183,7 +183,7 @@ public partial class ConsultaPedidos : System.Web.UI.Page
                     NM_VEND = item["NM_VEND"].ToString(),
                     VL_COMISSAO = Convert.ToDecimal(item["VL_COMISSAO"].ToString()),
                     VL_PERCOMISSAO = Convert.ToDecimal(item["VL_PERCOMISSAO"].ToString()),
-                    VL_TOTAL = Convert.ToDecimal(item["VL_TOTAL"].ToString()),
+                    VL_TOTAL = Convert.ToDecimal(item["VL_TOTAL_LIB"].ToString()),
                     VL_TOTPROD = Convert.ToDecimal(item["VL_TOTPROD"].ToString())
                 }).ToList();
 

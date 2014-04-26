@@ -1,30 +1,28 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "Web_Marpa", ".", "{774B1FB6-8ED1-44EC-A99F-5D4BF2218456}"
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "Web_Marpa", "http://localhost:58844", "{E7570C65-44D6-4707-A5F3-D6360D0A9946}"
 	ProjectSection(WebsiteProperties) = preProject
+		UseIISExpress = "true"
 		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
-		ProjectReferences = "{5F1CAB19-EADA-41DF-85A2-4951F3AB11BD}|HLP.Web.dll;{9EA6AF5A-7C40-4E63-8D34-24557AD166C1}|HLP.Dados.dll;"
-		Debug.AspNetCompiler.VirtualPath = "/Marpa"
+		Debug.AspNetCompiler.VirtualPath = "/localhost_58844"
 		Debug.AspNetCompiler.PhysicalPath = "..\Web_Marpa\"
-		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\Marpa\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_58844\"
 		Debug.AspNetCompiler.Updateable = "true"
 		Debug.AspNetCompiler.ForceOverwrite = "true"
 		Debug.AspNetCompiler.FixedNames = "false"
 		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.VirtualPath = "/Marpa"
+		Release.AspNetCompiler.VirtualPath = "/localhost_58844"
 		Release.AspNetCompiler.PhysicalPath = "..\Web_Marpa\"
-		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\Marpa\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_58844\"
 		Release.AspNetCompiler.Updateable = "true"
 		Release.AspNetCompiler.ForceOverwrite = "true"
 		Release.AspNetCompiler.FixedNames = "false"
 		Release.AspNetCompiler.Debug = "False"
-		VWDPort = "49207"
+		SlnRelativePath = "..\Web_Marpa\"
 	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HLP.Web", "..\Web_Estrutura\HLP.Web\HLP.Web.csproj", "{5F1CAB19-EADA-41DF-85A2-4951F3AB11BD}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HLP.Dados", "..\Web_Estrutura\HLP.Dados\HLP.Dados\HLP.Dados.csproj", "{9EA6AF5A-7C40-4E63-8D34-24557AD166C1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HLP.Dados.Vendas", "..\Web_Estrutura\HLP.Dados.Vendas\HLP.Dados.Vendas\HLP.Dados.Vendas.csproj", "{92A63FBC-D462-47CE-8DBB-0064C20C163A}"
 EndProject
@@ -34,18 +32,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{774B1FB6-8ED1-44EC-A99F-5D4BF2218456}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{774B1FB6-8ED1-44EC-A99F-5D4BF2218456}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{774B1FB6-8ED1-44EC-A99F-5D4BF2218456}.Release|Any CPU.ActiveCfg = Debug|Any CPU
-		{774B1FB6-8ED1-44EC-A99F-5D4BF2218456}.Release|Any CPU.Build.0 = Debug|Any CPU
-		{5F1CAB19-EADA-41DF-85A2-4951F3AB11BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5F1CAB19-EADA-41DF-85A2-4951F3AB11BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5F1CAB19-EADA-41DF-85A2-4951F3AB11BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5F1CAB19-EADA-41DF-85A2-4951F3AB11BD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9EA6AF5A-7C40-4E63-8D34-24557AD166C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9EA6AF5A-7C40-4E63-8D34-24557AD166C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9EA6AF5A-7C40-4E63-8D34-24557AD166C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9EA6AF5A-7C40-4E63-8D34-24557AD166C1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E7570C65-44D6-4707-A5F3-D6360D0A9946}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E7570C65-44D6-4707-A5F3-D6360D0A9946}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E7570C65-44D6-4707-A5F3-D6360D0A9946}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{E7570C65-44D6-4707-A5F3-D6360D0A9946}.Release|Any CPU.Build.0 = Debug|Any CPU
 		{92A63FBC-D462-47CE-8DBB-0064C20C163A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{92A63FBC-D462-47CE-8DBB-0064C20C163A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{92A63FBC-D462-47CE-8DBB-0064C20C163A}.Release|Any CPU.ActiveCfg = Release|Any CPU

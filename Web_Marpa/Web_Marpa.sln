@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "Web_Marpa", ".", "{00CD6A91-6C46-4210-8C6A-AD39D1DD248C}"
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "Web_Marpa", ".", "{7C5A603E-C71E-45CF-85BC-5827FBFD1EAB}"
 	ProjectSection(WebsiteProperties) = preProject
 		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
 		Debug.AspNetCompiler.VirtualPath = "/Web_Marpa"
@@ -26,8 +26,8 @@ Global
 		Debug|Any CPU = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{00CD6A91-6C46-4210-8C6A-AD39D1DD248C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{00CD6A91-6C46-4210-8C6A-AD39D1DD248C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C5A603E-C71E-45CF-85BC-5827FBFD1EAB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C5A603E-C71E-45CF-85BC-5827FBFD1EAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

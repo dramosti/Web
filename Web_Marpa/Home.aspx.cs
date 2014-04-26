@@ -52,7 +52,7 @@ public partial class Home : System.Web.UI.Page
 
    
     protected void btnAcessar_Click(object sender, EventArgs e)
-    {
+    {     
         Page.Response.Redirect("~/Login.aspx");
     }
 
@@ -152,10 +152,19 @@ public partial class Home : System.Web.UI.Page
 
     private void CarregaGraficoVendas()
     {
-        graficoVendasAnuais.Visible = true;
-        UsuarioWeb objUsuario = Session["ObjetoUsuario"] as UsuarioWeb;
-        graficoVendasAnuais.DataSource = HLP.Dados.Vendas.HlpFuncoesVendas.GetVendasPorRepresentanteAnual(objUsuario.oTabelas, DateTime.Now.Year.ToString(), objUsuario.oTabelas.CdVendedorAtual);
-        graficoVendasAnuais.DataBind();
+        try
+        {
+            graficoVendasAnuais.Visible = true;
+            UsuarioWeb objUsuario = Session["ObjetoUsuario"] as UsuarioWeb;
+            graficoVendasAnuais.DataSource = HLP.Dados.Vendas.HlpFuncoesVendas.GetVendasPorRepresentanteAnual(objUsuario.oTabelas, DateTime.Now.Year.ToString(), objUsuario.oTabelas.CdVendedorAtual);
+            graficoVendasAnuais.DataBind();
+        }
+        catch (Exception ex)
+        {
+
+            MessageHLP.ShowPopUpMsg(ex.Message, this);
+        }
+       
     }
     private void CarregaGraficoTop5Produto()
     {

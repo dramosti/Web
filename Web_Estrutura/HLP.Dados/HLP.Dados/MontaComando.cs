@@ -54,43 +54,53 @@ namespace HLP.Dados
                 (TipoExpressao == TipoComando.Update))
             {
                 string sCampo;
+
                 foreach (DataColumn campo in registro.Table.Columns)
                 {
-                    sCampo = campo.ColumnName;
-                    if (sCampo.StartsWith("CAMPO"))
-                        continue;
-                    if ((sCamposDesconsiderados != null) &&
-                        (sCamposDesconsiderados.Contains(sCampo)))
-                        continue;
-                    if (campo.DataType.Equals(typeof(System.Byte[])))
-                        continue;
+                    try
+                    {
+                        sCampo = campo.ColumnName;
+                        if (sCampo.StartsWith("CAMPO"))
+                            continue;
+                        if ((sCamposDesconsiderados != null) &&
+                            (sCamposDesconsiderados.Contains(sCampo)))
+                            continue;
+                        if (campo.DataType.Equals(typeof(System.Byte[])))
+                            continue;
 
-                    sValor = HlpDbFuncoesGeral.RetornaStrValor(registro[campo], campo);
-                    if (TipoExpressao == TipoComando.Insert)
-                    {
-                        //Renato - 25/09/2003 - OS 10603
-                        if (!sValor.Equals("NULL"))
+                        sValor = HlpDbFuncoesGeral.RetornaStrValor(registro[campo], campo);
+                        if (campo.ToString().ToUpper().Equals("ST_LIBERADO_TOTALMENTE") && sValor.Equals("NULL"))
+                            sValor = "'A'";
+                        if (TipoExpressao == TipoComando.Insert)
                         {
-                            if (str1.Length > 0)
-                                str1.Append(',');
-                            str1.Append(sCampo);
-                            if (str2.Length > 0)
-                                str2.Append(',');
-                            str2.Append(sValor);
+                            //Renato - 25/09/2003 - OS 10603
+                            if (!sValor.Equals("NULL"))
+                            {
+                                if (str1.Length > 0)
+                                    str1.Append(',');
+                                str1.Append(sCampo);
+                                if (str2.Length > 0)
+                                    str2.Append(',');
+                                str2.Append(sValor);
+                            }
+                            ////////////////////////////////
                         }
-                        ////////////////////////////////
+                        else
+                        {
+                            bContinua = (!bDesconsideraNullUpdate);
+                            if (!bContinua)
+                                bContinua = (!sValor.Equals("NULL"));
+                            if (bContinua)
+                            {
+                                if (str1.Length > 0)
+                                    str1.Append(',');
+                                str1.Append(" " + sCampo + " = " + sValor);
+                            }
+                        }
                     }
-                    else
+                    catch (Exception ex)
                     {
-                        bContinua = (!bDesconsideraNullUpdate);
-                        if (!bContinua)
-                            bContinua = (!sValor.Equals("NULL"));
-                        if (bContinua)
-                        {
-                            if (str1.Length > 0)
-                                str1.Append(',');
-                            str1.Append(" " + sCampo + " = " + sValor);
-                        }
+                        throw ex;
                     }
                 }
             }

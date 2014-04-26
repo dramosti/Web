@@ -6,7 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Drawing;
 using HLP.Dados;
-using HLP.Web;  
+using HLP.Web;
 using System.Text;
 using FirebirdSql.Data.FirebirdClient;
 using System.Web.Configuration;
@@ -15,6 +15,7 @@ using HLP.Dados.Cadastro;
 using System.Text.RegularExpressions;
 using HLP.Dados.Cadastro.Web;
 using System.Linq;
+using System.Net;
 
 
 public partial class Pedido : System.Web.UI.Page
@@ -138,16 +139,12 @@ public partial class Pedido : System.Web.UI.Page
             lblInfo.Text = String.Empty;
             MultiViewItensPed.ActiveViewIndex = 1;
             string sListaPadrao = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("CLIFOR", "coalesce(CD_LISTA,'')CD_LISTA", "CD_ALTER = '" + txtCodCli.Text + "'");
+            cbxListaPreco.Enabled = false;
+            cbxListaPreco.BackColor = System.Drawing.ColorTranslator.FromHtml("#E5E5E5");//cinza;
+
             if (sListaPadrao == "")
             {
                 sListaPadrao = "00001";
-                cbxListaPreco.Enabled = false;
-                cbxListaPreco.BackColor = System.Drawing.ColorTranslator.FromHtml("#E5E5E5");//cinza;
-            }
-            else
-            {
-                cbxListaPreco.Enabled = true;
-                cbxListaPreco.BackColor = Color.White;
             }
             cbxListaPreco.DataTextField = "DS_LISTA";
             cbxListaPreco.DataValueField = "CD_LISTA";
@@ -437,10 +434,39 @@ public partial class Pedido : System.Web.UI.Page
         public string sValor { get; set; }
 
     }
+
+    public string GetComputerName(string clientIP)
+    {
+        try
+        {
+            var hostEntry = Dns.GetHostEntry(clientIP);
+            return hostEntry.HostName;
+        }
+        catch (Exception ex)
+        {
+            return string.Empty;
+        }
+    }
+
+
     protected void btnGravar_Click(object sender, EventArgs e)
     {
         try
         {
+
+            string clientMachineName = "";
+            try
+            {
+                clientMachineName = GetComputerName(Request.UserHostAddress);
+                //var WinNetwork = new ActiveXObject("WScript.Network");
+                //var ComputerName = WinNetwork.ComputerName;
+            }
+            catch (Exception a)
+            {
+                clientMachineName = "No Machine";
+            }
+
+
             //if (Session["CD_ALTER"] != null)
             if (txtCodCli.Text != "")
             {
@@ -546,6 +572,8 @@ public partial class Pedido : System.Web.UI.Page
                     string sST_FRETE = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("EMPRESA", "ST_RESPONSAVEL_FRETE", "CD_EMPRESA = '" + objUsuario.oTabelas.sEmpresa.Trim() + "'");
 
                     strUpDatePed.Append(" UPDATE PEDIDO SET CD_PEDIDO = '" + strRetPedido.Trim());
+                    //strUpDatePed.Append("', HR_PEDIDO = '" + Session["HoraPedido"]);
+                    strUpDatePed.Append("', HR_PEDIDO = '" + DateTime.Now.ToShortTimeString());
                     strUpDatePed.Append("', ST_FRETE = '" + sST_FRETE);
                     strUpDatePed.Append("', VL_TOTALPED = '" + sVL_TOTALPED);
                     strUpDatePed.Append("', st_desccond = '" + "N");
@@ -589,7 +617,7 @@ public partial class Pedido : System.Web.UI.Page
                     strUpDatePed.Append("', CD_TIPODOC = '" + sTipoDocumento);
                     strUpDatePed.Append("', CD_PRAZO = '" + cbxCD_PRAZO.SelectedItem.Value.Trim());
                     strUpDatePed.Append("', CD_TRANS = '" + objUsuario.oTabelas.TRANSP.ToString().Trim());
-                    strUpDatePed.Append("', DS_OBS_WEB = '" + txtObs.Text.ToUpper().Trim());
+                    strUpDatePed.Append("', DS_OBS_WEB = '" + txtObs.Text.ToUpper().Trim() + Environment.NewLine + "PEDIDO FEITO POR: " + clientMachineName.ToUpper());
                     strUpDatePed.Append("', DT_ABER = '" + txtDataPedido.Text.Replace("/", "."));
                     strUpDatePed.Append("', CD_USUINC ='" + objUsuario.oTabelas.CdUsuarioAtual);
                     strUpDatePed.Append("', CD_VEND1 = '" + objUsuario.oTabelas.CdVendedorAtual + "'");
@@ -862,13 +890,10 @@ public partial class Pedido : System.Web.UI.Page
         if (GridViewNovo.Rows.Count > 0)
         {
             btnAtualiza_Click(sender, e);
+            txtObs.Text = "";
             if (Convert.ToInt32(Session["QtdePendencias"].ToString()) > 0)
             {
                 txtObs.Text += "**EXISTE PENDÊNCIA FINANCEIRA PARA ESSE CLIENTE**";
-            }
-            else
-            {
-                txtObs.Text = "";
             }
             MultiViewItensPed.ActiveViewIndex = 2;
         }

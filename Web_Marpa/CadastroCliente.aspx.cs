@@ -170,14 +170,14 @@ public partial class CadastroCliente : System.Web.UI.Page, ITelaCadastroWeb
         if (btnConfirmar.Text == "Incluir Pedido")
         {
             Session["CD_ALTER"] = lblCdClifor.Text.Trim();
-            Session["NM_CLIFOR"] = txtNmGuerra.Text.Trim();
+            Session["NM_CLIFOR"] = txtNmClifor.Text.Trim();
             Session["IncluirClientePedido"] = false;
             Response.Redirect("~/Pedido.aspx");
         }
         else if (btnConfirmar.Text == "Verificar Pendencia")
         {
             Session["CD_ALTER"] = lblCdClifor.Text.Trim();
-            Session["NM_CLIFOR"] = txtNmGuerra.Text.Trim();
+            Session["NM_CLIFOR"] = txtNmClifor.Text.Trim();
             Session["IncluirClientePedido"] = false;
             Response.Redirect("~/PesquisaPendenciaCliente.aspx");
         }
