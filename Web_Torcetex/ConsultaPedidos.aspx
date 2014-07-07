@@ -10,7 +10,7 @@
         <asp:GridView ID="gridConsultaPedidos" runat="server" CssClass="mGrid" PagerStyle-CssClass="pgr"
             Font-Names="Segoe UI" Font-Size="13px" AlternatingRowStyle-CssClass="alt" GridLines="None"
             AutoGenerateColumns="False" AllowPaging="True" OnPageIndexChanging="gridConsultaPedidos_PageIndexChanging"
-            PageSize="7" Width="100%" DataKeyNames="CD_PEDIDO" OnSelectedIndexChanged="gridConsultaPedidos_SelectedIndexChanged"
+            PageSize="7" Width="100%" DataKeyNames="CD_PEDIDO"
             OnRowCommand="gridConsultaPedidos_RowCommand">
             <AlternatingRowStyle CssClass="alt" />
             <Columns>
@@ -25,7 +25,7 @@
                 </asp:BoundField>
                 <asp:BoundField DataField="vl_totalped" DataFormatString="{0:n}" HeaderText="Valor Total">
                     <ItemStyle HorizontalAlign="Right" Width="100px" />
-                </asp:BoundField>               
+                </asp:BoundField>
                 <asp:BoundField DataField="VL_COMISSAO" DataFormatString="{0:n}" HeaderText="Valor Comissão"
                     Visible="False" />
                 <asp:BoundField DataField="VL_PERCOMISSAO" DataFormatString="{0:n}" HeaderText="% Comissão"
@@ -45,13 +45,12 @@
             <PagerStyle CssClass="pgr" />
         </asp:GridView>
         <br />
+         <asp:Button ID="btnVisualizar" runat="server" Text="Visualizar" Width="175px"
+            CssClass="button" OnClick="btnVisualizar_Click" />
+        <br />        
         <br />
         <asp:Button ID="lblVoltar" runat="server" Text="Efetuar nova pesquisa" Width="175px"
-            OnClick="lblVoltar_Click" CssClass="button" />
-        <br />
-        <br />
-        <asp:Button Visible="false" ID="btnComissao" runat="server" Text="Imprimir Comissão" Width="175px"
-            CssClass="button" OnClick="btnComissao_Click" />
+            CssClass="button" OnClick="lblVoltar_Click"/>
         <br />
         <br />
     </div>

@@ -67,7 +67,7 @@ public partial class Informativo : System.Web.UI.Page
             if (row["QT_PROD"].ToString() != "")
             {
                 drPedido = ds.Pedido.NewPedidoRow();
-                CopyRow(drPedido, row);
+                CopyRow(drPedido, row, "MOVIPEND");
                 ds.Pedido.Rows.Add(drPedido);
             }
 
@@ -77,21 +77,21 @@ public partial class Informativo : System.Web.UI.Page
             if (row["QT_PROD"].ToString() != "")
             {
                 drPedido = ds.Pedido.NewPedidoRow();
-                CopyRow(drPedido, row);
+                CopyRow(drPedido, row, "MOVITEM");
                 ds.Pedido.Rows.Add(drPedido);
             }
         }
         Session["PedidoRes"] = ds;
     }
 
-    private static void CopyRow(dsPedido.PedidoRow dr, DataRow row)
+    private static void CopyRow(dsPedido.PedidoRow dr, DataRow row, string sTabelaFilho)
     {
         dr.DT_PEDIDO = row["DT_PEDIDO"].ToString();
         dr.CD_CLIENTE = row["CD_CLIENTE"].ToString();
         dr.NM_CLIFOR = row["NM_CLIFOR"].ToString();
         dr.DS_ENDCLI = row["DS_ENDCLI"].ToString();
         dr.NM_BAIRROCLI = row["NM_BAIRROCLI"].ToString();
-        dr.NM_CIDCLI = row["NM_CIDCLI"].ToString();
+        dr.NM_CIDCLI = "";// row["NM_CIDCLI"].ToString();
         dr.CD_UFCLI = row["CD_UFCLI"].ToString();
         dr.CD_CEPCLI = row["CD_CEPCLI"].ToString();
         dr.CD_FONECLI = row["CD_FONECLI"].ToString();
@@ -105,6 +105,8 @@ public partial class Informativo : System.Web.UI.Page
         dr.DS_TIPODOC = row["DS_TIPODOC"].ToString();
         dr.ST_PEDIDO = row["ST_PEDIDO"].ToString();
         dr.VL_DESC = row["VL_DESCONTO_VALOR"].ToString();
+        if (sTabelaFilho.Equals("MOVIPEND"))
+            dr.NM_CIDCLI = row["DS_COR"].ToString();
         dr.CD_PROD = row["CD_PROD"].ToString();
     }
 
@@ -131,6 +133,8 @@ public partial class Informativo : System.Web.UI.Page
         str.Append(sTabelaFilho.Equals("MOVITEM") ? "'F' ST_PEDIDO," : "'P' ST_PEDIDO,");
         str.Append("M.VL_UNIPROD, ");
         str.Append("M.QT_PROD, ");
+        if (sTabelaFilho.Equals("MOVIPEND"))
+            str.Append("COALESCE(M.DS_COR,'')DS_COR, ");
         str.Append("M.VL_DESCONTO_VALOR, ");
         str.Append("M.DS_PROD , M.CD_PROD ");
         str.Append("FROM PEDIDO ");

@@ -86,7 +86,8 @@
             </tr>
              <tr>
                 <td>
-                    <asp:LinkButton ID="linkAcesso" runat="server" OnClick="LinkButton1_Click">Acesso Remoto</asp:LinkButton>
+                   <asp:HyperLink runat="server" Text="Acesso Remoto" NavigateUrl="http://hlp.com.br/Download/Remoto/Team.rar" />
+                  
                 </td>
             </tr>
             <tr>

@@ -26,6 +26,12 @@
         .style4 {
             width: 309px;
         }
+        .auto-style1 {
+            font-size: 14px;
+            font-family: Segoe UI;
+            color: Black;
+            width: 149px;
+        }
     </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="Server">
@@ -38,7 +44,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td align="right" class="label">Data do Pedido
+                        <td align="right" class="auto-style1">Data do Pedido
                         </td>
                         <td align="left">
                             <asp:TextBox ID="txtDataPedido" runat="server" CssClass="textBox" Enabled="False"
@@ -46,7 +52,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td align="right" class="label">Cliente:
+                        <td align="right" class="auto-style1">Cliente:
                         </td>
                         <td align="left">
                             <asp:TextBox ID="txtCodCli" runat="server" CssClass="textBox" Enabled="True" Width="101px"></asp:TextBox>
@@ -60,7 +66,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td align="right" class="label">Tipo de Documento:
+                        <td align="right" class="auto-style1">Tipo de Documento:
                         </td>
                         <td align="left">
                             <asp:DropDownList ID="cbxDS_TPDOCWEB" runat="server" AutoPostBack="True" CssClass="textBox"
@@ -203,7 +209,7 @@
                                         <ItemStyle Font-Names="Segoe UI" Font-Size="13px" HorizontalAlign="Left" Width="60px" />
                                         <HeaderStyle HorizontalAlign="Left" />
                                     </asp:BoundField>
-                                    <asp:BoundField DataField="CD_BARRAS" HeaderText="Código Barras">
+                                    <asp:BoundField Visible="true" DataField="cd_alter" HeaderText="Cod. Alter">
                                         <ItemStyle HorizontalAlign="Left" Width="80px" Wrap="False" />
                                         <HeaderStyle HorizontalAlign="Left" Width="50px" Wrap="False" />
                                     </asp:BoundField>
@@ -318,6 +324,18 @@
                                 AppendDataBoundItems="true" DataTextField="DS_FORMA" DataValueField="CD_FORMA"
                                 Enabled="True" Width="185px">
                                 <asp:ListItem>Selecione um item</asp:ListItem>
+                            </asp:DropDownList>
+                        </td>
+                    </tr>
+                      <tr>
+                        <td align="right" class="style3">Classificação 
+                        </td>
+                        <td align="left">
+                            <asp:DropDownList ID="cbxClassificacao" runat="server" AutoPostBack="True" CssClass="textBox"
+                                AppendDataBoundItems="true"  Enabled="True" Width="44px">
+                                <asp:ListItem>A</asp:ListItem>
+                                <asp:ListItem>B</asp:ListItem>
+                                <asp:ListItem>C</asp:ListItem>
                             </asp:DropDownList>
                         </td>
                     </tr>

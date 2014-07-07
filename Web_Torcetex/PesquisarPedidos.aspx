@@ -6,9 +6,26 @@
 <%@ Register Src="Componentes/HlpTextBoxData2.ascx" TagName="HlpTextBoxData2" TagPrefix="uc1" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="Server">
     <style type="text/css">
-        .style1
-        {
+        .style1 {
             width: 105px;
+        }
+
+        .auto-style1 {
+            font-size: 14px;
+            font-family: Segoe UI;
+            color: Black;
+            width: auto;
+        }
+
+        .auto-styleDireita {
+            font-size: 14px;
+            font-family: Segoe UI;
+            color: Black;
+            width: auto;
+        }
+
+        .auto-style2 {
+            width: 21%;
         }
     </style>
     <script type="text/javascript">
@@ -47,108 +64,75 @@
     </script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="Server">
-    <table width="100%">
+    <table width="100%" runat="server">
         <tr align="center">
-            <td width="30%">
-                &nbsp;
+            <td >&nbsp;
             </td>
             <td>
                 <div style="text-align: center">
                     <table style="width: 100%">
-                        <%-- <tr class="BordaInferior">
-                <td style="text-align: left; color: Black" class="Titulo" colspan="3">
-                    Selecione abaixo o critério para a Pesquisa de Pedidos
-                </td>
-            </tr>--%>
-                        <%-- <tr>
-                <td style="text-align: right" class="style2">
-                    <cc1:HlpWebRadioButton ID="rdbTodos" runat="server" Text="Todos" CssClass="label"
-                        GroupName="Opcoes" ForeColor="Black" Width="100px" AutoPostBack="True" OnCheckedChanged="rdbVariosPedidos_CheckedChanged"
-                        Checked="True" />
-                </td>
-                <td>
-                </td>
-            </tr>
-            <tr>
-                <td style="text-align: right" class="style2">
-                    <cc1:HlpWebRadioButton ID="rdbEspecifico" runat="server" CssClass="label" GroupName="Opcoes"
-                        OnCheckedChanged="rdbEspecifico_CheckedChanged" AutoPostBack="True" Width="141px"
-                        Text="Pedido Específico" />
-                </td>
-                <td style="text-align: left; height: 26px;">
-                    &nbsp;<cc1:HlpWebTextBoxInteiro ID="txtNumeroPedido" runat="server" Enabled="False"
-                        Width="105px" CssClass="textBox"></cc1:HlpWebTextBoxInteiro>
-                </td>
-            </tr>--%>
                         <tr class="BordaInferior">
-                            <td style="text-align: left; color: Black" class="Titulo" colspan="3">
-                                Período Desejado
+                            <td style="text-align: left; color: Black" class="Titulo" colspan="3">Período Desejado
                             </td>
                         </tr>
                     </table>
-                    <table style="width: 100%">
+                    <table width="100%">
                         <tr>
-                            <td style="text-align: right;" class="style1">
+                            <td style="text-align: right;">
                                 <cc1:HlpWebLabel ID="lblPeriodo" runat="server" CssClass="label">De </cc1:HlpWebLabel>
                             </td>
-                            <td style="width: 54px; height: 33px;">
+                            <td align="left" class="auto-styleDireita">
                                 <asp:TextBox runat="server" CssClass="textBox" ID="txtDataInicial" Width="100px"
                                     MaxLength="10"></asp:TextBox><asp:CalendarExtender ID="CalendarExtender1" runat="server"
                                         TargetControlID="txtDataInicial" Format="dd/MM/yyyy" TodaysDateFormat="dd/MM/yyyy">
                                     </asp:CalendarExtender>
-                            </td>
-                            <td style="width: 32px; height: 33px;">
-                                <cc1:HlpWebLabel ID="HlpWebLabel1" runat="server" CssClass="label">a</cc1:HlpWebLabel>
-                                <table style="width: 100%">
-                                    <tr>
-                                        <td style="width: 100px">
-                                        </td>
-                                    </tr>
-                                </table>
-                            </td>
-                            <td style="width: 89px; height: 33px;">
-                                <asp:TextBox runat="server" CssClass="textBox" ID="txtDataFinal" Width="100px" MaxLength="10"></asp:TextBox><asp:CalendarExtender
+                                <asp:TextBox Text="a" runat="server" CssClass="textBox" BackColor="#E8E8E8" Enabled="false" Width="10" />
+
+                                <asp:TextBox runat="server" CssClass="textBox" ID="txtDataFinal" MaxLength="10">
+                                </asp:TextBox><asp:CalendarExtender
                                     ID="CalendarExtender2" runat="server" TargetControlID="txtDataFinal" Format="dd/MM/yyyy"
                                     TodaysDateFormat="dd/MM/yyyy">
                                 </asp:CalendarExtender>
                             </td>
-                            <td style="width: 76px; height: 33px;">
+
+                        </tr>
+                        <tr>
+                            <td align="right">Cliente:
+                            </td>
+                            <td align="left">
+                                <asp:DropDownList ID="cbxCliente" runat="server" AutoPostBack="True" CssClass="textBox"
+                                    DataTextField="nm_clifor" DataValueField="cd_clifor" Enabled="true"
+                                    Width="451px">
+                                </asp:DropDownList>
                             </td>
                         </tr>
+                        <tr>
+                            <td align="right">Pedido Cliente:
+                            </td>
+                            <td align="left">
+                                <asp:TextBox ID="HlpWebtxtPedCli" MaxLength="15" runat="server" CssClass="textBox" Width="100px"></asp:TextBox>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="right">Pedido Torcetex:
+                            </td>
+                            <td align="left">
+                                <asp:TextBox ID="HlpWebtxtPedido" MaxLength="15" runat="server" CssClass="textBox" Width="100px"></asp:TextBox>
+                            </td>
+                            <td />
+                        </tr>
                     </table>
-                    <%-- <table style="width: 100%">
-            <tr class="BordaInferior">
-                <td style="text-align: left; color: Black" class="Titulo" colspan="3">
-                    Cliente
-                </td>
-            </tr>
-        </table>--%>
-                    <%--  <table style="width: 100%">
-            <tr>
-                <td style="width: 100px">
-                </td>
-                <td style="width: 100px; text-align: right">
-                    <cc1:HlpWebLabel ID="HlpWebLabel5" runat="server" CssClass="label">Razão Social</cc1:HlpWebLabel>
-                </td>
-                <td style="width: 100px; text-align: left">
-                    <cc1:HlpWebTextBox ID="txtNomeCliente" runat="server" MaxLength="20" Width="271px"
-                        CssClass="textBox"></cc1:HlpWebTextBox>
-                </td>
-                <td style="width: 100px">
-                </td>
-            </tr>
-        </table>--%>
                     <br />
                     <table style="width: 65%">
                         <tr>
-                            <td style="text-align: left">
+                            <%--<td style="text-align: left">
                                 <cc1:HlpWebButton ID="btnPesquisarComissao" runat="server" OnClick="btnPesquisar_Click"
                                     Text="Comissões" Width="124px" CssClass="button" Visible="False" />
-                            </td>
-                            <td style="text-align: center">
+                            </td>--%>
+                            <td style="text-align: left">
                                 <cc1:HlpWebButton ID="btnPesquisarPedido" runat="server" OnClick="btnPesquisar_Click"
-                                    Text="Pedidos" Width="124px" CssClass="button" />
-                                <td style="text-align: right">
+                                    Text="Pesquisar" Width="124px" CssClass="button" />
+                                <td style="text-align: left">
                                     <cc1:HlpWebButton ID="btnVoltar" runat="server" OnClick="btnVoltar_Click" Text="Voltar"
                                         Width="124px" CssClass="button" />
                                 </td>
@@ -156,19 +140,15 @@
             </td>
         </tr>
     </table> </div> </td>
-        <td width="30%">
-        </td>
+        <td width="30%"></td>
         </tr>
     </table>
     <table style="width: 100%">
         <tr>
-            <td style="width: 103px">
+            <td style="width: 103px"></td>
+            <td style="width: 108px">&nbsp;
             </td>
-            <td style="width: 108px">
-                &nbsp;
-            </td>
-            <td style="width: 100px">
-            </td>
+            <td style="width: 100px"></td>
         </tr>
     </table>
 </asp:Content>

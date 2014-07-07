@@ -37,10 +37,12 @@
                 </li>
                 <li class="top"><a href="ConsultaPedidos.aspx" target="_self" class="top_link"><span>
                     &nbsp;Pesquisa Pedido</span></a> </li>
+                <li class="top"><a href="PesquisaVendas.aspx" target="_self" class="top_link"><span>
+                    &nbsp;Vendas NF</span></a> </li>
                 <li class="top"><a href="ListaPreco.aspx" target="_self" class="top_link"><span>&nbsp;Lista
                     de Preço</span></a> </li>
                 <li class="top"><a href="PesquisaPendenciaCliente.aspx" target="_self" class="top_link">
-                    <span>Documentos em Aberto</span></a> </li>
+                    <span>Doc em Aberto</span></a> </li>
                 <li class="top">
                     <asp:LinkButton ID="btnSair" runat="server" OnClick="LinkButton1_Click">Sair</asp:LinkButton>
                 </li>

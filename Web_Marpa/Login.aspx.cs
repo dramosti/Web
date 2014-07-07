@@ -28,11 +28,11 @@ public partial class Account_Login : System.Web.UI.Page
     protected void HlpWebLogin1_Authenticate(object sender, AuthenticateEventArgs e)
     {
          UsuarioWeb objUsuario = new UsuarioWeb();
-        string sTotal = "¯¯";
+        //string sTotal = "¯¯";
 
         int iCount = Convert.ToInt32(objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("ACESSO", "COUNT(*)", "TP_OPERADO = 'WEB'"));
-        int iTotal = Convert.ToInt32(HLP.Web.Criptografia.Decripta(sTotal));
-        if (iCount > iTotal)
+        //int iTotal = Convert.ToInt32(HLP.Web.Criptografia.Decripta(sTotal));
+        if (iCount > 25)
         {
             MessageHLP.ShowPopUpMsg("O número de usuários cadastrados do tipo 'WEB' excede o limite de licenças." + Environment.NewLine +
             "Entre em contato com o administrador do sistema.", this.Page);

@@ -146,20 +146,7 @@ public partial class Pedido : System.Web.UI.Page
             lblInfo.Visible = false;
             lblInfo.Text = String.Empty;
             MultiViewItensPed.ActiveViewIndex = 1;
-            string sListaPadrao = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("CLIFOR", "coalesce(CD_LISTA,'')CD_LISTA", "CD_ALTER = '" + txtCodCli.Text + "'");
-            //cbxListaPreco.Enabled = false;
-            //cbxListaPreco.BackColor = System.Drawing.ColorTranslator.FromHtml("#E5E5E5");//cinza;
-
-            if (sListaPadrao == "")
-            {
-                sListaPadrao = "00001";
-            }
-            cbxListaPreco.DataTextField = "DS_LISTA";
-            cbxListaPreco.DataValueField = "CD_LISTA";
-            cbxListaPreco.DataSource = GetListaPrecos(sListaPadrao);
-            cbxListaPreco.DataBind();
-
-            cbxListaPreco.SelectedValue = sListaPadrao;
+            GetListaPrecos();
             GridViewDb.DataSource = GetProdutoGrid();
             GridViewDb.DataBind();
             txtTipoDoc.Text = cbxDS_TPDOCWEB.SelectedItem.ToString();
@@ -606,7 +593,7 @@ public partial class Pedido : System.Web.UI.Page
                             strUpDatePed.Append("CD_PEDCLI = '" + txtPediCli.Text.ToUpper().Trim() + "', VL_PERCOMI1 = " + HlpFuncoesVendas.GetPercentualComissao(objUsuario.oTabelas.CdVendedorAtual, cbxCD_PRAZO.SelectedItem.Value.Trim(), objUsuario.oTabelas) + ", ");
                             strUpDatePed.Append("VL_PERCOMI2 = " + HlpFuncoesVendas.GetPercentualComissao(objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("VENDEDOR", "CD_SEGVEND", "CD_VEND = '" + objUsuario.oTabelas.CdVendedorAtual + "'"), cbxCD_PRAZO.SelectedItem.Value.Trim(), objUsuario.oTabelas) + ", ");
                             strUpDatePed.Append("VL_ALIIPI = " + HlpFuncoesFaturamento.GetAliquotaIPI(objUsuario.oTabelas.GetOperacaoDefault("CD_OPER"), sCdClifor, CF, objUsuario.oTabelas) + ", ");
-                            strUpDatePed.Append("VL_COEFDESC = " + 0.ToString().Replace(",", ".") + ", ");
+                            strUpDatePed.Append("VL_COEF = " + 0.ToString().Replace(",", ".") + ", ");
                             strUpDatePed.Append("CD_OPER = '" + scdOper + "', VL_PERENTR = " + 100 + " ");
 
                             //Claudinei - o.s. 23858 - 18/11/2009
@@ -888,10 +875,11 @@ public partial class Pedido : System.Web.UI.Page
 
         return dtLinhaProd;
     }
-    private DataTable GetListaPrecos(string _sListaPadrao)
+    private void GetListaPrecos()
     {
         UsuarioWeb objUsuario = (UsuarioWeb)Session["ObjetoUsuario"];
         DataTable dtListas = null;
+        string _sListaPadrao = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("PRAZOS", "COALESCE(cd_lista,'')CD_LISTA", "cd_prazo = '" + cbxCD_PRAZO.SelectedValue.ToString() + "'");
 
         string sListaPermit = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("ACESSO", "cd_listapermitida", "cd_vend = '" + objUsuario.oTabelas.CdVendedorAtual + "'");
 
@@ -908,7 +896,20 @@ public partial class Pedido : System.Web.UI.Page
             dtListas = objUsuario.oTabelas.hlpDbFuncoes.qrySeekRet("listapre", "CD_LISTA, DS_LISTA", "CD_EMPRESA = '" + objUsuario.oTabelas.sEmpresa + "'");
         }
 
-        return dtListas;
+        
+        //cbxListaPreco.Enabled = false;
+        //cbxListaPreco.BackColor = System.Drawing.ColorTranslator.FromHtml("#E5E5E5");//cinza;
+
+        if (_sListaPadrao == "")
+        {
+            _sListaPadrao = "00001";
+        }
+        cbxListaPreco.DataTextField = "DS_LISTA";
+        cbxListaPreco.DataValueField = "CD_LISTA";
+        cbxListaPreco.DataSource = dtListas;        
+        cbxListaPreco.SelectedValue = _sListaPadrao;
+        cbxListaPreco.DataBind();
+
     }
     private void IncluirNaLista(string strProduto, string strDescProd, string strCodigo, string _sVL_PROD)
     {
@@ -924,7 +925,7 @@ public partial class Pedido : System.Web.UI.Page
             row = ListaProduto.NewRow();
             row["DESC"] = strDescProd;
             row["CD_LISTA"] = cbxListaPreco.SelectedValue.ToString();
-            decimal dVL_DESC = dVL_PROD;
+            decimal dVL_DESC = 0;
             row["VL_DESCONTO"] = String.Format("{0:N2}", dVL_DESC);
             row["VL_PROD"] = String.Format("{0:N4}", dVL_PROD);
             row["VL_UNIPROD_SEM_DESC"] = String.Format("{0:N4}", dVL_PROD);
@@ -1086,5 +1087,9 @@ public partial class Pedido : System.Web.UI.Page
             Session["lsCodigoInseridos"] = new Dictionary<string, double>();//OS 28143
         }
 
+    }
+    protected void cbxCD_PRAZO_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        GetListaPrecos();
     }
 }

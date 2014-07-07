@@ -12,8 +12,6 @@ using System.Text;
 public partial class Home : System.Web.UI.Page
 {
 
-
-
     protected void Page_Load(object sender, EventArgs e)
     {
         string sUser = UsuarioWeb.GetNomeUsuarioConectado(this.Session);
@@ -49,16 +47,10 @@ public partial class Home : System.Web.UI.Page
             }
         }
     }
-
-   
     protected void btnAcessar_Click(object sender, EventArgs e)
     {     
         Page.Response.Redirect("~/Login.aspx");
     }
-
-
-
-
     public void VerificaAvisosGeral()
     {
         UsuarioWeb objUsuario = new UsuarioWeb();
@@ -92,7 +84,6 @@ public partial class Home : System.Web.UI.Page
         lblTotalAvisos.Text = dtRetono.Rows.Count == 0 ? "Nenhum Aviso" : dtRetono.Rows.Count.ToString() + " Aviso(s)";
 
     }
-
     public void VerificaAvisosGeraleVendedor()
     {
         UsuarioWeb objUsuario = (UsuarioWeb)Session["ObjetoUsuario"];
@@ -129,7 +120,6 @@ public partial class Home : System.Web.UI.Page
         lblTotalAvisos.Text = dtRetono.Rows.Count == 0 ? "Nenhum Aviso" : dtRetono.Rows.Count.ToString() + " Aviso(s)";
 
     }
-
     protected void gridAvisos_SelectedIndexChanged(object sender, EventArgs e)
     {
         string sCodAviso = gridAvisos.SelectedDataKey[0].ToString();
@@ -139,8 +129,6 @@ public partial class Home : System.Web.UI.Page
         dvAviso.DataBind();
 
     }
-
-
     protected void btnCarregaGrafico_Click(object sender, EventArgs e)
     {
         CarregaGraficoVendas();
@@ -149,7 +137,6 @@ public partial class Home : System.Web.UI.Page
     {
         CarregaGraficoTop5Produto();
     }
-
     private void CarregaGraficoVendas()
     {
         graficoVendasAnuais.Visible = true;

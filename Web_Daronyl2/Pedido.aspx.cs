@@ -549,14 +549,6 @@ public partial class Pedido : System.Web.UI.Page
                 }
                 string sCD_PEDIDO = objUsuario.oTabelas.hlpDbFuncoes.RetornaProximoValorGenerator(sGenerator).PadLeft(7, '0');
 
-
-
-
-
-
-
-
-
                 string sUFclifor = Session["CD_UFNOR"].ToString();
                 string sUFempresa = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("EMPRESA", "cd_ufnor", string.Format("cd_empresa = '{0}'", objUsuario.oTabelas.sEmpresa.Trim()));
                 string sCD_CFOP = "";
@@ -601,7 +593,8 @@ public partial class Pedido : System.Web.UI.Page
                     strUpDatePed.Append("', VL_TOTALPED = '" + sVL_TOTALPED);
                     strUpDatePed.Append("', st_desccond = '" + "N");
                     strUpDatePed.Append("', ST_WEB = '" + "S");
-
+                    if (cbxClassificacao.Text != "")
+                        strUpDatePed.Append("', ST_CLAS = '" + cbxClassificacao.Text);
                     //strUpDatePed.Append("', VL_DESCONTO = '" + "-" + txtTotalDesconto.Text.Replace(".", "").Replace(",", "."));
                     //strUpDatePed.Append("', VL_PERDESC = '" + "-" + txtDesconto.Text.Replace(".", "").Replace(",", "."));
                     strUpDatePed.Append("', CD_CLIENTE = '" + sCdClifor);
@@ -952,7 +945,7 @@ public partial class Pedido : System.Web.UI.Page
         DataTable dtProduto = objUsuario.oTabelas.hlpDbFuncoes.qrySeekRet("PRECOS INNER JOIN PRODUTO ON (PRODUTO.CD_PROD = PRECOS.CD_PROD)" +
             " INNER JOIN CLAS_FIS ON PRODUTO.CD_CF = CLAS_FIS.CD_CF ",
             (st_atualizacao.Equals("M") ? "COALESCE(PRECOS.VL_PRECOVE,0)VL_PRECOVE" : "(COALESCE(PRECOS.VL_PRECOVE,0) * " + vl_perc.ToString().Replace(',', '.') + ")VL_PRECOVE") +
-       ", PRODUTO.CD_BARRAS, PRODUTO.CD_PROD, PRODUTO.DS_DETALHE, PRODUTO.VL_PESOBRU, PRODUTO.QT_ESTOQUE ",
+       ", PRODUTO.cd_alter, PRODUTO.CD_PROD, PRODUTO.DS_DETALHE, PRODUTO.VL_PESOBRU, PRODUTO.QT_ESTOQUE ",
         strWhere.ToString(), "PRODUTO.DS_DETALHE");
 
 
@@ -963,7 +956,7 @@ public partial class Pedido : System.Web.UI.Page
         column.ColumnName = "CD_PROD";
         dtRetorno.Columns.Add(column);
 
-        dtRetorno.Columns.Add("CD_BARRAS").DataType = System.Type.GetType("System.String");
+        dtRetorno.Columns.Add("cd_alter").DataType = System.Type.GetType("System.String");
         dtRetorno.Columns.Add("DS_PROD").DataType = System.Type.GetType("System.String");
         dtRetorno.Columns.Add("VL_PRECOVE").DataType = System.Type.GetType("System.Double");
         dtRetorno.Columns.Add("VL_PESOBRU").DataType = System.Type.GetType("System.Double");
@@ -978,7 +971,7 @@ public partial class Pedido : System.Web.UI.Page
         {
             drRet = dtRetorno.NewRow();
             drRet["CD_PROD"] = dr["CD_PROD"];
-            drRet["CD_BARRAS"] = dr["CD_BARRAS"];
+            drRet["cd_alter"] = dr["cd_alter"];
             drRet["DS_PROD"] = dr["DS_DETALHE"];
             sVl_ultVenda =
                 objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue

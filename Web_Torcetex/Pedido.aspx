@@ -162,6 +162,17 @@
                             </asp:DropDownList>
                         </td>
                     </tr>
+                     <tr>
+                        <td align="right" class="style3">Condição de Pgto
+                        </td>
+                        <td align="left">
+                            <asp:DropDownList ID="cbxCD_PRAZO" runat="server" AutoPostBack="True" CssClass="textBox"
+                                AppendDataBoundItems="true" DataTextField="DS_PRAZO" DataValueField="CD_PRAZO"
+                                Enabled="True" Width="235px" OnSelectedIndexChanged="cbxCD_PRAZO_SelectedIndexChanged">
+                                <asp:ListItem>Selecione um item</asp:ListItem>
+                            </asp:DropDownList>
+                        </td>
+                    </tr>
                     <tr>
                         <td align="right" class="style3">Lista de Preço
                         </td>
@@ -306,18 +317,7 @@
                             <asp:TextBox ID="txtTotalPedidoSemDesc" runat="server" CssClass="textBox" MaxLength="4"
                                 BackColor="#CCCCCC" ReadOnly="True"></asp:TextBox>
                         </td>
-                    </tr>
-                    <tr>
-                        <td align="right" class="style3">Condição de Pgto
-                        </td>
-                        <td align="left">
-                            <asp:DropDownList ID="cbxCD_PRAZO" runat="server" AutoPostBack="True" CssClass="textBox"
-                                AppendDataBoundItems="true" DataTextField="DS_PRAZO" DataValueField="CD_PRAZO"
-                                Enabled="True" Width="185px">
-                                <asp:ListItem>Selecione um item</asp:ListItem>
-                            </asp:DropDownList>
-                        </td>
-                    </tr>
+                    </tr>                   
                     <tr>
                         <td align="right" class="style3">Tipo de Documento
                         </td>
@@ -368,7 +368,7 @@
                                     <ItemStyle HorizontalAlign="Left" Width="200px" Wrap="False" />
                                     </asp:BoundField>
                                     <asp:BoundField DataField="VL_DESCONTO" HeaderText="Desconto" HeaderStyle-HorizontalAlign="Left"
-                                        ItemStyle-HorizontalAlign="Left" ItemStyle-Width="60px">
+                                        ItemStyle-HorizontalAlign="Left" ItemStyle-Width="60px" Visible="false">
                                     <HeaderStyle HorizontalAlign="Left" />
                                     <ItemStyle HorizontalAlign="Right" Width="60px" />
                                     </asp:BoundField>

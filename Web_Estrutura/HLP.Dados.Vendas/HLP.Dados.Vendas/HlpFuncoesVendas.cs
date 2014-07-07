@@ -70,15 +70,16 @@ namespace HLP.Dados.Vendas
 
             if (sCodRepresentante != "")
             {
-                sQuery.Append("where coalesce(ps.st_canped,'N') <> 'S' and coalesce(t.st_fatur,'1') = '0' and ");
-                sQuery.Append("c.cd_vend1 = '{0}' and ");
+                sQuery.Append("where coalesce(ps.st_canped,'N') <> 'S' ");
+                if (!oTabelas.CodigoCliente.Equals("TORCETEX"))
+                    sQuery.Append("and coalesce(t.st_fatur,'1') = '0' ");
+                sQuery.Append("and c.cd_vend1 = '{0}' and ");
                 sQuery.Append("p.dt_pedido between '01.01.{1}' and '31.12.{1}' ");
                 if (oTabelas.CodigoCliente.Equals("MARPA"))
                     sQuery.Append("and t.st_utiliza_web = 'S' ");
                 sQuery.Append("group by extract( month from p.dt_pedido), v.nm_vend order by extract( month from p.dt_pedido) ");
                 string sQueryFinal = string.Format(sQuery.ToString(), sCodRepresentante, sAno);
                 dtReport = oTabelas.hlpDbFuncoes.qrySeekRet(sQueryFinal);
-
             }
             else
             {

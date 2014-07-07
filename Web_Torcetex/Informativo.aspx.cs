@@ -36,6 +36,9 @@ public partial class Informativo : System.Web.UI.Page
             else if (Request["CD_PEDIDO_EMAIL"] != null)
             {
                 sCodigoPedido = Request["CD_PEDIDO_EMAIL"].ToString();
+                ParametroPesquisa objParametros = (ParametroPesquisa)Session["FiltroPedidos"];
+                objParametros.Limpar();
+                objParametros.AddCriterio(string.Format("PEDIDO.CD_PEDIDO = '{0}'", sCodigoPedido));
                 lblInfo.Text = "Pedido nº " + sCodigoPedido.Trim() + "!";
                 btnNovoPedido.Visible = false;
                 btnImprimir.Visible = true;
@@ -47,43 +50,10 @@ public partial class Informativo : System.Web.UI.Page
     {
         if (this.btnImprimir.Text == "Visualizar Pedido")
         {
-            ExportPDF();
+            PesquisarDados(sCodigoPedido);
             Response.Redirect("~/ViewPedido.aspx?ANEXO=" + sCodigoPedido);
         }
     }
-
-    private void CarregaDataTableParaImpressao()
-    {
-        UsuarioWeb objUsuario = (UsuarioWeb)Session["ObjetoUsuario"];
-        DataTable dtPedMovipend = objUsuario.oTabelas.hlpDbFuncoes.qrySeekRet(MontaQueryPedido(objUsuario, "MOVIPEND"));
-        DataTable dtPedMoviitem = objUsuario.oTabelas.hlpDbFuncoes.qrySeekRet(MontaQueryPedido(objUsuario, "MOVITEM"));
-
-
-        dsPedido ds = new dsPedido();
-        dsPedido.PedidoRow drPedido;
-
-        foreach (DataRow row in dtPedMovipend.Rows)
-        {
-            if (row["QT_PROD"].ToString() != "")
-            {
-                drPedido = ds.Pedido.NewPedidoRow();
-                CopyRow(drPedido, row);
-                ds.Pedido.Rows.Add(drPedido);
-            }
-
-        }
-        foreach (DataRow row in dtPedMoviitem.Rows)
-        {
-            if (row["QT_PROD"].ToString() != "")
-            {
-                drPedido = ds.Pedido.NewPedidoRow();
-                CopyRow(drPedido, row);
-                ds.Pedido.Rows.Add(drPedido);
-            }
-        }
-        Session["PedidoRes"] = ds;
-    }
-
     private static void CopyRow(dsPedido.PedidoRow dr, DataRow row)
     {
         dr.DT_PEDIDO = row["DT_PEDIDO"].ToString();
@@ -107,79 +77,105 @@ public partial class Informativo : System.Web.UI.Page
         dr.VL_DESC = row["VL_DESCONTO_VALOR"].ToString();
         dr.CD_PROD = row["CD_PROD"].ToString();
     }
-
-    private string MontaQueryPedido(UsuarioWeb objUsuario, string sTabelaFilho)
-    {
-        StringBuilder str = new StringBuilder();
-        str.Append("SELECT PEDIDO.CD_EMPRESA, PEDIDO.CD_PEDIDO CD_PEDCLI, ");
-        str.Append("(CLIFOR.CD_ALTER) CD_CLIENTE, ");
-        str.Append("PEDIDO.DT_PEDIDO, ");
-        str.Append("TPDOC.DS_TIPODOC,");
-        str.Append("VENDEDOR.NM_VEND NM_VENDEDOR, ");
-        str.Append("VENDEDOR.CD_FONE CD_FONEVEND, ");
-        str.Append("PEDIDO.CD_PRAZO, ");
-        str.Append("PRAZOS.DS_PRAZO, ");
-        str.Append("CLIFOR.NM_CLIFOR, ");
-        str.Append("CLIFOR.DS_ENDNOR DS_ENDCLI, ");
-        str.Append("CLIFOR.NM_BAIRRONOR NM_BAIRROCLI, ");
-        str.Append("CLIFOR.NM_CIDNOR NM_CIDCLI, ");
-        str.Append("CLIFOR.CD_UFNOR CD_UFCLI, ");
-        str.Append("CLIFOR.CD_CEPNOR CD_CEPCLI, ");
-        str.Append("CLIFOR.CD_FONENOR CD_FONECLI, ");
-        str.Append("CLIFOR.DS_CONTATO DS_CONTATOCLI, ");
-        str.Append("PEDIDO.DS_OBS_WEB, ");
-        str.Append(sTabelaFilho.Equals("MOVITEM") ? "'F' ST_PEDIDO," : "'P' ST_PEDIDO,");
-        str.Append("M.VL_UNIPROD, ");
-        str.Append("M.QT_PROD, ");
-        str.Append("M.VL_DESCONTO_VALOR, ");
-        str.Append("M.DS_PROD , M.CD_PROD ");
-        str.Append("FROM PEDIDO ");
-        str.Append("INNER JOIN EMPRESA ON (EMPRESA.CD_EMPRESA = PEDIDO.CD_EMPRESA) ");
-        str.Append("LEFT OUTER JOIN {0} M ON ((M.CD_EMPRESA = PEDIDO.CD_EMPRESA) AND (M.CD_PEDIDO = PEDIDO.CD_PEDIDO)) ");
-        str.Append("LEFT OUTER JOIN VENDEDOR ON (VENDEDOR.CD_VEND = PEDIDO.CD_VEND1) ");
-        str.Append("LEFT OUTER JOIN PRAZOS ON (PRAZOS.CD_PRAZO = PEDIDO.CD_PRAZO) ");
-        str.Append("LEFT OUTER JOIN CLIFOR ON (CLIFOR.CD_CLIFOR = PEDIDO.CD_CLIENTE) ");
-        str.Append("LEFT OUTER JOIN TPDOC ON (TPDOC.CD_TIPODOC = PEDIDO.CD_TIPODOC)");
-        str.Append("WHERE PEDIDO.cd_vend1 = '" + objUsuario.CodigoVendedor.ToString() + "' ");
-        str.Append("AND PEDIDO.CD_PEDIDO = '" + sCodigoPedido + "' ");
-        str.Append("ORDER BY PEDIDO.CD_PEDIDO ");
-        return string.Format(str.ToString(), sTabelaFilho);
-    }
     protected void btnNovoPedido_Click1(object sender, EventArgs e)
     {
         Response.Redirect("~/Pedido.aspx");
     }
     protected void btnEmail_Click(object sender, EventArgs e)
     {
-        ExportPDF();
+        //        ExportPDF();
         Response.Redirect("~/EnviarEmail.aspx?ANEXO=" + sCodigoPedido);
     }
+    protected void btnEmail0_Click(object sender, EventArgs e)
+    {
+        DirectoryInfo dinfo = new DirectoryInfo(Server.MapPath("Pedidos"));
+        lblInfo.Text = dinfo.FullName;
+        MessageHLP.ShowPopUpMsg(dinfo.Exists.ToString(), this.Page);
+    }
 
-    private void ExportPDF()
+
+
+    private void PesquisarDados(string sNameFile)
+    {
+        UsuarioWeb objUsuario = (UsuarioWeb)Session["ObjetoUsuario"];
+
+        DataTable dtClientes = new DataTable();
+        StringBuilder str = new StringBuilder();
+        str.Append("SELECT PEDIDO.CD_EMPRESA, PEDIDO.CD_PEDIDO, ");
+        str.Append("PEDIDO.CD_CLIENTE, ");
+        str.Append("PEDIDO.CD_TIPODOC, PEDIDO.CD_TRANS, ");
+        str.Append("PEDIDO.DS_ANOTA, ");
+        str.Append("PEDIDO.DS_PEDCLI CD_PEDCLI, PEDIDO.DT_ABER, ");
+        str.Append("PEDIDO.DT_PEDIDO, ");
+        str.Append("PEDIDO.CD_VEND1, PEDIDO.CD_VEND2, ");
+        str.Append("EMPRESA.IM_EMPRESA, EMPRESA.NM_EMPRESA, ");
+        str.Append("EMPRESA.NM_BAIRRONOR NM_BAIRROEMP, EMPRESA.NM_CIDNOR NM_CIDEMP, ");
+        str.Append("EMPRESA.DS_ENDNOR DS_ENDEMP, EMPRESA.CD_UFNOR CD_UFEMP, EMPRESA.CD_CEPNOR CD_CEPEMP, ");
+        str.Append("EMPRESA.CD_CGC CD_CGCEMP, EMPRESA.CD_INSEST CD_INSESTEMP, EMPRESA.CD_FONENOR CD_FONEEMP, ");
+        str.Append("EMPRESA.CD_FAXNOR CD_FAXEMP, EMPRESA.CD_EMAIL CD_EMAILEMP, ");
+        str.Append("VENDEDOR.NM_GUERRA, VENDEDOR.NM_VEND NM_VENDEDOR, VENDEDOR.CD_FONE CD_FONEVEND, ");
+        str.Append("PEDIDO.CD_PRAZO, PRAZOS.DS_PRAZO, ");
+        str.Append("TRANSPOR.NM_TRANS, ");
+        str.Append("TRANSPOR.CD_TRANS, PEDIDO.CD_FONETRANS_WEB, PEDIDO.NM_TRANS_WEB, ");
+        str.Append("CLIFOR.NM_CLIFOR, CLIFOR.DS_ENDNOR DS_ENDCLI, ");
+        str.Append("CLIFOR.NM_BAIRRONOR NM_BAIRROCLI, CLIFOR.NM_CIDNOR NM_CIDCLI, ");
+        str.Append("CLIFOR.CD_UFNOR CD_UFCLI, CLIFOR.CD_CEPNOR CD_CEPCLI, ");
+        str.Append("CLIFOR.CD_FONENOR CD_FONECLI, CLIFOR.CD_FAXNOR CD_FAXCLI, ");
+        str.Append("CLIFOR.CD_CGC CD_CGCCLI, CLIFOR.CD_INSEST CD_INSESTCLI, CLIFOR.DS_CONTATO DS_CONTATOCLI, ");
+        str.Append("ENDENTR.DS_ENDENT, ENDENTR.NM_BAIRROENT, ");
+        str.Append("ENDENTR.NM_CIDENT, ENDENTR.CD_CEPENT, ");
+        str.Append("PEDIDO.DS_OBS_WEB, "); //25989 - DIEGO
+        str.Append("ENDENTR.CD_UFENT, ");
+        str.Append("MOVIPEND.CD_PROD, ");
+        str.Append("MOVIPEND.VL_UNIPROD, MOVIPEND.VL_TOTLIQ, ");
+        str.Append("MOVIPEND.DT_PRAZOEN, MOVIPEND.CD_OPER, ");
+        str.Append("MOVIPEND.CD_TPUNID, MOVIPEND.QT_PROD, MOVIPEND.DS_PROD, ");
+        str.Append("MOVIPEND.CD_PEDCLI, MOVIPEND.CD_ALTER, ");
+        str.Append("CAST (MOVIPEND.QT_PROD * MOVIPEND.VL_UNIPROD AS NUMERIC(18,2)) AS ");
+        str.Append("VL_TOTBRUTO, ");
+        str.Append("CAST((cast( MOVIPEND.VL_UNIPROD*MOVIPEND.VL_COEF as numeric(18,4))*(1-MOVIPEND.VL_PERDESC/100))* MOVIPEND.QT_PROD AS NUMERIC(18,2)) AS VL_TOTAL, ");//Diego - OS_25085 - 13/10/2010    
+        str.Append(" CAST (CASE WHEN MOVIPEND.VL_COEF < 1 THEN cast(MOVIPEND.VL_COEF as numeric(18,6)) ELSE 1 END * cast(MOVIPEND.QT_PROD * MOVIPEND.VL_UNIPROD as numeric(18,6))  AS NUMERIC(18,2)) AS VL_TOTALCOMDESC "); // Diego - OS_25126 - 19/10/10
+        str.Append("FROM PEDIDO ");
+        str.Append("INNER JOIN EMPRESA ON (EMPRESA.CD_EMPRESA = PEDIDO.CD_EMPRESA) ");
+        str.Append("LEFT OUTER JOIN VENDEDOR ON (VENDEDOR.CD_VEND = PEDIDO.CD_VEND1) ");
+        str.Append("LEFT OUTER JOIN PRAZOS ON (PRAZOS.CD_PRAZO = PEDIDO.CD_PRAZO) ");
+        str.Append("LEFT OUTER JOIN TRANSPOR ON (TRANSPOR.CD_TRANS = PEDIDO.CD_TRANS) ");
+        str.Append("LEFT OUTER JOIN CLIFOR ON (CLIFOR.CD_CLIFOR = PEDIDO.CD_CLIENTE) ");
+        str.Append("LEFT OUTER JOIN ENDENTR ON (ENDENTR.CD_CLIENTE = CLIFOR.CD_CLIFOR) ");
+        str.Append("LEFT OUTER JOIN MOVIPEND ON ((MOVIPEND.CD_EMPRESA = PEDIDO.CD_EMPRESA) ");
+        str.Append("AND (MOVIPEND.CD_PEDIDO = PEDIDO.CD_PEDIDO)) ");
+        str.Append("WHERE {0} ORDER BY PEDIDO.CD_PEDIDO");
+
+        ParametroPesquisa objParametros = (ParametroPesquisa)Session["FiltroPedidos"];
+        dtClientes = objUsuario.oTabelas.hlpDbFuncoes.qrySeekRet(string.Format(str.ToString(), objParametros.GetWhere()));
+        Session["PedidoRes"] = dtClientes;
+        ExportPDF(sNameFile);
+        Response.Redirect("~/ViewPedido.aspx?ANEXO=" + sNameFile);
+    }
+    private void ExportPDF(string sNameFile)
     {
         try
         {
-            lblInfo.Text = "Gerando arquivo pdf para anexo";
             DirectoryInfo dinfo = new DirectoryInfo(Server.MapPath("Pedidos"));
             if (!dinfo.Exists)
             {
                 dinfo.Create();
             }
-            if (File.Exists(Server.MapPath("Pedidos\\" + sCodigoPedido + ".pdf")))
+            if (File.Exists(Server.MapPath("Pedidos\\" + sNameFile)))
             {
-                File.Delete(Server.MapPath("Pedidos\\" + sCodigoPedido + ".pdf"));
+                File.Delete(Server.MapPath("Pedidos\\" + sNameFile + ".pdf"));
             }
-            CarregaDataTableParaImpressao();
+            //            PesquisarDados();
             ReportDocument rpt = new ReportDocument();
-            dsPedido TabelaImpressao = (dsPedido)Session["PedidoRes"];
-            rpt.Load(Server.MapPath("rptPedido.rpt"));
+            DataTable TabelaImpressao = (DataTable)Session["PedidoRes"];
+            rpt.Load(Server.MapPath("RelatorioPedido.rpt"));
             rpt.SetDataSource(TabelaImpressao);
 
             CrystalDecisions.Web.CrystalReportViewer cryView = new CrystalDecisions.Web.CrystalReportViewer();
             ExportOptions CrExportOptions;
             DiskFileDestinationOptions CrDiskFileDestinationOptions = new DiskFileDestinationOptions();
             PdfRtfWordFormatOptions CrFormatTypeOptions = new PdfRtfWordFormatOptions();
-            CrDiskFileDestinationOptions.DiskFileName = Server.MapPath("Pedidos\\" + sCodigoPedido + ".pdf");
+            CrDiskFileDestinationOptions.DiskFileName = Server.MapPath("Pedidos\\" + sNameFile + ".pdf");
             CrExportOptions = rpt.ExportOptions;
             {
                 CrExportOptions.ExportDestinationType = ExportDestinationType.DiskFile;
@@ -188,7 +184,6 @@ public partial class Informativo : System.Web.UI.Page
                 CrExportOptions.FormatOptions = CrFormatTypeOptions;
             }
             rpt.Export();
-            lblInfo.Text = "Exportando arquivo para o servidor";
         }
         catch (Exception ex)
         {
@@ -197,10 +192,4 @@ public partial class Informativo : System.Web.UI.Page
         }
     }
 
-    protected void btnEmail0_Click(object sender, EventArgs e)
-    {
-        DirectoryInfo dinfo = new DirectoryInfo(Server.MapPath("Pedidos"));
-        lblInfo.Text = dinfo.FullName;
-        MessageHLP.ShowPopUpMsg(dinfo.Exists.ToString(), this.Page);
-    }
 }

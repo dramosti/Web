@@ -17,7 +17,7 @@ public partial class ViewPedido : System.Web.UI.Page
 
 
     protected void Page_Load(object sender, EventArgs e)
-    {
+    {       
         if (!IsPostBack)
         {
 
@@ -41,18 +41,6 @@ public partial class ViewPedido : System.Web.UI.Page
 
         }
     }
-
-    private void GerarPDF()
-    {
-
-        MemoryStream oStream = (MemoryStream)rpt.ExportToStream(ExportFormatType.PortableDocFormat);
-        Response.Clear();
-        Response.Buffer = true;
-        Response.ContentType = "application/pdf";
-        Response.BinaryWrite(oStream.ToArray());
-        Response.End();
-    }
-
 
     private void ShowFile2(string spath)
     {
