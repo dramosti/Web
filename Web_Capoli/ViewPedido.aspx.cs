@@ -24,7 +24,8 @@ public partial class ViewPedido : System.Web.UI.Page
             {
                 Response.Redirect("~/Home.aspx");
             }
-            DataTable TabelaImpressao = (DataTable)Session["PedidoRes"];
+            DataTable TabelaImpressao = (DataTable)Session["PedidoRes"];            
+            //MessageHLP.ShowPopUpMsg(Server.MapPath("rptPedido.rpt"), this);
             rpt.Load(Server.MapPath("rptPedido.rpt"));
             rpt.SetDataSource(TabelaImpressao);
             CrystalReportViewer1.ReportSource = rpt;

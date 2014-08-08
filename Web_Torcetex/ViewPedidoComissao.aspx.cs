@@ -22,12 +22,13 @@ public partial class ViewPedidoComissao : System.Web.UI.Page
             if (sUser == "")
             {
                 Response.Redirect("~/Home.aspx");
-            }
+            }         
             rpt.Load(Server.MapPath("rptPedidoComissao.rpt"));
             rpt.SetDataSource((List<belComissao>)Session["DataSetPedidoComissao"]);
             rpt.DataDefinition.FormulaFields["f_vendedor"].Text = "\"" + ((List<belComissao>)Session["DataSetPedidoComissao"]).FirstOrDefault().NM_VEND + "\"";
             CrystalReportViewer1.ReportSource = rpt;
             GerarPDF();
+          
         }
 
     }

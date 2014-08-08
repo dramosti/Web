@@ -593,7 +593,7 @@ public partial class Pedido : System.Web.UI.Page
                             strUpDatePed.Append("CD_PEDCLI = '" + txtPediCli.Text.ToUpper().Trim() + "', VL_PERCOMI1 = " + HlpFuncoesVendas.GetPercentualComissao(objUsuario.oTabelas.CdVendedorAtual, cbxCD_PRAZO.SelectedItem.Value.Trim(), objUsuario.oTabelas) + ", ");
                             strUpDatePed.Append("VL_PERCOMI2 = " + HlpFuncoesVendas.GetPercentualComissao(objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("VENDEDOR", "CD_SEGVEND", "CD_VEND = '" + objUsuario.oTabelas.CdVendedorAtual + "'"), cbxCD_PRAZO.SelectedItem.Value.Trim(), objUsuario.oTabelas) + ", ");
                             strUpDatePed.Append("VL_ALIIPI = " + HlpFuncoesFaturamento.GetAliquotaIPI(objUsuario.oTabelas.GetOperacaoDefault("CD_OPER"), sCdClifor, CF, objUsuario.oTabelas) + ", ");
-                            strUpDatePed.Append("VL_COEF = " + 0.ToString().Replace(",", ".") + ", ");
+                            strUpDatePed.Append("VL_COEF = " + sVL_COEF.ToString().Replace(",", ".") + ", ");
                             strUpDatePed.Append("CD_OPER = '" + scdOper + "', VL_PERENTR = " + 100 + " ");
 
                             //Claudinei - o.s. 23858 - 18/11/2009
@@ -896,7 +896,7 @@ public partial class Pedido : System.Web.UI.Page
             dtListas = objUsuario.oTabelas.hlpDbFuncoes.qrySeekRet("listapre", "CD_LISTA, DS_LISTA", "CD_EMPRESA = '" + objUsuario.oTabelas.sEmpresa + "'");
         }
 
-        
+
         //cbxListaPreco.Enabled = false;
         //cbxListaPreco.BackColor = System.Drawing.ColorTranslator.FromHtml("#E5E5E5");//cinza;
 
@@ -906,7 +906,7 @@ public partial class Pedido : System.Web.UI.Page
         }
         cbxListaPreco.DataTextField = "DS_LISTA";
         cbxListaPreco.DataValueField = "CD_LISTA";
-        cbxListaPreco.DataSource = dtListas;        
+        cbxListaPreco.DataSource = dtListas;
         cbxListaPreco.SelectedValue = _sListaPadrao;
         cbxListaPreco.DataBind();
 

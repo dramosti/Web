@@ -128,6 +128,7 @@ public partial class Informativo : System.Web.UI.Page
         str.Append("ENDENTR.CD_UFENT, ");
         str.Append("MOVIPEND.CD_PROD, ");
         str.Append("MOVIPEND.VL_UNIPROD, MOVIPEND.VL_TOTLIQ, ");
+        str.Append("MOVIPEND.VL_DESCONTO_VALOR VL_DESC, ");
         str.Append("MOVIPEND.DT_PRAZOEN, MOVIPEND.CD_OPER, ");
         str.Append("MOVIPEND.CD_TPUNID, MOVIPEND.QT_PROD, MOVIPEND.DS_PROD, ");
         str.Append("MOVIPEND.CD_PEDCLI, MOVIPEND.CD_ALTER, ");
@@ -147,6 +148,14 @@ public partial class Informativo : System.Web.UI.Page
         str.Append("WHERE {0} ORDER BY PEDIDO.CD_PEDIDO");
 
         ParametroPesquisa objParametros = (ParametroPesquisa)Session["FiltroPedidos"];
+        if (objParametros == null)
+        {
+            ParametroPesquisaCapoli.InicializarParametroPesquisa(
+            "FiltroPedidos", "PEDIDO", this.Session);
+            objParametros = (ParametroPesquisa)Session["FiltroPedidos"];
+        }
+        objParametros.Limpar();
+        objParametros.AddCriterio(string.Format("PEDIDO.CD_PEDIDO = '{0}'", sCodigoPedido));
         dtClientes = objUsuario.oTabelas.hlpDbFuncoes.qrySeekRet(string.Format(str.ToString(), objParametros.GetWhere()));
         Session["PedidoRes"] = dtClientes;
         ExportPDF(sNameFile);
