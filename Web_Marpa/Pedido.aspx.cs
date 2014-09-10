@@ -155,6 +155,14 @@ public partial class Pedido : System.Web.UI.Page
             GridViewDb.DataSource = GetProdutoGrid();
             GridViewDb.DataBind();
             txtTipoDoc.Text = cbxDS_TPDOCWEB.SelectedItem.ToString();
+
+            string[] docs = new string[] {"005","006","007"};
+
+            if (docs.Contains(cbxDS_TPDOCWEB.SelectedValue))
+            {
+                cbxCD_PRAZO.SelectedValue = "0000000";
+            }
+            
         }
         else
         {

@@ -9,6 +9,7 @@ using System.Net.Mail;
 using System.Text;
 using HLP.Web;
 using System.IO;
+using System.Web.Configuration;
 
 public partial class EnviarEmail : System.Web.UI.Page
 {
@@ -40,7 +41,7 @@ public partial class EnviarEmail : System.Web.UI.Page
                 txtTitulo.Text = "Confirmação do seu Pedido Web " + sPathAnexo + ".";
             }
 
-            
+
         }
     }
 
@@ -73,17 +74,17 @@ public partial class EnviarEmail : System.Web.UI.Page
         return corpo.ToString();
     }
 
-   
+
     protected void btnEnviar_Click(object sender, EventArgs e)
     {
         if (txtDestino.Text != "")
         {
             SmtpClient Cliente = new SmtpClient();
-            Cliente.Host = "smtp.hlp.com.br";
-            Cliente.Port = 587;
+            Cliente.Host = WebConfigurationManager.AppSettings["SMTP"].ToString();  //"smtp.hlp.com.br";
+            Cliente.Port = Convert.ToInt32(WebConfigurationManager.AppSettings["Porta"].ToString());
 
             MailAddress Destino = new MailAddress(txtDestino.Text);
-            MailAddress Remeter = new MailAddress("pedidoweb@hlp.com.br");
+            MailAddress Remeter = new MailAddress(WebConfigurationManager.AppSettings["Email"]);
 
             MailMessage email = new MailMessage(Remeter, Destino);
             email.Subject = txtTitulo.Text.Trim();
@@ -98,7 +99,7 @@ public partial class EnviarEmail : System.Web.UI.Page
                 email.Attachments.Add(Anexo);
             }
 
-            NetworkCredential Credendical = new NetworkCredential("pedidoweb@hlp.com.br", "hlpmudar");
+            NetworkCredential Credendical = new NetworkCredential(WebConfigurationManager.AppSettings["Email"].ToString(), WebConfigurationManager.AppSettings["Senha"]);
             Cliente.Credentials = Credendical;
 
             try

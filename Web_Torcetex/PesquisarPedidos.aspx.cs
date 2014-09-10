@@ -95,7 +95,7 @@ public partial class PesquisarPedidos : System.Web.UI.Page
         //Response.Redirect("~/ConsultaPedidos.aspx");
 
         ParametroPesquisa objParametros =
-           (ParametroPesquisa)Session["FiltroPedidos"];
+           (ParametroPesquisa)Session["FiltroPedidos"];        
         StringBuilder strErros = new StringBuilder();
         bool bFiltroValido = (objParametros != null);
         bFiltroValido = VerificaDataPedidos(bFiltroValido, objParametros, strErros);
@@ -126,9 +126,9 @@ public partial class PesquisarPedidos : System.Web.UI.Page
             objParametros.AddCriterio("PEDIDO.CD_CLIENTE = " + cbxCliente.SelectedValue.ToString());
         }
 
-        if (txtDataFinal.Text != "" && txtDataFinal.Text != "")
+        if (txtDataInicial.Text != "" && txtDataFinal.Text != "")
         {
-            string DtIni = txtDataFinal.Text.Replace("/", ".");
+            string DtIni = txtDataInicial.Text.Replace("/", ".");
             string dtFim = txtDataFinal.Text.Replace("/", ".");
 
             objParametros.AddCriterio("PEDIDO.DT_PEDIDO Between " + "'" + DtIni + "'" + " AND " + "'" + dtFim + "'");

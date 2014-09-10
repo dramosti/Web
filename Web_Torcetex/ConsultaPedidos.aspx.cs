@@ -81,7 +81,8 @@ public partial class ConsultaPedidos : System.Web.UI.Page
                 squery.Append("pedido.cd_cliente CD_CLIFOR, ");
                 squery.Append("pedido.cd_pedido, ");
                 squery.Append("pedido.nm_guerra ");
-                squery.Append("FROM pedido left join pedseq ps on pedido.cd_pedido = ps.cd_pedido and pedido.cd_empresa = ps.cd_empresa ");
+                squery.Append("FROM pedido ");
+                //squery.Append(" left join pedseq ps on pedido.cd_pedido = ps.cd_pedido and pedido.cd_empresa = ps.cd_empresa ");
                 squery.Append("where {0} ORDER BY pedido.CD_PEDIDO");
                 //squery.Append("where p.dt_pedido between ('{0}') and ('{1}') ");
                 //squery.Append("and p.cd_vend1 = '{2}' ");

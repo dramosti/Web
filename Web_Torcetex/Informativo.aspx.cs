@@ -50,7 +50,8 @@ public partial class Informativo : System.Web.UI.Page
     {
         if (this.btnImprimir.Text == "Visualizar Pedido")
         {
-            PesquisarDados(sCodigoPedido);
+            //PesquisarDados(sCodigoPedido);                        
+            ExportPDF(sCodigoPedido);
             Response.Redirect("~/ViewPedido.aspx?ANEXO=" + sCodigoPedido);
         }
     }
@@ -83,7 +84,7 @@ public partial class Informativo : System.Web.UI.Page
     }
     protected void btnEmail_Click(object sender, EventArgs e)
     {
-        //        ExportPDF();
+        ExportPDF(sCodigoPedido);
         Response.Redirect("~/EnviarEmail.aspx?ANEXO=" + sCodigoPedido);
     }
     protected void btnEmail0_Click(object sender, EventArgs e)
@@ -157,9 +158,7 @@ public partial class Informativo : System.Web.UI.Page
         objParametros.Limpar();
         objParametros.AddCriterio(string.Format("PEDIDO.CD_PEDIDO = '{0}'", sCodigoPedido));
         dtClientes = objUsuario.oTabelas.hlpDbFuncoes.qrySeekRet(string.Format(str.ToString(), objParametros.GetWhere()));
-        Session["PedidoRes"] = dtClientes;
-        ExportPDF(sNameFile);
-        Response.Redirect("~/ViewPedido.aspx?ANEXO=" + sNameFile);
+        Session["PedidoRes"] = dtClientes;       
     }
     private void ExportPDF(string sNameFile)
     {
@@ -174,7 +173,7 @@ public partial class Informativo : System.Web.UI.Page
             {
                 File.Delete(Server.MapPath("Pedidos\\" + sNameFile + ".pdf"));
             }
-            //            PesquisarDados();
+            PesquisarDados(sCodigoPedido);
             ReportDocument rpt = new ReportDocument();
             DataTable TabelaImpressao = (DataTable)Session["PedidoRes"];
             rpt.Load(Server.MapPath("RelatorioPedido.rpt"));

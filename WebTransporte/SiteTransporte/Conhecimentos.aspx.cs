@@ -80,7 +80,6 @@ public partial class Conhecimentos : System.Web.UI.Page
                 }
 
 
-
                 if (gridConhec.Rows.Count == 0)
                 {
                     lblResul.Visible = true;

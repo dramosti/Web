@@ -215,6 +215,8 @@ namespace DAO
                                 break;
                             case "between": { sWhere.Append(string.Format(sBetween, sParametro, sValor1, sValor2)); }
                                 break;
+                            case "in": { sWhere.Append(string.Format(" in ('{0}','{1}') ", sValor1, sValor2)); }
+                                break;
                         }
 
                         if (sBaixa != "A")
@@ -233,7 +235,7 @@ namespace DAO
                         {
                             try
                             {
-              
+
                                 Conn.Open();
                                 using (FbCommand cmd = new FbCommand(sQuery, Conn))
                                 {
@@ -327,7 +329,7 @@ namespace DAO
                             {
                                 sNota2 = NFs[NFs.Count() - 2];
                             }
-                            objListaConhecimento = GetAll(sBaixa, "conhec.CD_CONHECI", "between", sNota1, sNota2);
+                            objListaConhecimento = GetAll(sBaixa, "conhec.CD_CONHECI", "in", sNota1, sNota2);
                         }
                         else if (NFs.Count() == 1)
                         {

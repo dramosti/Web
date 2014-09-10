@@ -1,10 +1,10 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "SiteTransporte", ".", "{E6A9F47E-7BAB-47C2-88DE-EB64749164ED}"
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "SiteTransporte", ".", "{B3DCA0A7-7AC0-443B-8A4F-59BA61860ED0}"
 	ProjectSection(WebsiteProperties) = preProject
 		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
-		ProjectReferences = "{B8BE7687-944F-4657-9932-87C0369DFAB0}|Business.dll;{EC29BE9F-AB8A-43C1-A88D-DE90FD39B5F3}|DAO.dll;"
+		ProjectReferences = "{b8be7687-944f-4657-9932-87c0369dfab0}|Business.dll;{EC29BE9F-AB8A-43C1-A88D-DE90FD39B5F3}|DAO.dll;"
 		Debug.AspNetCompiler.VirtualPath = "/SiteTransporte"
 		Debug.AspNetCompiler.PhysicalPath = "..\SiteTransporte\"
 		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\SiteTransporte\"
@@ -19,7 +19,7 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "SiteTransporte", ".", "{E6A
 		Release.AspNetCompiler.ForceOverwrite = "true"
 		Release.AspNetCompiler.FixedNames = "false"
 		Release.AspNetCompiler.Debug = "False"
-		VWDPort = "51576"
+		VWDPort = "51371"
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Business", "..\Business\Business\Business.csproj", "{B8BE7687-944F-4657-9932-87C0369DFAB0}"
@@ -32,10 +32,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{E6A9F47E-7BAB-47C2-88DE-EB64749164ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E6A9F47E-7BAB-47C2-88DE-EB64749164ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E6A9F47E-7BAB-47C2-88DE-EB64749164ED}.Release|Any CPU.ActiveCfg = Debug|Any CPU
-		{E6A9F47E-7BAB-47C2-88DE-EB64749164ED}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{B3DCA0A7-7AC0-443B-8A4F-59BA61860ED0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B3DCA0A7-7AC0-443B-8A4F-59BA61860ED0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B3DCA0A7-7AC0-443B-8A4F-59BA61860ED0}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{B3DCA0A7-7AC0-443B-8A4F-59BA61860ED0}.Release|Any CPU.Build.0 = Debug|Any CPU
 		{B8BE7687-944F-4657-9932-87C0369DFAB0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B8BE7687-944F-4657-9932-87C0369DFAB0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B8BE7687-944F-4657-9932-87C0369DFAB0}.Release|Any CPU.ActiveCfg = Release|Any CPU
