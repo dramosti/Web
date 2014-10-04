@@ -86,10 +86,11 @@ public partial class Informativo : System.Web.UI.Page
 
     private static void CopyRow(dsPedido.PedidoRow dr, DataRow row, string sTabelaFilho)
     {
+
         dr.DT_PEDIDO = row["DT_PEDIDO"].ToString();
         dr.CD_CLIENTE = row["CD_CLIENTE"].ToString();
         dr.NM_CLIFOR = row["NM_CLIFOR"].ToString();
-        dr.DS_ENDCLI = row["DS_ENDCLI"].ToString();
+        //dr.DS_ENDCLI = row["DS_ENDCLI"].ToString();
         dr.NM_BAIRROCLI = row["NM_BAIRROCLI"].ToString();
         dr.NM_CIDCLI = "";// row["NM_CIDCLI"].ToString();
         dr.CD_UFCLI = row["CD_UFCLI"].ToString();
@@ -104,6 +105,14 @@ public partial class Informativo : System.Web.UI.Page
         dr.CD_FONEVEND = row["CD_FONEVEND"].ToString();
         dr.DS_TIPODOC = row["DS_TIPODOC"].ToString();
         dr.ST_PEDIDO = row["ST_PEDIDO"].ToString();
+        if (dr.ST_PEDIDO == "F")
+        {
+            dr.ST_PEDIDO = "Faturado-NFe: " + row["CD_NFSEQ"].ToString(); // utilizado esse campo pois não foi possivel atualizar o dataset do relatório 
+        }
+        else
+        {
+            dr.ST_PEDIDO = "Pendente";
+        }
         dr.VL_DESC = row["VL_DESCONTO_VALOR"].ToString();
         if (sTabelaFilho.Equals("MOVIPEND"))
             dr.NM_CIDCLI = row["DS_COR"].ToString();
@@ -122,7 +131,7 @@ public partial class Informativo : System.Web.UI.Page
         str.Append("PEDIDO.CD_PRAZO, ");
         str.Append("PRAZOS.DS_PRAZO, ");
         str.Append("CLIFOR.NM_CLIFOR, ");
-        str.Append("CLIFOR.DS_ENDNOR DS_ENDCLI, ");
+        //str.Append("CLIFOR.DS_ENDNOR DS_ENDCLI, ");
         str.Append("CLIFOR.NM_BAIRRONOR NM_BAIRROCLI, ");
         str.Append("CLIFOR.NM_CIDNOR NM_CIDCLI, ");
         str.Append("CLIFOR.CD_UFNOR CD_UFCLI, ");
@@ -131,6 +140,7 @@ public partial class Informativo : System.Web.UI.Page
         str.Append("CLIFOR.DS_CONTATO DS_CONTATOCLI, ");
         str.Append("PEDIDO.DS_OBS_WEB, ");
         str.Append(sTabelaFilho.Equals("MOVITEM") ? "'F' ST_PEDIDO," : "'P' ST_PEDIDO,");
+        str.Append(sTabelaFilho.Equals("MOVITEM") ? "M.CD_NFSEQ," : "'' CD_NFSEQ,");
         str.Append("M.VL_UNIPROD, ");
         str.Append("M.QT_PROD, ");
         if (sTabelaFilho.Equals("MOVIPEND"))

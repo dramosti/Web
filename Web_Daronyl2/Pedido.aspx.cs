@@ -57,6 +57,7 @@ public partial class Pedido : System.Web.UI.Page
         GetPrazo();
         GetTPDOC();
         GetTipoConbrancas();
+        GetStFrete();
         if (cbxFormaPgto.Items.Count == 1)
             GetFormaPgto();
 
@@ -222,8 +223,9 @@ public partial class Pedido : System.Web.UI.Page
             }
             else
             {
-                string sCD_PROD = Linha.Cells[1].Text;
-                txtQtde.Text = (Session["lsCodigoInseridos"] as Dictionary<string, double>).FirstOrDefault(c => c.Key == sCD_PROD).Value.ToString();//OS 28143
+                decimal sValor = Convert.ToDecimal(Linha.Cells[10].Text.ToString());
+                string sINDEX = Convert.ToInt32(sValor).ToString();
+                txtQtde.Text = (Session["lsCodigoInseridos"] as Dictionary<string, double>).FirstOrDefault(c => c.Key == sINDEX).Value.ToString();//OS 28143
                 dqtde = Convert.ToDouble(String.Format("{0:N2}", txtQtde.Text));
             }
             double dVL_UNIPROD = 0;
@@ -295,9 +297,9 @@ public partial class Pedido : System.Web.UI.Page
             CarregaSessionDadosInseridos();
             int index = Convert.ToInt32(e.CommandArgument);
             GridViewRow row = GridViewNovo.Rows[index];
-            ExcluirItem(Server.HtmlDecode(row.Cells[1].Text), Server.HtmlDecode(row.Cells[3].Text));
-            (Session["lsCodigoInseridos"] as Dictionary<string, double>).Remove(Server.HtmlDecode(row.Cells[1].Text));//OS 28143
-            ColoriItensJaSelecionadosNaPesquisa();
+            ExcluirItem(Server.HtmlDecode(row.Cells[10].Text), Server.HtmlDecode(row.Cells[3].Text));
+            (Session["lsCodigoInseridos"] as Dictionary<string, double>).Remove(Server.HtmlDecode(row.Cells[10].Text));//OS 28143
+            //ColoriItensJaSelecionadosNaPesquisa();
             RecalculaGridNovo(true);
         }
     }
@@ -310,15 +312,15 @@ public partial class Pedido : System.Web.UI.Page
             int index = Convert.ToInt32(e.CommandArgument);
             GridViewRow row = GridViewDb.Rows[index];
             Label lblValor = (Label)row.Cells[4].FindControl("Label1");
-            IncluirNaLista(Server.HtmlDecode(row.Cells[1].Text), Server.HtmlDecode(row.Cells[3].Text), Server.HtmlDecode(row.Cells[1].Text), Server.HtmlDecode(lblValor.Text));
+            int id = IncluirNaLista(Server.HtmlDecode(row.Cells[1].Text), Server.HtmlDecode(row.Cells[3].Text), Server.HtmlDecode(row.Cells[1].Text), Server.HtmlDecode(lblValor.Text));
 
 
-            if (!(((Session["lsCodigoInseridos"] as Dictionary<string, double>).Where(c => c.Key == Server.HtmlDecode(row.Cells[1].Text)).Count()) > 0))
-            {
-                (Session["lsCodigoInseridos"] as Dictionary<string, double>).Add(Server.HtmlDecode(row.Cells[1].Text), 1);
-            }
+            //if (!(((Session["lsCodigoInseridos"] as Dictionary<string, double>).Where(c => c.Key == Server.HtmlDecode(row.Cells[1].Text)).Count()) > 0))
+            //{
+            (Session["lsCodigoInseridos"] as Dictionary<string, double>).Add(id.ToString(), 1);
+            //}
 
-            ColoriItensJaSelecionadosNaPesquisa();
+            //ColoriItensJaSelecionadosNaPesquisa();
             RecalculaGridNovo(true);
 
         }
@@ -376,7 +378,7 @@ public partial class Pedido : System.Web.UI.Page
             TextBox txtQtde = (TextBox)r.Cells[5].FindControl("txtQtde");
             txtQtde.Text = txtQtde.Text.Replace('.', ',');
             string svalor = txtQtde.Text;
-            dicDadosInseridos.Add(r.Cells[1].Text, Convert.ToDouble(txtQtde.Text));
+            dicDadosInseridos.Add(r.Cells[10].Text, Convert.ToDouble(txtQtde.Text));
         }
         Session["lsCodigoInseridos"] = dicDadosInseridos;
         //OS 28143 - FIM
@@ -415,24 +417,24 @@ public partial class Pedido : System.Web.UI.Page
         GridViewDb.DataSource = GetProdutoGrid();
         GridViewDb.DataBind();
 
-        ColoriItensJaSelecionadosNaPesquisa();
+        //ColoriItensJaSelecionadosNaPesquisa();
     }
 
-    private void ColoriItensJaSelecionadosNaPesquisa()
-    {
-        foreach (GridViewRow row in GridViewDb.Rows)
-        {
-            if (((Session["lsCodigoInseridos"] as Dictionary<string, double>).Where(c => c.Key == row.Cells[1].Text.Trim())).Count() > 0)//OS 28143
-            {
-                row.BackColor = System.Drawing.ColorTranslator.FromHtml("#FFB3B3");//Color.Red;
-            }
-            else
-            {
-                row.BackColor = Color.White;
-            }
-        }
-        GridViewNovo.Caption = "<b>" + (Session["lsCodigoInseridos"] as Dictionary<string, double>).Count.ToString() + " Produto(s) inserido(s)</b>";//OS 28143
-    }
+    //private void ColoriItensJaSelecionadosNaPesquisa()
+    //{
+    //    foreach (GridViewRow row in GridViewDb.Rows)
+    //    {
+    //        if (((Session["lsCodigoInseridos"] as Dictionary<string, double>).Where(c => c.Key == row.Cells[1].Text.Trim())).Count() > 0)//OS 28143
+    //        {
+    //            row.BackColor = System.Drawing.ColorTranslator.FromHtml("#FFB3B3");//Color.Red;
+    //        }
+    //        else
+    //        {
+    //            row.BackColor = Color.White;
+    //        }
+    //    }
+    //    GridViewNovo.Caption = "<b>" + (Session["lsCodigoInseridos"] as Dictionary<string, double>).Count.ToString() + " Produto(s) inserido(s)</b>";//OS 28143
+    //}
     protected void btnVoltar_Click(object sender, EventArgs e)
     {
         MultiViewItensPed.ActiveViewIndex = 0;
@@ -586,7 +588,8 @@ public partial class Pedido : System.Web.UI.Page
                     StringBuilder strUpDatePed = new StringBuilder();
 
                     string sVL_TOTALPED = GridViewNovo.FooterRow.Cells[8].Text.Replace(".", "").Replace(",", ".");
-                    string sST_FRETE = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("EMPRESA", "ST_RESPONSAVEL_FRETE", "CD_EMPRESA = '" + objUsuario.oTabelas.sEmpresa.Trim() + "'");
+                    //string sST_FRETE = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("EMPRESA", "ST_RESPONSAVEL_FRETE", "CD_EMPRESA = '" + objUsuario.oTabelas.sEmpresa.Trim() + "'");
+                    string sST_FRETE = cbxStFrete.SelectedValue;
 
                     strUpDatePed.Append(" UPDATE PEDIDO SET CD_PEDIDO = '" + strRetPedido.Trim());
                     strUpDatePed.Append("', ST_FRETE = '" + sST_FRETE);
@@ -614,7 +617,15 @@ public partial class Pedido : System.Web.UI.Page
                     }
                     strUpDatePed.Append("', CD_TIPODOC = '" + sTipoDocumento);
                     strUpDatePed.Append("', CD_PRAZO = '" + cbxCD_PRAZO.SelectedItem.Value.Trim());
-                    strUpDatePed.Append("', CD_TRANS = '" + objUsuario.oTabelas.TRANSP.ToString().Trim());
+
+                    string sTransp = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("CLIFOR", "COALESCE(CD_TRANS,'')", "CD_ALTER = '" + txtCodCli.Text + "'");
+                    if (sTransp != "")
+
+                        strUpDatePed.Append("', CD_TRANS = '" + sTransp.Trim());
+                    else
+                        strUpDatePed.Append("', CD_TRANS = '" + objUsuario.oTabelas.TRANSP.ToString().Trim());
+
+
                     strUpDatePed.Append("', DS_OBS_WEB = '" + txtObs.Text.ToUpper().Trim() + Environment.NewLine + "PEDIDO FEITO POR: " + clientMachineName.ToUpper());
                     strUpDatePed.Append("', DT_ABER = '" + txtDataPedido.Text.Replace("/", "."));
                     strUpDatePed.Append("', CD_USUINC ='" + objUsuario.oTabelas.CdUsuarioAtual);
@@ -664,7 +675,7 @@ public partial class Pedido : System.Web.UI.Page
                             string dVL_DESCONTO = row.Cells[4].Text.Trim().Replace(".", "").Replace(",", ".");
                             string sCD_LISTA = row.Cells[5].Text.Trim();
 
-
+                            
 
 
                             string dVL_PROD = ((TextBox)row.Cells[6].FindControl("txtValorUnit")).Text.Trim().Replace(".", "").Replace(",", ".");
@@ -711,10 +722,14 @@ public partial class Pedido : System.Web.UI.Page
 
                                 string sUpdateItens = "Update {0} set {1} where {2} ;";
                                 List<update> obljup = new List<update>();
+                                if (cbxClassificacao.SelectedValue == "A")
+                                    obljup.Add(new update { sCampo = "VL_PERENTR", sValor = "100" });
+                                if (cbxClassificacao.SelectedValue == "B")
+                                    obljup.Add(new update { sCampo = "VL_PERENTR", sValor = "50" }); 
                                 obljup.Add(new update { sCampo = "VL_PERCOMI1", sValor = sVL_COMISSAO }); // OS 30137
                                 obljup.Add(new update { sCampo = "DS_COR", sValor = sCor }); // OS 30137                                
                                 obljup.Add(new update { sCampo = "CD_VEND1", sValor = objUsuario.oTabelas.CdVendedorAtual });
-                                obljup.Add(new update { sCampo = "VL_PERENTR", sValor = "100.00" });
+                                //obljup.Add(new update { sCampo = "VL_PERENTR", sValor = "100.00" });
                                 obljup.Add(new update { sCampo = "NR_LANC", sValor = strRetMoviPend.Trim() });
                                 obljup.Add(new update { sCampo = "CD_PEDIDO", sValor = strRetPedido.Trim() });
                                 obljup.Add(new update { sCampo = "DS_PROD", sValor = sDESC });
@@ -755,7 +770,7 @@ public partial class Pedido : System.Web.UI.Page
                                     sCampos += up.sCampo + " = '" + up.sValor + "'" + Environment.NewLine + " ,";
                                 }
                                 sCampos = sCampos.Remove(sCampos.Length - 1, 1);
-
+                                 
                                 string sWhere = " (NR_LANC = '" + strRetMoviPend.Trim() + "') AND (CD_EMPRESA = '" + objUsuario.oTabelas.sEmpresa.Trim() + "')";
 
                                 sUpdateItens = string.Format(sUpdateItens, sTableItens, sCampos, sWhere);
@@ -829,7 +844,7 @@ public partial class Pedido : System.Web.UI.Page
         GridViewDb.PageIndex = e.NewPageIndex;
         GridViewDb.DataSource = (DataTable)Session["DadosConsultaProduto"];
         GridViewDb.DataBind();
-        ColoriItensJaSelecionadosNaPesquisa();
+        //ColoriItensJaSelecionadosNaPesquisa();
     }
     protected void GridDuplicatas_PageIndexChanging(object sender, GridViewPageEventArgs e)
     {
@@ -837,11 +852,11 @@ public partial class Pedido : System.Web.UI.Page
         GridDuplicatas.DataSource = (DataTable)Session["DadosConsultaDuplicatas"];
         GridDuplicatas.DataBind();
     }
-    private void ExcluirItem(string strCodigo, string strDesc)
+    private void ExcluirItem(string strindex, string strDesc)
     {
         DataSet ExcluirProduto = CriaDataSet();
 
-        DataRow row = ExcluirProduto.Tables[0].Rows.Find(strCodigo);
+        DataRow row = ExcluirProduto.Tables[0].Rows.Find(strindex);
 
         if (row != null)
         {
@@ -852,7 +867,7 @@ public partial class Pedido : System.Web.UI.Page
         }
         else
         {
-            string strAbrir = "if(window.alert('Não foi possível excluir o Produto: " + strCodigo.Trim() + " - " + strDesc.Trim() + " da Lista!'))";
+            string strAbrir = "if(window.alert('Não foi possível excluir o Produto: " + strindex.Trim() + " - " + strDesc.Trim() + " da Lista!'))";
             Page.ClientScript.RegisterClientScriptBlock(this.GetType(), "Confirmar", strAbrir, true);
         }
 
@@ -1003,6 +1018,30 @@ public partial class Pedido : System.Web.UI.Page
             cbxCD_PRAZO.DataBind();
         }
     }
+    private void GetStFrete()
+    {
+
+        List<ModelToComboBox> l = new List<ModelToComboBox>();
+        l.Add(new ModelToComboBox { ID_ITEM = "0", DS_ITEM = "0-EMITENTE" });
+        l.Add(new ModelToComboBox { ID_ITEM = "1", DS_ITEM = "1-REMETENTE" });
+        l.Add(new ModelToComboBox { ID_ITEM = "2", DS_ITEM = "2-DESTINATÁRIO" });
+        l.Add(new ModelToComboBox { ID_ITEM = "3", DS_ITEM = "3-TERCEIROS" });
+        l.Add(new ModelToComboBox { ID_ITEM = "9", DS_ITEM = "9-OUTROS" });
+
+        if (cbxStFrete.DataSource == null)
+        {
+            cbxStFrete.Items.Clear();
+            cbxStFrete.DataSource = l;
+            cbxStFrete.DataBind();
+        }
+        UsuarioWeb objUsuario = (UsuarioWeb)Session["ObjetoUsuario"];
+        string sST_FRETE = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("EMPRESA", "ST_RESPONSAVEL_FRETE", "CD_EMPRESA = '" + objUsuario.oTabelas.sEmpresa.Trim() + "'");
+        if (sST_FRETE != "")
+        {
+            cbxStFrete.SelectedValue = sST_FRETE;
+        }
+
+    }
     private void GetTipoConbrancas()
     {
         UsuarioWeb objUsuario = (UsuarioWeb)Session["ObjetoUsuario"];
@@ -1107,41 +1146,47 @@ public partial class Pedido : System.Web.UI.Page
 
         return dtListas;
     }
-    private void IncluirNaLista(string strProduto, string strDescProd, string strCodigo, string _sVL_PROD)
+    private int IncluirNaLista(string strProduto, string strDescProd, string strCodigo, string _sVL_PROD)
     {
         decimal dVL_PROD = Convert.ToDecimal(_sVL_PROD);
         UsuarioWeb objUsuario = (UsuarioWeb)Session["ObjetoUsuario"];
         DataTable ListaProduto = CriaDataSet().Tables[0];
-        DataRow row = ListaProduto.Rows.Find(strCodigo);
+        //DataRow row = ListaProduto.Rows.Find(strCodigo);
+        DataRow row = null;
 
-        if (row == null)
-        {
-            string strValorUnitario = String.Empty;
+        //if (row == null)
+        //{
+        string strValorUnitario = String.Empty;
 
-            row = ListaProduto.NewRow();
-            row["DESC"] = strDescProd;
-            row["CD_LISTA"] = cbxListaPreco.SelectedValue.ToString();
-            decimal dVL_DESC = 0; // dVL_PROD * Convert.ToDecimal(txtDesconto.Text.Replace('.', ',')) / 100;
-            row["VL_DESCONTO"] = String.Format("{0:N2}", dVL_DESC);
-            row["VL_PROD"] = String.Format("{0:N4}", dVL_PROD);
-            row["VL_UNIPROD_SEM_DESC"] = String.Format("{0:N4}", dVL_PROD);
-            row["SUBTOTAL"] = string.Format("{0:N2}", dVL_PROD - dVL_DESC);
-            row["QT_PROD"] = "1";
-            row["CD_PROD"] = strCodigo;
+        row = ListaProduto.NewRow();
+        row["DESC"] = strDescProd;
+        row["CD_LISTA"] = cbxListaPreco.SelectedValue.ToString();
+        decimal dVL_DESC = 0; // dVL_PROD * Convert.ToDecimal(txtDesconto.Text.Replace('.', ',')) / 100;
+        row["VL_DESCONTO"] = String.Format("{0:N2}", dVL_DESC);
+        row["VL_PROD"] = String.Format("{0:N4}", dVL_PROD);
+        row["VL_UNIPROD_SEM_DESC"] = String.Format("{0:N4}", dVL_PROD);
+        row["SUBTOTAL"] = string.Format("{0:N2}", dVL_PROD - dVL_DESC);
+        row["QT_PROD"] = "1";
+        row["CD_PROD"] = strCodigo;
+        int id = 0;
+        if (ListaProduto.Rows.Count > 0)
+            id = ListaProduto.AsEnumerable().Select(c => Convert.ToInt32(c["INDEX"].ToString())).Max() + 1;
+        row["INDEX"] = id;
 
-            ListaProduto.Rows.Add(row);
-            GridViewNovo.DataSource = ListaProduto;
-            GridViewNovo.DataBind();
-            //RecalculaGridNovo(true);            
-        }
-        else
-        {
-            string strAbrir = "if(window.alert('Já existe esse Produto: " + strProduto.Trim() + " - " + strDescProd.Trim() + " na Lista!'))";
-            Page.ClientScript.RegisterClientScriptBlock(this.GetType(), "Confirmar", strAbrir, true);
-        }
+        ListaProduto.Rows.Add(row);
+        GridViewNovo.DataSource = ListaProduto;
+        GridViewNovo.DataBind();
+        //RecalculaGridNovo(true);            
+        //}
+        //else
+        //{
+        //    string strAbrir = "if(window.alert('Já existe esse Produto: " + strProduto.Trim() + " - " + strDescProd.Trim() + " na Lista!'))";
+        //    Page.ClientScript.RegisterClientScriptBlock(this.GetType(), "Confirmar", strAbrir, true);
+        //}
 
         btnAtualiza.Visible = true;
         btnAvancar.Visible = true;
+        return id;
 
     }
     private DataSet CriaDataSet()
@@ -1151,9 +1196,10 @@ public partial class Pedido : System.Web.UI.Page
 
             DataSet ds = new DataSet();
             DataTable dt = new DataTable("Lista");
-            DataColumn CD_PROD = new DataColumn("CD_PROD", System.Type.GetType("System.String"), "");
+            DataColumn INDEX = new DataColumn("INDEX", System.Type.GetType("System.Int32"));
             DataColumn[] PkCollumn = new DataColumn[1];
-            dt.Columns.Add(CD_PROD);
+            dt.Columns.Add(INDEX);
+            dt.Columns.Add("CD_PROD", System.Type.GetType("System.String"), "");
             dt.Columns.Add("DESC", System.Type.GetType("System.String"), "");
             dt.Columns.Add("SUBTOTAL", System.Type.GetType("System.Decimal"), "");//VL_PROD - (VL_PROD * VL_DESCONTO)
             dt.Columns.Add("CD_LISTA", System.Type.GetType("System.String"), "");
@@ -1165,7 +1211,7 @@ public partial class Pedido : System.Web.UI.Page
             dt.Columns.Add("TOTAL", System.Type.GetType("System.Decimal"), "SUM(SUBTOTAL)");
             dt.Columns.Add("DS_COR", System.Type.GetType("System.String"), "");
 
-            PkCollumn[0] = CD_PROD;
+            PkCollumn[0] = INDEX;
             dt.PrimaryKey = PkCollumn;
             ds.Tables.Add(dt);
 
@@ -1284,5 +1330,13 @@ public partial class Pedido : System.Web.UI.Page
             Session["lsCodigoInseridos"] = new Dictionary<string, double>();//OS 28143
         }
 
-    }  
+    }
+}
+
+
+
+public sealed class ModelToComboBox
+{
+    public string ID_ITEM { get; set; }
+    public string DS_ITEM { get; set; }
 }

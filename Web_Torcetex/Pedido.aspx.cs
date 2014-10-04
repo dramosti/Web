@@ -67,7 +67,7 @@ public partial class Pedido : System.Web.UI.Page
             sCdClifor = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("CLIFOR", "CD_CLIFOR", "CD_ALTER = '" + CodigoCliente + "'");
 
             txtCodCli.Text = CodigoCliente;
-            DataTable dtRet = objUsuario.oTabelas.hlpDbFuncoes.qrySeekRet(string.Format("select count(NR_DOC)TOTAL from doc_ctr where coalesce(st_baixa,'') <> 'B' and cd_empresa = '{0}' and cd_cliente = '{1}' and dt_venci < current_date", objUsuario.oTabelas.sEmpresa, sCdClifor));
+            DataTable dtRet = objUsuario.oTabelas.hlpDbFuncoes.qrySeekRet(string.Format("select count(NR_DOC)TOTAL from doc_ctr where coalesce(st_baixa,'') <> 'B' and cd_empresa = '{0}' and cd_cliente = '{1}' and dt_venci < current_date and coalesce(ST_CANDOC,'N') = 'N' and coalesce(ST_DEVOLUC, 'N') = 'N'", objUsuario.oTabelas.sEmpresa, sCdClifor));
             Session["QtdePendencias"] = Convert.ToUInt32(dtRet.Rows[0]["TOTAL"].ToString());
             if (Session["QtdePendencias"] != null)
             {
@@ -722,7 +722,7 @@ public partial class Pedido : System.Web.UI.Page
     {
         UsuarioWeb objUsuario = (UsuarioWeb)Session["ObjetoUsuario"];
         string sCdClifor = objUsuario.oTabelas.hlpDbFuncoes.qrySeekValue("CLIFOR", "CD_CLIFOR", "CD_ALTER = '" + (string)txtCodCli.Text + "'");
-        string sWhere = "coalesce(st_baixa,'') <> 'B' and cd_empresa = '" + objUsuario.oTabelas.sEmpresa.ToString().Trim() + "' and cd_cliente = '" + sCdClifor + "'";
+        string sWhere = "coalesce(ST_CANDOC,'N') = 'N' and coalesce(ST_DEVOLUC, 'N') = 'N' and coalesce(st_baixa,'') <> 'B' and cd_empresa = '" + objUsuario.oTabelas.sEmpresa.ToString().Trim() + "' and cd_cliente = '" + sCdClifor + "'";
 
         DataTable dtDuplicatas = objUsuario.oTabelas.hlpDbFuncoes.qrySeekRet("DOC_CTR", "CD_DUPLI,dt_venci, vl_doc ", sWhere);
 

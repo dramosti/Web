@@ -26,6 +26,7 @@
         .style4 {
             width: 309px;
         }
+
         .auto-style1 {
             font-size: 14px;
             font-family: Segoe UI;
@@ -282,7 +283,7 @@
                     </tr>
                     <tr>
                         <td align="right" class="label" colspan="2"></td>
-                    </tr>                  
+                    </tr>
                     <tr>
                         <td align="right" class="style3">Condição de Pgto
                         </td>
@@ -295,7 +296,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td align="right" class="style3">Tipo de Conbrança 1 
+                        <td align="right" class="style3">Tipo de COBRANÇA 1 
                         </td>
                         <td align="left">
                             <asp:DropDownList ID="cbxConranca1" runat="server" AutoPostBack="True" CssClass="textBox"
@@ -306,7 +307,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td align="right" class="style3">Tipo de Conbrança 2 
+                        <td align="right" class="style3">Tipo de COBRANÇA 2 
                         </td>
                         <td align="left">
                             <asp:DropDownList ID="cbxConranca2" runat="server" AutoPostBack="True" CssClass="textBox"
@@ -327,12 +328,23 @@
                             </asp:DropDownList>
                         </td>
                     </tr>
-                      <tr>
+                     <tr>
+                        <td align="right" class="style3">Responsável Frete 
+                        </td>
+                        <td align="left">
+                            <asp:DropDownList ID="cbxStFrete" runat="server" AutoPostBack="True" CssClass="textBox"
+                                AppendDataBoundItems="true" DataTextField="DS_ITEM" DataValueField="ID_ITEM"
+                                Enabled="True" Width="185px">
+                                <asp:ListItem>Selecione um item</asp:ListItem>
+                            </asp:DropDownList>
+                        </td>
+                    </tr>
+                    <tr>
                         <td align="right" class="style3">Classificação 
                         </td>
                         <td align="left">
                             <asp:DropDownList ID="cbxClassificacao" runat="server" AutoPostBack="True" CssClass="textBox"
-                                AppendDataBoundItems="true"  Enabled="True" Width="44px">
+                                AppendDataBoundItems="true" Enabled="True" Width="44px">
                                 <asp:ListItem>A</asp:ListItem>
                                 <asp:ListItem>B</asp:ListItem>
                                 <asp:ListItem>C</asp:ListItem>
@@ -347,7 +359,7 @@
                                 ReadOnly="True" Width="300px"></asp:TextBox>
                         </td>
                     </tr>
-                      <tr>
+                    <tr>
                         <td align="right" class="style3">Total do Pedido R$
                         </td>
                         <td align="left">
@@ -397,8 +409,8 @@
                                     </asp:BoundField>
                                     <asp:BoundField DataField="CD_LISTA" HeaderText="Lista" ItemStyle-HorizontalAlign="Left"
                                         ItemStyle-Width="80px">
-                                        <ItemStyle HorizontalAlign="Center" Width="40px" Wrap="False"/>
-                                        <HeaderStyle HorizontalAlign="Center"/>
+                                        <ItemStyle HorizontalAlign="Center" Width="40px" Wrap="False" />
+                                        <HeaderStyle HorizontalAlign="Center" />
                                     </asp:BoundField>
                                     <asp:TemplateField HeaderText="Vl. Unitário">
                                         <ItemTemplate>
@@ -415,7 +427,7 @@
                                     <asp:BoundField DataField="VL_UNIPROD_SEM_DESC" Visible="false" HeaderText="Vl. s/desc">
                                         <ItemStyle Width="60px" Wrap="False" HorizontalAlign="Right" />
                                         <HeaderStyle Wrap="False" Width="60px" />
-                                    </asp:BoundField>
+                                    </asp:BoundField>                                    
                                     <asp:BoundField DataField="SUBTOTAL" ItemStyle-HorizontalAlign="Left" HeaderText="Vl. Total">
                                         <HeaderStyle HorizontalAlign="Left" Wrap="False" Width="80" />
                                         <ItemStyle HorizontalAlign="Left" Wrap="False" Width="80" />
@@ -423,16 +435,20 @@
                                     <asp:TemplateField HeaderText="COR">
                                         <ItemTemplate>
                                             <asp:TextBox ID="txtCor" runat="server" BackColor="Info" BorderColor="#E0E0E0" Font-Names="Segoe UI"
-                                                Font-Size="13px" MaxLength="9"  Text='<%# Bind("DS_COR") %>' Width="150px"></asp:TextBox>
+                                                Font-Size="13px" MaxLength="25" Text='<%# Bind("DS_COR") %>' Width="150px"></asp:TextBox>
                                         </ItemTemplate>
                                         <EditItemTemplate>
                                             <asp:TextBox ID="txtCor" runat="server" BackColor="White" BorderColor="#E0E0E0"
-                                                Font-Names="Segoe UI" Font-Size="13px" MaxLength="9" Text='<%# Bind("DS_COR") %>'
+                                                Font-Names="Segoe UI" Font-Size="13px" MaxLength="25" Text='<%# Bind("DS_COR") %>'
                                                 Width="150px"></asp:TextBox>
                                         </EditItemTemplate>
                                         <HeaderStyle HorizontalAlign="Left" />
                                         <ItemStyle HorizontalAlign="Left" Width="60px" Wrap="False" />
                                     </asp:TemplateField>
+                                    <asp:BoundField DataField="INDEX" HeaderText="index" >
+                                        <ItemStyle Font-Names="Segoe UI" Font-Size="13px" HorizontalAlign="Left" Width="40px" />
+                                        <HeaderStyle HorizontalAlign="Left" />
+                                    </asp:BoundField>
                                 </Columns>
                                 <PagerStyle CssClass="pgr" />
                             </asp:GridView>
